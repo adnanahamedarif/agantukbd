@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -1561,4 +1562,1569 @@ window.addEventListener('resize', () => {
 });
 </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="photo/Agantuk logo.jpg">
+    <title>আগন্তুক অ্যাডমিন প্যানেল</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { font-family: 'Hind Siliguri', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
+        .sidebar { background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%); }
+        .nav-item { transition: all 0.2s; border-left: 3px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.1); border-left-color: rgba(255,255,255,0.5); }
+        .nav-item.active { background: rgba(255,255,255,0.15); border-left-color: white; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .stat-card { transition: all 0.3s; }
+        .stat-card:hover { transform: translateY(-2px); }
+        .modal-bg { background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+        .drop-zone { border: 2px dashed #cbd5e1; transition: all 0.2s; }
+        .drop-zone.drag-over { border-color: #3b82f6; background: #eff6ff; }
+        .spinner { border: 3px solid #e2e8f0; border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .section { display: none; }
+        .section.active { display: block; }
+        input, textarea, select { transition: border-color 0.2s, box-shadow 0.2s; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .toast-enter { animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .img-thumb { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; }
+        .badge { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+        .sidebar-collapsed { width: 0; overflow: hidden; }
+    </style>
+</head>
+<body class="bg-slate-100 text-gray-800">
+
+<!-- ══════════════════════ LOGIN PAGE ══════════════════════ -->
+<div id="loginPage" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 p-4">
+    <div class="w-full max-w-md">
+        <div class="text-center mb-8">
+            <img src="photo/logo1.png" alt="Logo" class="h-24 mx-auto mb-4 drop-shadow-xl">
+            <h1 class="text-3xl font-bold text-white">আগন্তুক অ্যাডমিন</h1>
+            <p class="text-blue-200 mt-1">ওয়েবসাইট কন্টেন্ট ম্যানেজমেন্ট সিস্টেম</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            <div id="loginError" class="hidden mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm flex items-center gap-2">
+                <i class="fas fa-exclamation-circle"></i><span id="loginErrorMsg"></span>
+            </div>
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">ইউজারনেম</label>
+                    <div class="relative">
+                        <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="loginUser" placeholder="agantukbd"
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl"
+                               onkeydown="if(event.key==='Enter') doLogin()">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">পাসওয়ার্ড</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="password" id="loginPass" placeholder="••••••••"
+                               class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl"
+                               onkeydown="if(event.key==='Enter') doLogin()">
+                        <button type="button" onclick="togglePassVis()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-eye" id="passEyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                <button onclick="doLogin()" id="loginBtn"
+                        class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-xl font-bold text-lg hover:shadow-lg transition">
+                    <i class="fas fa-sign-in-alt mr-2"></i>লগইন করুন
+                </button>
+            </div>
+            <p class="text-center text-sm text-gray-400 mt-6">আগন্তুক অ্যাডমিন প্যানেল v2.0</p>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════ ADMIN PANEL ══════════════════════ -->
+<div id="adminPanel" class="hidden min-h-screen flex flex-col">
+
+    <!-- Top Header -->
+    <header class="bg-white border-b shadow-sm fixed w-full z-30 top-0">
+        <div class="flex items-center justify-between px-4 py-3">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="text-gray-500 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <img src="photo/logo1.png" alt="Logo" class="h-10">
+                <div>
+                    <h1 class="font-bold text-gray-800 leading-none">আগন্তুক অ্যাডমিন</h1>
+                    <p class="text-xs text-gray-500" id="currentPageTitle">ড্যাশবোর্ড</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html" target="_blank"
+                   class="hidden md:flex items-center gap-2 text-sm text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-lg transition">
+                    <i class="fas fa-external-link-alt"></i> ওয়েবসাইট
+                </a>
+                <div class="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg">
+                    <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">অ</div>
+                    <span class="hidden md:block text-sm font-medium text-blue-700">agantukbd</span>
+                </div>
+                <button onclick="doLogout()" class="flex items-center gap-2 bg-red-50 text-red-600 px-3 py-2 rounded-lg hover:bg-red-100 transition text-sm">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="hidden md:inline">লগ আউট</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex pt-16 min-h-screen">
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar text-white w-64 fixed top-16 bottom-0 z-20 overflow-y-auto transition-all duration-300">
+            <nav class="p-4 space-y-1">
+                <a href="#" onclick="nav('dashboard')" id="nav-dashboard" class="nav-item active flex items-center gap-3 px-4 py-3 rounded-r-lg text-white">
+                    <i class="fas fa-tachometer-alt w-5"></i><span>ড্যাশবোর্ড</span>
+                </a>
+                <div class="pt-2 pb-1 px-4 text-blue-300 text-xs uppercase tracking-wider font-semibold">কন্টেন্ট</div>
+                <a href="#" onclick="nav('homepage')" id="nav-homepage" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-blue-100">
+                    <i class="fas fa-home w-5"></i><span>হোমপেজ</span>
+                </a>
+                <a href="#" onclick="nav('about')" id="nav-about" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-blue-100">
+                    <i class="fas fa-info-circle w-5"></i><span>আমাদের সম্পর্কে</span>
+                </a>
+                <a href="#" onclick="nav('projects')" id="nav-projects" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-blue-100">
+                    <i class="fas fa-project-diagram w-5"></i><span>প্রজেক্টস</span>
+                </a>
+                <a href="#" onclick="nav('counters')" id="nav-counters" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-blue-100">
+                    <i class="fas fa-chart-bar w-5"></i><span>কাউন্টার</span>
+                </a>
+                <a href="#" onclick="nav('gallery')" id="nav-gallery" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-blue-100">
+                    <i class="fas fa-images w-5"></i><span>গ্যালারি</span>
+                </a>
+                <a href="#" onclick="nav('transparency')" id="nav-transparency" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-blue-100">
+                    <i class="fas fa-file-alt w-5"></i><span>স্বচ্ছতা</span>
+                </a>
+                <a href="#" onclick="nav('donate')" id="nav-donate" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-blue-100">
+                    <i class="fas fa-donate w-5"></i><span>দান/ব্যাংক তথ্য</span>
+                </a>
+                <a href="#" onclick="nav('volunteer')" id="nav-volunteer" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-blue-100">
+                    <i class="fas fa-hands-helping w-5"></i><span>ভলান্টিয়ার ফর্ম</span>
+                </a>
+                <div class="pt-2 pb-1 px-4 text-blue-300 text-xs uppercase tracking-wider font-semibold">সিস্টেম</div>
+                <a href="#" onclick="nav('settings')" id="nav-settings" class="nav-item flex items-center gap-3 px-4 py-3 rounded-r-lg text-blue-100">
+                    <i class="fas fa-cog w-5"></i><span>সেটিংস</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="mainContent" class="flex-1 ml-64 p-6 transition-all duration-300">
+
+            <!-- ── DASHBOARD ── -->
+            <div id="sec-dashboard" class="section active">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">ড্যাশবোর্ড</h2>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="card stat-card p-6 border-l-4 border-blue-500">
+                        <div class="flex justify-between items-start">
+                            <div><p class="text-sm text-gray-500">মোট প্রজেক্ট</p><h3 class="text-3xl font-bold text-gray-800 mt-1" id="dashProjects">—</h3></div>
+                            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center"><i class="fas fa-project-diagram text-xl"></i></div>
+                        </div>
+                    </div>
+                    <div class="card stat-card p-6 border-l-4 border-green-500">
+                        <div class="flex justify-between items-start">
+                            <div><p class="text-sm text-gray-500">গ্যালারি ছবি</p><h3 class="text-3xl font-bold text-gray-800 mt-1" id="dashImages">—</h3></div>
+                            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center"><i class="fas fa-images text-xl"></i></div>
+                        </div>
+                    </div>
+                    <div class="card stat-card p-6 border-l-4 border-purple-500">
+                        <div class="flex justify-between items-start">
+                            <div><p class="text-sm text-gray-500">উপকৃত মানুষ</p><h3 class="text-3xl font-bold text-gray-800 mt-1" id="dashBeneficiaries">—</h3></div>
+                            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center"><i class="fas fa-users text-xl"></i></div>
+                        </div>
+                    </div>
+                    <div class="card stat-card p-6 border-l-4 border-amber-500">
+                        <div class="flex justify-between items-start">
+                            <div><p class="text-sm text-gray-500">সর্বশেষ আপডেট</p><h3 class="text-sm font-bold text-gray-800 mt-1" id="dashLastUpdate">—</h3></div>
+                            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center"><i class="fas fa-clock text-xl"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4"><i class="fas fa-bolt text-yellow-500 mr-2"></i>দ্রুত কাজ</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="nav('projects')" class="flex flex-col items-center p-4 bg-blue-50 text-blue-700 rounded-xl hover:bg-blue-100 transition">
+                                <i class="fas fa-plus-circle text-2xl mb-2"></i><span class="text-sm font-semibold">নতুন প্রজেক্ট</span>
+                            </button>
+                            <button onclick="nav('gallery')" class="flex flex-col items-center p-4 bg-green-50 text-green-700 rounded-xl hover:bg-green-100 transition">
+                                <i class="fas fa-upload text-2xl mb-2"></i><span class="text-sm font-semibold">ছবি আপলোড</span>
+                            </button>
+                            <button onclick="nav('counters')" class="flex flex-col items-center p-4 bg-purple-50 text-purple-700 rounded-xl hover:bg-purple-100 transition">
+                                <i class="fas fa-chart-bar text-2xl mb-2"></i><span class="text-sm font-semibold">কাউন্টার</span>
+                            </button>
+                            <button onclick="nav('homepage')" class="flex flex-col items-center p-4 bg-amber-50 text-amber-700 rounded-xl hover:bg-amber-100 transition">
+                                <i class="fas fa-edit text-2xl mb-2"></i><span class="text-sm font-semibold">হোমপেজ এডিট</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4"><i class="fas fa-info-circle text-blue-500 mr-2"></i>সিস্টেম তথ্য</h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-600"><i class="fas fa-database mr-2 text-blue-500"></i>ডাটাবেজ</span>
+                                <span class="badge bg-green-100 text-green-700">Google Sheets ✓</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-600"><i class="fas fa-cloud mr-2 text-blue-500"></i>ফাইল স্টোরেজ</span>
+                                <span class="badge bg-green-100 text-green-700">Google Drive ✓</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-600"><i class="fas fa-user-shield mr-2 text-blue-500"></i>অ্যাডমিন</span>
+                                <span class="badge bg-blue-100 text-blue-700">agantukbd</span>
+                            </div>
+                            <div class="p-3 bg-yellow-50 rounded-lg text-yellow-700 text-xs">
+                                <i class="fas fa-exclamation-triangle mr-1"></i>
+                                Apps Script URL সেটিংস থেকে সেট করুন।
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── HOMEPAGE ── -->
+            <div id="sec-homepage" class="section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">হোমপেজ কন্টেন্ট</h2>
+                    <button onclick="saveHomepage()" class="btn-primary"><i class="fas fa-save mr-2"></i>সেভ করুন</button>
+                </div>
+                <div class="space-y-6">
+                    <!-- Hero -->
+                    <div class="card p-6">
+                        <h3 class="section-title">হিরো সেকশন</h3>
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <label class="form-label">প্রধান শিরোনাম</label>
+                                <textarea id="hp_heroHeadline" rows="3" class="form-input" placeholder="আপনার একটু সহানুভূতি..."></textarea>
+                            </div>
+                            <div>
+                                <label class="form-label">সাবটাইটেল</label>
+                                <textarea id="hp_heroSubtitle" rows="3" class="form-input" placeholder="আমরা সুবিধাবঞ্চিত মানুষের পাশে..."></textarea>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="form-label">ওয়েলকাম ব্যাজ টেক্সট</label>
+                            <input type="text" id="hp_heroBadge" class="form-input" placeholder="স্বাগত আগন্তুক পরিবারে">
+                        </div>
+                        <div class="mt-4">
+                            <label class="form-label">হিরো ব্যাকগ্রাউন্ড ছবি</label>
+                            <div class="flex items-center gap-4 mt-2">
+                                <div id="heroImgPreview" class="w-40 h-24 bg-gray-100 rounded-lg overflow-hidden border flex items-center justify-center text-gray-400 text-sm">
+                                    <i class="fas fa-image text-3xl"></i>
+                                </div>
+                                <button onclick="openImgModal('hero')" class="btn-secondary"><i class="fas fa-upload mr-2"></i>ছবি পরিবর্তন</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- CTA Buttons -->
+                    <div class="card p-6">
+                        <h3 class="section-title">CTA বাটন টেক্সট</h3>
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <label class="form-label">প্রথম বাটন</label>
+                                <input type="text" id="hp_cta1" class="form-input" placeholder="পাশে দাঁড়ান">
+                            </div>
+                            <div>
+                                <label class="form-label">দ্বিতীয় বাটন</label>
+                                <input type="text" id="hp_cta2" class="form-input" placeholder="স্বেচ্ছাসেবক হোন">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Announcement Banner -->
+                    <div class="card p-6">
+                        <h3 class="section-title">ঘোষণা ব্যানার <span class="badge bg-blue-100 text-blue-700 ml-2">ঐচ্ছিক</span></h3>
+                        <div class="mt-4 space-y-3">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="hp_announcementEnabled" class="w-5 h-5 rounded text-blue-600">
+                                <label class="form-label mb-0">ঘোষণা ব্যানার চালু রাখুন</label>
+                            </div>
+                            <input type="text" id="hp_announcementText" class="form-input" placeholder="জরুরি ঘোষণা টেক্সট এখানে লিখুন...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── ABOUT ── -->
+            <div id="sec-about" class="section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">আমাদের সম্পর্কে</h2>
+                    <button onclick="saveAbout()" class="btn-primary"><i class="fas fa-save mr-2"></i>সেভ করুন</button>
+                </div>
+                <div class="space-y-6">
+                    <div class="card p-6">
+                        <h3 class="section-title">মূল তথ্য</h3>
+                        <div class="space-y-4 mt-4">
+                            <div>
+                                <label class="form-label">মূল বিবরণ</label>
+                                <textarea id="ab_description" rows="4" class="form-input" placeholder="আগন্তুক একটি অরাজনৈতিক..."></textarea>
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="form-label">আমাদের ভিশন (লক্ষ্য)</label>
+                                    <textarea id="ab_vision" rows="3" class="form-input"></textarea>
+                                </div>
+                                <div>
+                                    <label class="form-label">আমাদের মিশন (উদ্দেশ্য)</label>
+                                    <textarea id="ab_mission" rows="3" class="form-input"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="section-title">সোশ্যাল মিডিয়া লিংক</h3>
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <label class="form-label"><i class="fab fa-facebook text-blue-600 mr-2"></i>ফেসবুক</label>
+                                <input type="url" id="ab_facebook" class="form-input" placeholder="https://facebook.com/...">
+                            </div>
+                            <div>
+                                <label class="form-label"><i class="fab fa-youtube text-red-600 mr-2"></i>ইউটিউব</label>
+                                <input type="url" id="ab_youtube" class="form-input" placeholder="https://youtube.com/...">
+                            </div>
+                            <div>
+                                <label class="form-label"><i class="fab fa-whatsapp text-green-600 mr-2"></i>হোয়াটসঅ্যাপ নম্বর</label>
+                                <input type="text" id="ab_whatsapp" class="form-input" placeholder="+8801XXXXXXXXX">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── PROJECTS ── -->
+            <div id="sec-projects" class="section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">প্রজেক্টস ম্যানেজমেন্ট</h2>
+                    <button onclick="openProjectModal(null)" class="btn-primary"><i class="fas fa-plus mr-2"></i>নতুন প্রজেক্ট</button>
+                </div>
+                <!-- Filter tabs -->
+                <div class="flex gap-2 mb-4 flex-wrap">
+                    <button onclick="filterProjects('all')" class="proj-filter-btn active-filter px-4 py-2 rounded-full text-sm font-semibold border-2 border-blue-600 text-blue-600 bg-blue-50">সব</button>
+                    <button onclick="filterProjects('active')" class="proj-filter-btn px-4 py-2 rounded-full text-sm font-semibold border-2 border-gray-300 text-gray-600 hover:border-blue-600 hover:text-blue-600">সক্রিয়</button>
+                    <button onclick="filterProjects('completed')" class="proj-filter-btn px-4 py-2 rounded-full text-sm font-semibold border-2 border-gray-300 text-gray-600 hover:border-blue-600 hover:text-blue-600">সম্পন্ন</button>
+                    <button onclick="filterProjects('upcoming')" class="proj-filter-btn px-4 py-2 rounded-full text-sm font-semibold border-2 border-gray-300 text-gray-600 hover:border-blue-600 hover:text-blue-600">আসন্ন</button>
+                </div>
+                <div id="projectsContainer" class="space-y-4">
+                    <div class="card p-8 text-center text-gray-400"><div class="spinner w-8 h-8 mx-auto mb-3"></div>লোড হচ্ছে...</div>
+                </div>
+            </div>
+
+            <!-- ── COUNTERS ── -->
+            <div id="sec-counters" class="section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">লাইভ কাউন্টার</h2>
+                    <button onclick="saveCounters()" class="btn-primary"><i class="fas fa-save mr-2"></i>সেভ করুন</button>
+                </div>
+                <div class="card p-6">
+                    <p class="text-sm text-gray-500 mb-6 flex items-center gap-2"><i class="fas fa-info-circle text-blue-500"></i>হোমপেজে যে সংখ্যাগুলো দেখা যায় সেগুলো এখান থেকে আপডেট করুন।</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="p-4 bg-blue-50 rounded-xl border border-blue-200">
+                            <label class="form-label text-blue-700"><i class="fas fa-users mr-2"></i>উপকৃত মানুষ</label>
+                            <input type="number" id="cnt_beneficiaries" class="form-input mt-2" placeholder="1000">
+                            <p class="text-xs text-gray-400 mt-1">সাফিক্স যোগ হবে (+)</p>
+                        </div>
+                        <div class="p-4 bg-red-50 rounded-xl border border-red-200">
+                            <label class="form-label text-red-700"><i class="fas fa-tint mr-2"></i>রক্তদান সম্পন্ন</label>
+                            <input type="number" id="cnt_blood" class="form-input mt-2" placeholder="100">
+                        </div>
+                        <div class="p-4 bg-green-50 rounded-xl border border-green-200">
+                            <label class="form-label text-green-700"><i class="fas fa-project-diagram mr-2"></i>মোট প্রজেক্ট</label>
+                            <input type="number" id="cnt_projects" class="form-input mt-2" placeholder="50">
+                        </div>
+                        <div class="p-4 bg-amber-50 rounded-xl border border-amber-200">
+                            <label class="form-label text-amber-700"><i class="fas fa-hand-holding-heart mr-2"></i>স্বেচ্ছাসেবক</label>
+                            <input type="number" id="cnt_volunteers" class="form-input mt-2" placeholder="100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── GALLERY ── -->
+            <div id="sec-gallery" class="section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">গ্যালারি ম্যানেজমেন্ট</h2>
+                    <button onclick="openImgModal('gallery')" class="btn-primary"><i class="fas fa-upload mr-2"></i>ছবি আপলোড</button>
+                </div>
+                <div id="galleryContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="col-span-full card p-8 text-center text-gray-400"><div class="spinner w-8 h-8 mx-auto mb-3"></div>লোড হচ্ছে...</div>
+                </div>
+            </div>
+
+            <!-- ── TRANSPARENCY ── -->
+            <div id="sec-transparency" class="section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">স্বচ্ছতা ডকুমেন্ট</h2>
+                    <button onclick="saveTransparency()" class="btn-primary"><i class="fas fa-save mr-2"></i>সেভ করুন</button>
+                </div>
+                <div class="space-y-6">
+                    <div class="card p-6">
+                        <h3 class="section-title"><i class="fas fa-file-spreadsheet text-green-600 mr-2"></i>ফাইন্যান্সিয়াল রিপোর্ট</h3>
+                        <div class="space-y-4 mt-4">
+                            <div>
+                                <label class="form-label">Google Sheets লিংক</label>
+                                <input type="url" id="tr_financeSheet" class="form-input" placeholder="https://docs.google.com/spreadsheets/...">
+                            </div>
+                            <div>
+                                <label class="form-label">শেষ আপডেট তারিখ</label>
+                                <input type="text" id="tr_financeUpdate" class="form-input" placeholder="১ ফেব্রুয়ারি, ২০২৬">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="section-title"><i class="fas fa-file-pdf text-red-600 mr-2"></i>গঠনতন্ত্র</h3>
+                        <div class="mt-4">
+                            <label class="form-label">PDF / Google Doc লিংক</label>
+                            <input type="url" id="tr_constitution" class="form-input" placeholder="https://...">
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="section-title"><i class="fas fa-scroll text-purple-600 mr-2"></i>সদস্য নীতিমালা</h3>
+                        <div class="mt-4">
+                            <label class="form-label">Google Doc লিংক</label>
+                            <input type="url" id="tr_memberPolicy" class="form-input" placeholder="https://...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── DONATE ── -->
+            <div id="sec-donate" class="section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">দান ও ব্যাংক তথ্য</h2>
+                    <button onclick="saveDonate()" class="btn-primary"><i class="fas fa-save mr-2"></i>সেভ করুন</button>
+                </div>
+                <div class="space-y-6">
+                    <div class="card p-6">
+                        <h3 class="section-title">বিকাশ / নগদ / রকেট</h3>
+                        <div class="grid md:grid-cols-3 gap-4 mt-4">
+                            <div>
+                                <label class="form-label"><i class="fas fa-mobile-alt text-pink-600 mr-2"></i>বিকাশ নম্বর</label>
+                                <input type="text" id="dn_bkash" class="form-input" placeholder="01XXXXXXXXX">
+                            </div>
+                            <div>
+                                <label class="form-label"><i class="fas fa-mobile-alt text-orange-600 mr-2"></i>নগদ নম্বর</label>
+                                <input type="text" id="dn_nagad" class="form-input" placeholder="01XXXXXXXXX">
+                            </div>
+                            <div>
+                                <label class="form-label"><i class="fas fa-mobile-alt text-purple-600 mr-2"></i>রকেট নম্বর</label>
+                                <input type="text" id="dn_rocket" class="form-input" placeholder="01XXXXXXXXX">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="section-title">ব্যাংক অ্যাকাউন্ট</h3>
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <label class="form-label">অ্যাকাউন্ট নাম</label>
+                                <input type="text" id="dn_bankName" class="form-input" placeholder="Agantuk">
+                            </div>
+                            <div>
+                                <label class="form-label">অ্যাকাউন্ট নম্বর</label>
+                                <input type="text" id="dn_bankAcc" class="form-input" placeholder="XXXXXXXXXXXX">
+                            </div>
+                            <div>
+                                <label class="form-label">ব্যাংকের নাম</label>
+                                <input type="text" id="dn_bankBankName" class="form-input" placeholder="Islami Bank">
+                            </div>
+                            <div>
+                                <label class="form-label">শাখা</label>
+                                <input type="text" id="dn_bankBranch" class="form-input" placeholder="Alamdanga Branch">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="section-title">দান সেকশন টেক্সট</h3>
+                        <div class="space-y-4 mt-4">
+                            <div>
+                                <label class="form-label">সেকশন শিরোনাম</label>
+                                <input type="text" id="dn_sectionTitle" class="form-input" placeholder="আপনার সহযোগিতাই আমাদের শক্তি">
+                            </div>
+                            <div>
+                                <label class="form-label">সেকশন বিবরণ</label>
+                                <textarea id="dn_sectionDesc" rows="3" class="form-input"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── VOLUNTEER FORM ── -->
+            <div id="sec-volunteer" class="section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">ভলান্টিয়ার ফর্ম সেটিং</h2>
+                    <button onclick="saveVolunteer()" class="btn-primary"><i class="fas fa-save mr-2"></i>সেভ করুন</button>
+                </div>
+                <div class="space-y-6">
+                    <div class="card p-6">
+                        <h3 class="section-title">ফর্ম কনফিগারেশন</h3>
+                        <div class="space-y-4 mt-4">
+                            <div>
+                                <label class="form-label">Google Form লিংক (ঐচ্ছিক)</label>
+                                <input type="url" id="vl_formLink" class="form-input" placeholder="https://docs.google.com/forms/...">
+                                <p class="text-xs text-gray-400 mt-1">খালি রাখলে ওয়েবসাইটের নিজস্ব ফর্ম ব্যবহার হবে।</p>
+                            </div>
+                            <div>
+                                <label class="form-label">ফর্ম সেকশন শিরোনাম</label>
+                                <input type="text" id="vl_title" class="form-input" placeholder="স্বেচ্ছাসেবক হিসেবে যোগ দিন">
+                            </div>
+                            <div>
+                                <label class="form-label">ফর্ম বিবরণ</label>
+                                <textarea id="vl_desc" rows="3" class="form-input"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="section-title">সাবমিশন নোটিফিকেশন ইমেইল</h3>
+                        <div class="mt-4">
+                            <label class="form-label">নোটিফিকেশন ইমেইল</label>
+                            <input type="email" id="vl_email" class="form-input" placeholder="agantukbd2019@gmail.com">
+                            <p class="text-xs text-gray-400 mt-1">নতুন ভলান্টিয়ার সাবমিট করলে এই ইমেইলে জানানো হবে।</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SETTINGS ── -->
+            <div id="sec-settings" class="section">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">সিস্টেম সেটিংস</h2>
+                <div class="space-y-6">
+                    <div class="card p-6">
+                        <h3 class="section-title"><i class="fas fa-link text-blue-600 mr-2"></i>Apps Script URL</h3>
+                        <div class="mt-4 space-y-3">
+                            <input type="text" id="st_apiUrl" class="form-input font-mono text-sm"
+                                   placeholder="https://script.google.com/macros/s/...">
+                            <div class="flex gap-3">
+                                <button onclick="saveApiUrl()" class="btn-primary text-sm"><i class="fas fa-save mr-2"></i>URL সেভ করুন</button>
+                                <button onclick="testConnection()" class="btn-secondary text-sm"><i class="fas fa-plug mr-2"></i>কানেকশন টেস্ট</button>
+                            </div>
+                            <div id="testResult" class="hidden p-3 rounded-lg text-sm"></div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="section-title"><i class="fas fa-database text-green-600 mr-2"></i>ডাটা ব্যাকআপ</h3>
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                            <button onclick="exportData()" class="flex items-center gap-3 p-4 bg-blue-50 text-blue-700 rounded-xl hover:bg-blue-100 transition">
+                                <i class="fas fa-download text-xl"></i>
+                                <div class="text-left"><p class="font-semibold">ডাটা এক্সপোর্ট</p><p class="text-xs text-blue-500">JSON ফাইল ডাউনলোড</p></div>
+                            </button>
+                            <button onclick="clearSession()" class="flex items-center gap-3 p-4 bg-red-50 text-red-700 rounded-xl hover:bg-red-100 transition">
+                                <i class="fas fa-broom text-xl"></i>
+                                <div class="text-left"><p class="font-semibold">সেশন ক্লিয়ার</p><p class="text-xs text-red-500">লগইন সেশন মুছুন</p></div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card p-6 border border-red-200 bg-red-50">
+                        <h3 class="section-title text-red-700"><i class="fas fa-exclamation-triangle mr-2"></i>ব্যবহার নির্দেশনা</h3>
+                        <ul class="mt-4 space-y-2 text-sm text-red-700">
+                            <li>• সেটিংস থেকে Apps Script URL সেট করুন</li>
+                            <li>• Google Sheets ID: <code class="bg-red-100 px-1 rounded">18iKgkmR2xl5Yiavo40Y1rlgL8CvIAItXqvwbz_uE1oQ</code></li>
+                            <li>• Drive Folder ID: <code class="bg-red-100 px-1 rounded">1Ft3Jf4l-Xi8aqr24TVHnh02ySuWNFJ0u</code></li>
+                            <li>• AdminCode.gs ফাইলটি Apps Script-এ deploy করুন</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<!-- ══════════════════════ PROJECT MODAL ══════════════════════ -->
+<div id="projectModal" class="modal-bg fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div class="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
+            <h3 class="text-xl font-bold text-gray-800" id="projModalTitle">নতুন প্রজেক্ট</h3>
+            <button onclick="closeProjectModal()" class="w-8 h-8 bg-gray-100 text-gray-500 rounded-full hover:bg-gray-200 flex items-center justify-center">&times;</button>
+        </div>
+        <div class="p-6 space-y-5">
+            <input type="hidden" id="proj_id">
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="form-label">প্রজেক্ট শিরোনাম *</label>
+                    <input type="text" id="proj_title" class="form-input" required>
+                </div>
+                <div>
+                    <label class="form-label">ক্যাটেগরি *</label>
+                    <select id="proj_category" class="form-input">
+                        <option value="education">শিক্ষা</option>
+                        <option value="health">স্বাস্থ্য</option>
+                        <option value="relief">ত্রাণ</option>
+                        <option value="food">খাদ্য</option>
+                        <option value="blood">রক্তদান</option>
+                        <option value="environment">পরিবেশ</option>
+                        <option value="other">অন্যান্য</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">বিবরণ *</label>
+                <textarea id="proj_description" rows="3" class="form-input" required></textarea>
+            </div>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                    <label class="form-label">তারিখ</label>
+                    <input type="date" id="proj_date" class="form-input">
+                </div>
+                <div>
+                    <label class="form-label">লোকেশন</label>
+                    <input type="text" id="proj_location" class="form-input" placeholder="আলমডাঙ্গা">
+                </div>
+                <div>
+                    <label class="form-label">স্ট্যাটাস</label>
+                    <select id="proj_status" class="form-input">
+                        <option value="active">সক্রিয় (চলমান)</option>
+                        <option value="completed">সম্পন্ন</option>
+                        <option value="upcoming">আসন্ন</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="form-label">লক্ষ্যমাত্রা (টাকা)</label>
+                    <input type="number" id="proj_goal" class="form-input" placeholder="100000">
+                </div>
+                <div>
+                    <label class="form-label">সংগৃহীত (টাকা)</label>
+                    <input type="number" id="proj_collected" class="form-input" placeholder="20000">
+                </div>
+                <div>
+                    <label class="form-label">উপকৃত ব্যক্তি</label>
+                    <input type="number" id="proj_beneficiaries" class="form-input" placeholder="0">
+                </div>
+                <div>
+                    <label class="form-label">ভলান্টিয়ার</label>
+                    <input type="number" id="proj_volunteers" class="form-input" placeholder="0">
+                </div>
+            </div>
+            <div>
+                <label class="form-label">প্রজেক্ট ছবি</label>
+                <div class="flex items-start gap-4 mt-2">
+                    <div id="projImgPreview" class="w-40 h-24 bg-gray-100 rounded-lg overflow-hidden border flex items-center justify-center text-gray-400 flex-shrink-0">
+                        <i class="fas fa-image text-3xl"></i>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <button type="button" onclick="openImgModal('project')" class="btn-secondary w-full justify-center"><i class="fas fa-upload mr-2"></i>Drive-এ আপলোড করুন</button>
+                        <p class="text-xs text-gray-400 text-center">— অথবা —</p>
+                        <input type="url" id="proj_imageUrl_input" class="form-input text-sm" placeholder="ছবির URL সরাসরি দিন (https://...)" oninput="previewProjImgFromUrl(this.value)">
+                        <p class="text-xs text-gray-400">Drive thumbnail URL, external link বা local path যেকোনোটি দেওয়া যাবে।</p>
+                    </div>
+                </div>
+                <input type="hidden" id="proj_imageUrl">
+            </div>
+            <div>
+                <label class="form-label">অর্জনসমূহ (প্রতি লাইনে একটি)</label>
+                <textarea id="proj_achievements" rows="3" class="form-input font-mono text-sm" placeholder="১০০ পরিবার উপকৃত&#10;৫০ জন রক্তদাতা&#10;৩টি স্কুল সহায়তা"></textarea>
+            </div>
+        </div>
+        <div class="flex justify-end gap-3 p-6 border-t sticky bottom-0 bg-white">
+            <button onclick="closeProjectModal()" class="btn-ghost">বাতিল</button>
+            <button onclick="saveProject()" class="btn-primary"><i class="fas fa-save mr-2"></i>সেভ করুন</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════ IMAGE UPLOAD MODAL ══════════════════════ -->
+<div id="imgModal" class="modal-bg fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl">
+        <div class="flex items-center justify-between p-6 border-b">
+            <h3 class="text-xl font-bold text-gray-800">ছবি আপলোড</h3>
+            <button onclick="closeImgModal()" class="w-8 h-8 bg-gray-100 text-gray-500 rounded-full hover:bg-gray-200 flex items-center justify-center">&times;</button>
+        </div>
+        <div class="p-6 space-y-4">
+            <input type="hidden" id="imgContext">
+            <div id="imgDropZone" class="drop-zone rounded-xl p-10 text-center cursor-pointer" onclick="document.getElementById('imgFileInput').click()">
+                <i class="fas fa-cloud-upload-alt text-5xl text-gray-300 mb-3"></i>
+                <p class="text-gray-600 font-medium">ছবি এখানে ড্রপ করুন বা ক্লিক করুন</p>
+                <p class="text-sm text-gray-400 mt-1">JPEG, PNG, WEBP — সর্বোচ্চ 5MB</p>
+                <input type="file" id="imgFileInput" accept="image/*" class="hidden" onchange="onImgSelected(event)">
+            </div>
+            <div id="imgPreviewBox" class="hidden">
+                <div class="relative">
+                    <img id="imgPreviewEl" class="w-full h-48 object-cover rounded-xl border">
+                    <button onclick="clearImgPreview()" class="absolute top-2 right-2 w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700">&times;</button>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">ছবির শিরোনাম</label>
+                <input type="text" id="imgTitle" class="form-input" placeholder="ছবির বিবরণ দিন">
+            </div>
+        </div>
+        <div class="flex justify-end gap-3 p-6 border-t">
+            <button onclick="closeImgModal()" class="btn-ghost">বাতিল</button>
+            <button onclick="uploadImage()" id="imgUploadBtn" class="btn-primary"><i class="fas fa-upload mr-2"></i>আপলোড করুন</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════ DELETE CONFIRM MODAL ══════════════════════ -->
+<div id="deleteModal" class="modal-bg fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-sm shadow-2xl p-8 text-center">
+        <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-trash text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">মুছে ফেলবেন?</h3>
+        <p class="text-gray-500 mb-6" id="deleteMsg">এই আইটেমটি স্থায়ীভাবে মুছে যাবে।</p>
+        <div class="flex gap-3 justify-center">
+            <button onclick="closeDeleteModal()" class="btn-ghost px-6">বাতিল</button>
+            <button onclick="confirmDelete()" class="px-6 py-2 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition">
+                <i class="fas fa-trash mr-2"></i>মুছুন
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════ TOAST ══════════════════════ -->
+<div id="toastContainer" class="fixed top-6 right-6 z-[100] space-y-3 w-80"></div>
+
+<!-- ══════════════════════ LOADING OVERLAY ══════════════════════ -->
+<div id="loadingOverlay" class="modal-bg fixed inset-0 z-[200] hidden items-center justify-center">
+    <div class="bg-white rounded-2xl p-8 flex flex-col items-center gap-4 shadow-2xl">
+        <div class="spinner w-12 h-12"></div>
+        <p class="text-gray-700 font-medium" id="loadingMsg">অপেক্ষা করুন...</p>
+    </div>
+</div>
+
+<style>
+.btn-primary { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 0.625rem 1.25rem; border-radius: 0.75rem; font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; }
+.btn-primary:hover { box-shadow: 0 4px 12px rgba(37,99,235,0.4); transform: translateY(-1px); }
+.btn-secondary { background: #f1f5f9; color: #475569; padding: 0.625rem 1.25rem; border-radius: 0.75rem; font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; border: 1px solid #e2e8f0; }
+.btn-secondary:hover { background: #e2e8f0; }
+.btn-ghost { background: transparent; color: #64748b; padding: 0.625rem 1.25rem; border-radius: 0.75rem; font-weight: 600; transition: all 0.2s; border: 1px solid #e2e8f0; display: inline-flex; align-items: center; }
+.btn-ghost:hover { background: #f1f5f9; }
+.form-label { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem; }
+.form-input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; font-family: 'Hind Siliguri', sans-serif; font-size: 0.9rem; }
+.section-title { font-size: 1rem; font-weight: 700; color: #1e40af; padding-bottom: 0.5rem; border-bottom: 2px solid #eff6ff; display: flex; align-items: center; }
+</style>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════════
+const ADMIN_USER = 'agantukbd';
+const ADMIN_PASS = 'agantukbd';
+
+let API_URL = localStorage.getItem('agantuk_api_url') || '';
+let currentImgContext = '';
+let currentImgFile = null;
+let deleteTarget = null;
+let allProjects = [];
+let sidebarOpen = true;
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('agantuk_logged_in') === 'yes') {
+        showAdmin();
+    }
+    document.getElementById('st_apiUrl').value = API_URL;
+    setupDragDrop();
+});
+
+// ══════════════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════════════
+function doLogin() {
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value;
+    const btn = document.getElementById('loginBtn');
+
+    if (u === ADMIN_USER && p === ADMIN_PASS) {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>লগইন হচ্ছে...';
+        btn.disabled = true;
+        localStorage.setItem('agantuk_logged_in', 'yes');
+        setTimeout(() => { showAdmin(); btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>লগইন করুন'; }, 800);
+    } else {
+        document.getElementById('loginError').classList.remove('hidden');
+        document.getElementById('loginErrorMsg').textContent = 'ইউজারনেম বা পাসওয়ার্ড ভুল!';
+        document.getElementById('loginUser').focus();
+    }
+}
+
+function showAdmin() {
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('adminPanel').classList.remove('hidden');
+    document.getElementById('adminPanel').classList.add('flex');
+    loadDashboard();
+    nav('dashboard');
+    toast('লগইন সফল! স্বাগতম আগন্তুক অ্যাডমিনে।', 'success');
+}
+
+function doLogout() {
+    if (confirm('লগ আউট করবেন?')) {
+        localStorage.removeItem('agantuk_logged_in');
+        location.reload();
+    }
+}
+
+function togglePassVis() {
+    const inp = document.getElementById('loginPass');
+    const icon = document.getElementById('passEyeIcon');
+    if (inp.type === 'password') { inp.type = 'text'; icon.className = 'fas fa-eye-slash'; }
+    else { inp.type = 'password'; icon.className = 'fas fa-eye'; }
+}
+
+// ══════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════
+const navTitles = {
+    dashboard: 'ড্যাশবোর্ড', homepage: 'হোমপেজ কন্টেন্ট', about: 'আমাদের সম্পর্কে',
+    projects: 'প্রজেক্টস', counters: 'লাইভ কাউন্টার', gallery: 'গ্যালারি',
+    transparency: 'স্বচ্ছতা', donate: 'দান তথ্য', volunteer: 'ভলান্টিয়ার ফর্ম', settings: 'সেটিংস'
+};
+
+function nav(section) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('sec-' + section).classList.add('active');
+    const navEl = document.getElementById('nav-' + section);
+    if (navEl) navEl.classList.add('active');
+    document.getElementById('currentPageTitle').textContent = navTitles[section] || section;
+    // Load data for section
+    const loaders = { homepage: loadHomepage, about: loadAbout, projects: loadProjects,
+                      counters: loadCounters, gallery: loadGallery, transparency: loadTransparency,
+                      donate: loadDonate, volunteer: loadVolunteer };
+    if (loaders[section]) loaders[section]();
+    // Close mobile sidebar
+    if (window.innerWidth < 768) { closeSidebarMobile(); }
+    return false;
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('mainContent');
+    sidebarOpen = !sidebarOpen;
+    if (sidebarOpen) {
+        sidebar.style.width = '256px';
+        sidebar.style.overflow = 'visible';
+        main.style.marginLeft = '256px';
+    } else {
+        sidebar.style.width = '0';
+        sidebar.style.overflow = 'hidden';
+        main.style.marginLeft = '0';
+    }
+}
+
+function closeSidebarMobile() {
+    document.getElementById('sidebar').style.width = '0';
+    document.getElementById('sidebar').style.overflow = 'hidden';
+    document.getElementById('mainContent').style.marginLeft = '0';
+    sidebarOpen = false;
+}
+
+// ══════════════════════════════════════════════════════════
+// API REQUEST (CORS-safe GET)
+// ══════════════════════════════════════════════════════════
+async function api(action, params = {}) {
+    if (!API_URL) throw new Error('Apps Script URL সেট করা নেই। সেটিংস থেকে URL দিন।');
+    const qs = new URLSearchParams({ action, ...params, _: Date.now() });
+    const res = await fetch(`${API_URL}?${qs}`, { method: 'GET', redirect: 'follow' });
+    return await res.json();
+}
+
+async function apiPost(action, data = {}) {
+    if (!API_URL) throw new Error('Apps Script URL সেট করা নেই।');
+    const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        redirect: 'follow',
+        body: JSON.stringify({ action, ...data })
+    });
+    return await res.json();
+}
+
+// ══════════════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════════════
+async function loadDashboard() {
+    if (!API_URL) return;
+    try {
+        const r = await api('getDashboard');
+        if (r.success) {
+            document.getElementById('dashProjects').textContent = r.data.totalProjects || 0;
+            document.getElementById('dashImages').textContent = r.data.totalImages || 0;
+            document.getElementById('dashBeneficiaries').textContent = (r.data.beneficiaries || 0) + '+';
+            document.getElementById('dashLastUpdate').textContent = r.data.lastUpdate || '—';
+        }
+    } catch(e) { /* silent */ }
+}
+
+// ══════════════════════════════════════════════════════════
+// HOMEPAGE
+// ══════════════════════════════════════════════════════════
+async function loadHomepage() {
+    if (!API_URL) return;
+    try {
+        showLoading('হোমপেজ ডাটা লোড হচ্ছে...');
+        const r = await api('getSections');
+        if (r.success && r.sections) {
+            const s = r.sections;
+            setVal('hp_heroHeadline', s.hero_headline);
+            setVal('hp_heroSubtitle', s.hero_subtitle);
+            setVal('hp_heroBadge', s.hero_badge);
+            setVal('hp_cta1', s.cta_btn1);
+            setVal('hp_cta2', s.cta_btn2);
+            setVal('hp_announcementText', s.announcement_text);
+            document.getElementById('hp_announcementEnabled').checked = s.announcement_enabled === 'true';
+            if (s.hero_image) {
+                document.getElementById('heroImgPreview').innerHTML = `<img src="${s.hero_image}" class="w-full h-full object-cover">`;
+            }
+        }
+    } catch(e) { toast('হোমপেজ ডাটা লোড ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+async function saveHomepage() {
+    try {
+        showLoading('সেভ হচ্ছে...');
+        const r = await apiPost('saveSections', {
+            hero_headline: getVal('hp_heroHeadline'),
+            hero_subtitle: getVal('hp_heroSubtitle'),
+            hero_badge: getVal('hp_heroBadge'),
+            cta_btn1: getVal('hp_cta1'),
+            cta_btn2: getVal('hp_cta2'),
+            announcement_text: getVal('hp_announcementText'),
+            announcement_enabled: document.getElementById('hp_announcementEnabled').checked.toString()
+        });
+        if (r.success) toast('হোমপেজ সফলভাবে সেভ হয়েছে!', 'success');
+        else toast('সেভ ব্যর্থ: ' + (r.error || ''), 'error');
+    } catch(e) { toast('সেভ ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+// ══════════════════════════════════════════════════════════
+// ABOUT
+// ══════════════════════════════════════════════════════════
+async function loadAbout() {
+    if (!API_URL) return;
+    try {
+        showLoading('লোড হচ্ছে...');
+        const r = await api('getSections');
+        if (r.success && r.sections) {
+            const s = r.sections;
+            setVal('ab_description', s.about_description);
+            setVal('ab_vision', s.about_vision);
+            setVal('ab_mission', s.about_mission);
+            setVal('ab_facebook', s.social_facebook);
+            setVal('ab_youtube', s.social_youtube);
+            setVal('ab_whatsapp', s.social_whatsapp);
+        }
+    } catch(e) { toast('লোড ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+async function saveAbout() {
+    try {
+        showLoading('সেভ হচ্ছে...');
+        const r = await apiPost('saveSections', {
+            about_description: getVal('ab_description'),
+            about_vision: getVal('ab_vision'),
+            about_mission: getVal('ab_mission'),
+            social_facebook: getVal('ab_facebook'),
+            social_youtube: getVal('ab_youtube'),
+            social_whatsapp: getVal('ab_whatsapp')
+        });
+        if (r.success) toast('সফলভাবে সেভ হয়েছে!', 'success');
+        else toast('সেভ ব্যর্থ: ' + (r.error || ''), 'error');
+    } catch(e) { toast('সেভ ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+// ══════════════════════════════════════════════════════════
+// PROJECTS
+// ══════════════════════════════════════════════════════════
+async function loadProjects() {
+    if (!API_URL) { showProjectsEmpty(); return; }
+    try {
+        showLoading('প্রজেক্ট লোড হচ্ছে...');
+        const r = await api('getProjects');
+        if (r.success) {
+            allProjects = r.projects || [];
+            renderProjects(allProjects);
+        }
+    } catch(e) { toast('প্রজেক্ট লোড ব্যর্থ: ' + e.message, 'error'); showProjectsEmpty(); }
+    finally { hideLoading(); }
+}
+
+function showProjectsEmpty() {
+    document.getElementById('projectsContainer').innerHTML = `
+        <div class="card p-10 text-center text-gray-400">
+            <i class="fas fa-folder-open text-5xl mb-3"></i>
+            <p>কোনো প্রজেক্ট নেই। প্রথম প্রজেক্ট যোগ করুন।</p>
+        </div>`;
+}
+
+function filterProjects(status) {
+    document.querySelectorAll('.proj-filter-btn').forEach(b => b.classList.remove('active-filter', 'bg-blue-50', 'border-blue-600', 'text-blue-600'));
+    event.target.classList.add('active-filter', 'bg-blue-50', 'border-blue-600', 'text-blue-600');
+    const filtered = status === 'all' ? allProjects : allProjects.filter(p => p.status === status);
+    renderProjects(filtered);
+}
+
+const statusLabel = { active: ['সক্রিয়', 'bg-green-100 text-green-700'], completed: ['সম্পন্ন', 'bg-blue-100 text-blue-700'], upcoming: ['আসন্ন', 'bg-amber-100 text-amber-700'] };
+const catLabel = { education: 'শিক্ষা', health: 'স্বাস্থ্য', relief: 'ত্রাণ', food: 'খাদ্য', blood: 'রক্তদান', environment: 'পরিবেশ', other: 'অন্যান্য' };
+
+function renderProjects(projects) {
+    const container = document.getElementById('projectsContainer');
+    if (!projects.length) { showProjectsEmpty(); return; }
+    container.innerHTML = projects.map(p => {
+        const [slabel, scls] = statusLabel[p.status] || ['—', 'bg-gray-100 text-gray-600'];
+        const progress = p.goal > 0 ? Math.min(100, Math.round((p.collected / p.goal) * 100)) : 0;
+        return `
+        <div class="card p-5 hover:shadow-lg transition" data-id="${p.id}">
+            <div class="flex gap-4">
+                ${p.imageUrl ? `<img src="${p.imageUrl}" class="w-28 h-20 object-cover rounded-lg flex-shrink-0">` : `<div class="w-28 h-20 bg-gray-100 rounded-lg flex items-center justify-center text-gray-300 flex-shrink-0"><i class="fas fa-image text-2xl"></i></div>`}
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-lg leading-tight">${p.title}</h4>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <span class="badge ${scls}">${slabel}</span>
+                                <span class="badge bg-gray-100 text-gray-600">${catLabel[p.category] || p.category}</span>
+                                ${p.date ? `<span class="text-xs text-gray-400"><i class="far fa-calendar mr-1"></i>${p.date}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button onclick="editProject(${p.id})" class="w-9 h-9 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 flex items-center justify-center transition">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="askDelete('project', ${p.id}, '${p.title.replace(/'/g,"\\'")}');" class="w-9 h-9 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 flex items-center justify-center transition">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-gray-500 text-sm mt-2 line-clamp-2">${p.description}</p>
+                    ${p.goal > 0 ? `
+                    <div class="mt-3">
+                        <div class="flex justify-between text-xs text-gray-500 mb-1">
+                            <span>সংগৃহীত: ৳${Number(p.collected||0).toLocaleString('bn-BD')}</span>
+                            <span>লক্ষ্য: ৳${Number(p.goal||0).toLocaleString('bn-BD')} (${progress}%)</span>
+                        </div>
+                        <div class="h-2 bg-gray-200 rounded-full"><div class="h-2 bg-blue-500 rounded-full" style="width:${progress}%"></div></div>
+                    </div>` : ''}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function openProjectModal(id) {
+    document.getElementById('projectModal').classList.remove('hidden');
+    document.getElementById('projectModal').classList.add('flex');
+    if (id === null) {
+        document.getElementById('projModalTitle').textContent = 'নতুন প্রজেক্ট';
+        document.getElementById('proj_id').value = '';
+        document.getElementById('projImgPreview').innerHTML = '<i class="fas fa-image text-3xl text-gray-300"></i>';
+        ['proj_title','proj_description','proj_date','proj_location','proj_goal','proj_collected','proj_beneficiaries','proj_volunteers','proj_achievements','proj_imageUrl','proj_imageUrl_input'].forEach(id => setVal(id, ''));
+        document.getElementById('proj_status').value = 'active';
+        document.getElementById('proj_category').value = 'education';
+    }
+}
+
+async function editProject(id) {
+    const p = allProjects.find(x => x.id == id);
+    if (!p) return;
+    openProjectModal(id);
+    document.getElementById('projModalTitle').textContent = 'প্রজেক্ট এডিট';
+    document.getElementById('proj_id').value = p.id;
+    setVal('proj_title', p.title);
+    setVal('proj_description', p.description);
+    document.getElementById('proj_category').value = p.category || 'education';
+    setVal('proj_date', p.date);
+    setVal('proj_location', p.location);
+    document.getElementById('proj_status').value = p.status || 'active';
+    setVal('proj_goal', p.goal);
+    setVal('proj_collected', p.collected);
+    setVal('proj_beneficiaries', p.beneficiaries);
+    setVal('proj_volunteers', p.volunteers);
+    setVal('proj_achievements', Array.isArray(p.achievements) ? p.achievements.join('\n') : p.achievements);
+    setVal('proj_imageUrl', p.imageUrl);
+    setVal('proj_imageUrl_input', p.imageUrl);
+    if (p.imageUrl) {
+        document.getElementById('projImgPreview').innerHTML = `<img src="${p.imageUrl}" class="w-full h-full object-cover rounded-lg">`;
+    }
+}
+
+function closeProjectModal() {
+    document.getElementById('projectModal').classList.add('hidden');
+    document.getElementById('projectModal').classList.remove('flex');
+}
+
+async function saveProject() {
+    const id = document.getElementById('proj_id').value;
+    const data = {
+        id: id || null,
+        title: getVal('proj_title'),
+        description: getVal('proj_description'),
+        category: document.getElementById('proj_category').value,
+        date: getVal('proj_date'),
+        location: getVal('proj_location'),
+        status: document.getElementById('proj_status').value,
+        goal: getVal('proj_goal') || 0,
+        collected: getVal('proj_collected') || 0,
+        beneficiaries: getVal('proj_beneficiaries') || 0,
+        volunteers: getVal('proj_volunteers') || 0,
+        achievements: getVal('proj_achievements').split('\n').filter(a => a.trim()),
+        imageUrl: getVal('proj_imageUrl') || getVal('proj_imageUrl_input')
+    };
+    if (!data.title) { toast('শিরোনাম আবশ্যক!', 'warning'); return; }
+    try {
+        showLoading('সেভ হচ্ছে...');
+        const action = id ? 'updateProject' : 'addProject';
+        const r = await apiPost(action, data);
+        if (r.success) {
+            toast(id ? 'প্রজেক্ট আপডেট হয়েছে!' : 'নতুন প্রজেক্ট যোগ হয়েছে!', 'success');
+            closeProjectModal();
+            await loadProjects();
+        } else toast('সেভ ব্যর্থ: ' + (r.error || ''), 'error');
+    } catch(e) { toast('সেভ ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+// ══════════════════════════════════════════════════════════
+// COUNTERS
+// ══════════════════════════════════════════════════════════
+async function loadCounters() {
+    if (!API_URL) return;
+    try {
+        showLoading('কাউন্টার লোড হচ্ছে...');
+        const r = await api('getCounters');
+        if (r.success && r.counters) {
+            const c = r.counters;
+            setVal('cnt_beneficiaries', c.beneficiaries);
+            setVal('cnt_blood', c.blood_donated);
+            setVal('cnt_projects', c.projects_done);
+            setVal('cnt_volunteers', c.volunteers);
+        }
+    } catch(e) { toast('কাউন্টার লোড ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+async function saveCounters() {
+    try {
+        showLoading('সেভ হচ্ছে...');
+        const r = await apiPost('saveCounters', {
+            beneficiaries: getVal('cnt_beneficiaries'),
+            blood_donated: getVal('cnt_blood'),
+            projects_done: getVal('cnt_projects'),
+            volunteers: getVal('cnt_volunteers')
+        });
+        if (r.success) toast('কাউন্টার আপডেট হয়েছে!', 'success');
+        else toast('সেভ ব্যর্থ: ' + (r.error || ''), 'error');
+    } catch(e) { toast('সেভ ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+// ══════════════════════════════════════════════════════════
+// GALLERY
+// ══════════════════════════════════════════════════════════
+async function loadGallery() {
+    if (!API_URL) {
+        document.getElementById('galleryContainer').innerHTML = `<div class="col-span-full card p-8 text-center text-gray-400"><i class="fas fa-link text-3xl mb-2"></i><p>API URL সেট করুন</p></div>`;
+        return;
+    }
+    try {
+        showLoading('গ্যালারি লোড হচ্ছে...');
+        const r = await api('getGallery');
+        const container = document.getElementById('galleryContainer');
+        if (r.success && r.images && r.images.length > 0) {
+            container.innerHTML = r.images.map(img => `
+                <div class="card overflow-hidden group relative">
+                    <img src="${img.url}" class="img-thumb" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\'></svg>'">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-3">
+                        <a href="${img.url}" target="_blank" class="w-9 h-9 bg-white text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-100">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <button onclick="askDelete('gallery', '${img.fileId}', '${(img.title||'ছবি').replace(/'/g,"\\'")}');" class="w-9 h-9 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="p-2 text-xs text-gray-600 truncate">${img.title || 'অজানা'}</div>
+                </div>`).join('');
+            document.getElementById('dashImages').textContent = r.images.length;
+        } else {
+            container.innerHTML = `<div class="col-span-full card p-10 text-center text-gray-400"><i class="fas fa-images text-5xl mb-3"></i><p>গ্যালারিতে কোনো ছবি নেই।</p></div>`;
+        }
+    } catch(e) { toast('গ্যালারি লোড ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+// ══════════════════════════════════════════════════════════
+// TRANSPARENCY
+// ══════════════════════════════════════════════════════════
+async function loadTransparency() {
+    if (!API_URL) return;
+    try {
+        showLoading('লোড হচ্ছে...');
+        const r = await api('getSections');
+        if (r.success && r.sections) {
+            const s = r.sections;
+            setVal('tr_financeSheet', s.finance_sheet_url);
+            setVal('tr_financeUpdate', s.finance_update_date);
+            setVal('tr_constitution', s.constitution_url);
+            setVal('tr_memberPolicy', s.member_policy_url);
+        }
+    } catch(e) { toast('লোড ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+async function saveTransparency() {
+    try {
+        showLoading('সেভ হচ্ছে...');
+        const r = await apiPost('saveSections', {
+            finance_sheet_url: getVal('tr_financeSheet'),
+            finance_update_date: getVal('tr_financeUpdate'),
+            constitution_url: getVal('tr_constitution'),
+            member_policy_url: getVal('tr_memberPolicy')
+        });
+        if (r.success) toast('স্বচ্ছতা তথ্য সেভ হয়েছে!', 'success');
+        else toast('সেভ ব্যর্থ: ' + (r.error || ''), 'error');
+    } catch(e) { toast('সেভ ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+// ══════════════════════════════════════════════════════════
+// DONATE
+// ══════════════════════════════════════════════════════════
+async function loadDonate() {
+    if (!API_URL) return;
+    try {
+        showLoading('লোড হচ্ছে...');
+        const r = await api('getSections');
+        if (r.success && r.sections) {
+            const s = r.sections;
+            setVal('dn_bkash', s.donate_bkash);
+            setVal('dn_nagad', s.donate_nagad);
+            setVal('dn_rocket', s.donate_rocket);
+            setVal('dn_bankName', s.bank_acc_name);
+            setVal('dn_bankAcc', s.bank_acc_number);
+            setVal('dn_bankBankName', s.bank_name);
+            setVal('dn_bankBranch', s.bank_branch);
+            setVal('dn_sectionTitle', s.donate_title);
+            setVal('dn_sectionDesc', s.donate_description);
+        }
+    } catch(e) { toast('লোড ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+async function saveDonate() {
+    try {
+        showLoading('সেভ হচ্ছে...');
+        const r = await apiPost('saveSections', {
+            donate_bkash: getVal('dn_bkash'),
+            donate_nagad: getVal('dn_nagad'),
+            donate_rocket: getVal('dn_rocket'),
+            bank_acc_name: getVal('dn_bankName'),
+            bank_acc_number: getVal('dn_bankAcc'),
+            bank_name: getVal('dn_bankBankName'),
+            bank_branch: getVal('dn_bankBranch'),
+            donate_title: getVal('dn_sectionTitle'),
+            donate_description: getVal('dn_sectionDesc')
+        });
+        if (r.success) toast('দান তথ্য সেভ হয়েছে!', 'success');
+        else toast('সেভ ব্যর্থ: ' + (r.error || ''), 'error');
+    } catch(e) { toast('সেভ ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+// ══════════════════════════════════════════════════════════
+// VOLUNTEER
+// ══════════════════════════════════════════════════════════
+async function loadVolunteer() {
+    if (!API_URL) return;
+    try {
+        showLoading('লোড হচ্ছে...');
+        const r = await api('getSections');
+        if (r.success && r.sections) {
+            const s = r.sections;
+            setVal('vl_formLink', s.volunteer_form_url);
+            setVal('vl_title', s.volunteer_section_title);
+            setVal('vl_desc', s.volunteer_section_desc);
+            setVal('vl_email', s.volunteer_notification_email);
+        }
+    } catch(e) { toast('লোড ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+async function saveVolunteer() {
+    try {
+        showLoading('সেভ হচ্ছে...');
+        const r = await apiPost('saveSections', {
+            volunteer_form_url: getVal('vl_formLink'),
+            volunteer_section_title: getVal('vl_title'),
+            volunteer_section_desc: getVal('vl_desc'),
+            volunteer_notification_email: getVal('vl_email')
+        });
+        if (r.success) toast('ভলান্টিয়ার সেটিং সেভ হয়েছে!', 'success');
+        else toast('সেভ ব্যর্থ: ' + (r.error || ''), 'error');
+    } catch(e) { toast('সেভ ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+// ══════════════════════════════════════════════════════════
+// IMAGE UPLOAD
+// ══════════════════════════════════════════════════════════
+
+// preview project image from URL input
+function previewProjImgFromUrl(url) {
+    setVal('proj_imageUrl', url);
+    const prev = document.getElementById('projImgPreview');
+    if (url) {
+        prev.innerHTML = `<img src="${url}" class="w-full h-full object-cover rounded-lg" onerror="this.parentElement.innerHTML='<i class=\"fas fa-exclamation-triangle text-red-400 text-2xl\"></i>'">`;
+    } else {
+        prev.innerHTML = '<i class="fas fa-image text-3xl text-gray-300"></i>';
+    }
+}
+
+function openImgModal(context) {
+    currentImgContext = context;
+    currentImgFile = null;
+    document.getElementById('imgContext').value = context;
+    document.getElementById('imgTitle').value = '';
+    document.getElementById('imgPreviewBox').classList.add('hidden');
+    document.getElementById('imgDropZone').classList.remove('hidden');
+    document.getElementById('imgFileInput').value = '';
+    document.getElementById('imgModal').classList.remove('hidden');
+    document.getElementById('imgModal').classList.add('flex');
+}
+
+function closeImgModal() {
+    document.getElementById('imgModal').classList.add('hidden');
+    document.getElementById('imgModal').classList.remove('flex');
+    currentImgFile = null;
+}
+
+function onImgSelected(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { toast('ছবি 5MB-এর বেশি হতে পারবে না!', 'warning'); return; }
+    currentImgFile = file;
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('imgPreviewEl').src = e.target.result;
+        document.getElementById('imgPreviewBox').classList.remove('hidden');
+        document.getElementById('imgDropZone').classList.add('hidden');
+    };
+    reader.readAsDataURL(file);
+}
+
+function clearImgPreview() {
+    currentImgFile = null;
+    document.getElementById('imgFileInput').value = '';
+    document.getElementById('imgPreviewBox').classList.add('hidden');
+    document.getElementById('imgDropZone').classList.remove('hidden');
+}
+
+async function uploadImage() {
+    if (!currentImgFile) { toast('একটি ছবি সিলেক্ট করুন!', 'warning'); return; }
+    const title = document.getElementById('imgTitle').value || currentImgFile.name;
+    const btn = document.getElementById('imgUploadBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>আপলোড হচ্ছে...';
+    btn.disabled = true;
+    try {
+        showLoading('Google Drive-এ আপলোড হচ্ছে...');
+        const base64 = await fileToBase64(currentImgFile);
+        const r = await apiPost('uploadImage', {
+            imageData: base64.split(',')[1],
+            imageName: currentImgFile.name,
+            imageType: currentImgFile.type,
+            imageTitle: title,
+            context: currentImgContext
+        });
+        if (r.success) {
+            toast('ছবি সফলভাবে আপলোড হয়েছে!', 'success');
+            closeImgModal();
+            // Update relevant preview
+            if (currentImgContext === 'hero') {
+                document.getElementById('heroImgPreview').innerHTML = `<img src="${r.url}" class="w-full h-full object-cover">`;
+                await apiPost('saveSections', { hero_image: r.url });
+            } else if (currentImgContext === 'project') {
+                setVal('proj_imageUrl', r.url);
+                setVal('proj_imageUrl_input', r.url);
+                document.getElementById('projImgPreview').innerHTML = `<img src="${r.url}" class="w-full h-full object-cover rounded-lg">`;
+            } else if (currentImgContext === 'gallery') {
+                await loadGallery();
+            }
+        } else toast('আপলোড ব্যর্থ: ' + (r.error || ''), 'error');
+    } catch(e) { toast('আপলোড ব্যর্থ: ' + e.message, 'error'); }
+    finally {
+        hideLoading();
+        btn.innerHTML = '<i class="fas fa-upload mr-2"></i>আপলোড করুন';
+        btn.disabled = false;
+    }
+}
+
+function setupDragDrop() {
+    const zone = document.getElementById('imgDropZone');
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            document.getElementById('imgFileInput').files = e.dataTransfer.files;
+            onImgSelected({ target: { files: [file] } });
+        }
+    });
+}
+
+// ══════════════════════════════════════════════════════════
+// DELETE
+// ══════════════════════════════════════════════════════════
+function askDelete(type, id, name) {
+    deleteTarget = { type, id };
+    document.getElementById('deleteMsg').textContent = `"${name}" মুছে ফেলবেন? এটি আর ফিরিয়ে আনা যাবে না।`;
+    document.getElementById('deleteModal').classList.remove('hidden');
+    document.getElementById('deleteModal').classList.add('flex');
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.add('hidden');
+    document.getElementById('deleteModal').classList.remove('flex');
+    deleteTarget = null;
+}
+
+async function confirmDelete() {
+    if (!deleteTarget) return;
+    closeDeleteModal();
+    try {
+        showLoading('মুছে ফেলা হচ্ছে...');
+        let r;
+        if (deleteTarget.type === 'project') {
+            r = await apiPost('deleteProject', { id: deleteTarget.id });
+            if (r.success) { toast('প্রজেক্ট মুছে গেছে।', 'success'); await loadProjects(); }
+        } else if (deleteTarget.type === 'gallery') {
+            r = await apiPost('deleteGalleryImage', { fileId: deleteTarget.id });
+            if (r.success) { toast('ছবি মুছে গেছে।', 'success'); await loadGallery(); }
+        }
+        if (r && !r.success) toast('মুছতে সমস্যা: ' + (r.error || ''), 'error');
+    } catch(e) { toast('মুছতে সমস্যা: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+// ══════════════════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════════════════
+function saveApiUrl() {
+    const url = document.getElementById('st_apiUrl').value.trim();
+    if (!url) { toast('URL খালি রাখা যাবে না!', 'warning'); return; }
+    API_URL = url;
+    localStorage.setItem('agantuk_api_url', url);
+    toast('API URL সেভ হয়েছে!', 'success');
+}
+
+async function testConnection() {
+    const result = document.getElementById('testResult');
+    result.classList.remove('hidden');
+    result.className = 'p-3 rounded-lg text-sm bg-blue-50 text-blue-700';
+    result.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>টেস্ট চলছে...';
+    try {
+        const r = await api('ping');
+        if (r.success || r.pong) {
+            result.className = 'p-3 rounded-lg text-sm bg-green-50 text-green-700';
+            result.innerHTML = '<i class="fas fa-check-circle mr-2"></i>কানেকশন সফল! Apps Script সার্ভার রেসপন্ড করছে।';
+        } else throw new Error(r.error || 'Unknown');
+    } catch(e) {
+        result.className = 'p-3 rounded-lg text-sm bg-red-50 text-red-700';
+        result.innerHTML = '<i class="fas fa-times-circle mr-2"></i>কানেকশন ব্যর্থ: ' + e.message;
+    }
+}
+
+async function exportData() {
+    try {
+        showLoading('ডাটা এক্সপোর্ট হচ্ছে...');
+        const [sections, projects, gallery, counters] = await Promise.all([
+            API_URL ? api('getSections') : {success:false},
+            API_URL ? api('getProjects') : {success:false},
+            API_URL ? api('getGallery') : {success:false},
+            API_URL ? api('getCounters') : {success:false}
+        ]);
+        const data = {
+            exportDate: new Date().toISOString(),
+            sections: sections.success ? sections.sections : {},
+            projects: projects.success ? projects.projects : [],
+            gallery: gallery.success ? gallery.images : [],
+            counters: counters.success ? counters.counters : {}
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `agantuk-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click(); URL.revokeObjectURL(url);
+        toast('ডাটা ডাউনলোড হয়েছে!', 'success');
+    } catch(e) { toast('এক্সপোর্ট ব্যর্থ: ' + e.message, 'error'); }
+    finally { hideLoading(); }
+}
+
+function clearSession() {
+    if (confirm('সেশন ক্লিয়ার করবেন?')) {
+        localStorage.removeItem('agantuk_logged_in');
+        toast('সেশন ক্লিয়ার। পেজ রিলোড হচ্ছে...', 'info');
+        setTimeout(() => location.reload(), 1000);
+    }
+}
+
+// ══════════════════════════════════════════════════════════
+// UTILITIES
+// ══════════════════════════════════════════════════════════
+const getVal = id => document.getElementById(id)?.value || '';
+const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+
+function fileToBase64(file) {
+    return new Promise((res, rej) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => res(reader.result);
+        reader.onerror = rej;
+    });
+}
+
+function showLoading(msg = 'অপেক্ষা করুন...') {
+    document.getElementById('loadingMsg').textContent = msg;
+    document.getElementById('loadingOverlay').classList.remove('hidden');
+    document.getElementById('loadingOverlay').classList.add('flex');
+}
+function hideLoading() {
+    document.getElementById('loadingOverlay').classList.add('hidden');
+    document.getElementById('loadingOverlay').classList.remove('flex');
+}
+
+const toastIcons = { success: 'fa-check-circle text-green-500', error: 'fa-exclamation-circle text-red-500', warning: 'fa-exclamation-triangle text-amber-500', info: 'fa-info-circle text-blue-500' };
+const toastBg = { success: 'bg-white border-l-4 border-green-500', error: 'bg-white border-l-4 border-red-500', warning: 'bg-white border-l-4 border-amber-500', info: 'bg-white border-l-4 border-blue-500' };
+
+function toast(msg, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const div = document.createElement('div');
+    div.className = `toast-enter ${toastBg[type]} rounded-xl shadow-xl p-4 flex items-center gap-3`;
+    div.innerHTML = `<i class="fas ${toastIcons[type]} text-xl flex-shrink-0"></i><p class="text-sm text-gray-700 font-medium">${msg}</p>`;
+    container.appendChild(div);
+    setTimeout(() => { div.style.opacity = '0'; div.style.transition = 'opacity 0.3s'; setTimeout(() => div.remove(), 300); }, 4000);
+}
+
+// Responsive sidebar
+window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768) {
+        document.getElementById('sidebar').style.width = '256px';
+        document.getElementById('sidebar').style.overflow = 'visible';
+        document.getElementById('mainContent').style.marginLeft = '256px';
+        sidebarOpen = true;
+    }
+});
+</script>
+</body>
+>>>>>>> 97685e3392e916a0eee442b5ea752ea4ef9d1bbb
 </html>

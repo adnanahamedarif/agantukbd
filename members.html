@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আগন্তুক · সদস্য পরিচিতি</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#2563EB',
+                            secondary: '#DC2626',
+                            dark: '#1E3A8A',
+                            light: '#EFF6FF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 0.6s ease-out forwards',
+                        'pulse-slow': 'pulse 3s infinite',
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        /* glassmorphism panels */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        }
+        .member-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.4s cubic-bezier(0.15, 0.75, 0.45, 1);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.1);
+            border-radius: 32px;
+            opacity: 0;
+            animation: cardGlide 0.5s ease forwards;
+        }
+        .member-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            background: white;
+            border-color: rgba(37, 99, 235, 0.3);
+            box-shadow: 0 30px 40px -15px rgba(37, 99, 235, 0.3);
+        }
+        @keyframes cardGlide {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .image-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .member-card:hover .image-container {
+            transform: scale(1.05);
+            border-color: #2563EB;
+        }
+        .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            background: linear-gradient(145deg, #3B82F6, #1E3A8A);
+        }
+        /* custom gradient text */
+        .gradient-text {
+            background: linear-gradient(145deg, #2563EB, #DC2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        /* search bar */
+        .search-glass {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+        }
+        /* id badge */
+        .id-badge {
+            background: rgba(37, 99, 235, 0.1);
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            color: #1E3A8A;
+            font-weight: 600;
+            border-radius: 40px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.3px;
+        }
+        /* blood icon */
+        .blood-drop {
+            filter: drop-shadow(0 4px 4px rgba(220, 38, 38, 0.3));
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <!-- Navigation Bar (refined) -->
+    <nav
+      class="fixed w-full z-50 bg-white shadow-md top-0 transition-all duration-300"
+      id="navbar"
+    >
+      <div
+        class="container mx-auto px-4 py-2 flex justify-between items-center"
+      >
+        <!-- Logo -->
+        <a href="index.html#home" class="flex items-center gap-2 group">
+          <img
+            src="photo/logo1.png"
+            alt="Agantuk Logo"
+            class="h-14 w-auto transition-transform group-hover:scale-105"
+          />
+          <div class="hidden sm:block">
+            <h1 class="text-2xl font-bold text-brand-secondary leading-none">
+              আগন্তুক
+            </h1>
+            <span class="text-xs text-brand-primary font-bold tracking-wider"
+              >একটি সমাজ সেবা মূলক সংগঠন</span
+            >
+          </div>
+        </a>
+
+        <!-- Desktop Menu — MEMBERS added -->
+        <div
+          class="hidden md:flex items-center gap-6 font-medium text-gray-700"
+        >
+          <a href="index.html#home" class="hover:text-brand-primary transition">হোম</a>
+          <a href="index.html#about" class="hover:text-brand-primary transition"
+            >আমাদের সম্পর্কে</a
+          >
+          <a href="index.html#projects" class="hover:text-brand-primary transition"
+            >প্রজেক্ট</a
+          >
+          <a href="index.html#recent-projects" class="hover:text-brand-primary transition"
+            >কার্যক্রম</a
+          >
+
+          <a href="blood.html" class="hover:text-brand-secondary transition"
+            ><i class="fas fa-droplet text-red-500 mr-1"></i>ব্লাড ব্যাংক</a
+          >
+          <a href="volunteer.html" class="hover:text-brand-primary transition"
+            >স্বেচ্ছাসেবক</a
+          >
+          <a
+            href="members.html"
+            class="text-brand-primary font-semibold hover:text-brand-dark transition flex items-center gap-1 border-b-2 border-transparent hover:border-brand-primary"
+          >
+            <i class="fas fa-users"></i> সদস্যবৃন্দ
+          </a>
+          <a href="index.html#contact" class="hover:text-brand-primary transition"
+            >যোগাযোগ</a
+          >
+          <a
+            href="index.html#donate"
+            class="bg-brand-secondary text-white px-5 py-2.5 rounded-full hover:bg-red-700 transition shadow-lg transform hover:-translate-y-0.5 font-bold"
+            ><i class="fas fa-heart mr-1"></i>দান করুন</a
+          >
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button
+          onclick="toggleMenu()"
+          class="md:hidden text-brand-primary text-2xl focus:outline-none"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Dropdown (Members included) -->
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg"
+      >
+        <div class="flex flex-col p-4 gap-4 font-medium text-center">
+          <a
+            href="index.html#home"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >হোম</a
+          >
+          <a
+            href="index.html#about"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >আমাদের সম্পর্কে</a
+          >
+          <a
+            href="index.html#projects"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >প্রজেক্ট</a
+          >
+          <a
+            href="index.html#recent-projects"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >কার্যক্রম</a
+          >
+          <a
+            href="members.html"
+            onclick="toggleMenu()"
+            class="py-2 text-brand-primary bg-blue-50 rounded font-semibold"
+            ><i class="fas fa-users mr-1"></i>সদস্যবৃন্দ</a
+          >
+          <a
+            href="blood.html"
+            onclick="toggleMenu()"
+            class="py-2 text-red-600 hover:bg-red-50 rounded font-semibold"
+            ><i class="fas fa-droplet mr-1"></i>ব্লাড ব্যাংক</a
+          >
+          <a
+            href="volunteer.html"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >স্বেচ্ছাসেবক</a
+          >
+          <a
+            href="index.html#donate"
+            onclick="toggleMenu()"
+            class="py-3 bg-brand-secondary hover:bg-red-700 text-white rounded-xl shadow-lg font-bold"
+            ><i class="fas fa-heart mr-2"></i>দান করুন</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Hero Section with decorative elements -->
+    <section class="relative pt-32 pb-16 overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse-slow"></div>
+            <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-red-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse-slow"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 max-w-7xl relative">
+            <div class="text-center mb-14">
+                <div class="inline-block mb-4">
+                    <span class="bg-white/70 backdrop-blur-sm text-brand-primary px-6 py-2 rounded-full text-sm font-semibold shadow-sm border border-white/50">
+                        <i class="fas fa-hand-holding-heart mr-2"></i>আগন্তুক পরিবার
+                    </span>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-black text-gray-900 mb-4 leading-tight">
+                    আমাদের <span class="gradient-text">স্বেচ্ছাসেবক</span> <br>পরিবার
+                </h2>
+                <div class="w-32 h-1.5 bg-gradient-to-r from-brand-primary to-brand-secondary mx-auto rounded-full mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg font-light">
+                    তারাই এই সংগঠনের মূল শক্তি — আগন্তুক পরিবারের প্রতিটি মুখ একটি গল্প বলে।
+                </p>
+            </div>
+
+            <!-- Search & stats - glass panel -->
+            <div class="search-glass rounded-3xl p-6 mb-16 max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <div class="relative w-full md:w-96">
+                        <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="memberSearch" placeholder="নাম, আইডি, ঠিকানা বা ব্লাড গ্রুপ..." 
+                               class="w-full pl-12 pr-5 py-4 bg-white/70 backdrop-blur-sm border border-white/60 rounded-2xl focus:ring-2 focus:ring-brand-primary outline-none transition-all placeholder-gray-400 text-gray-700">
+                    </div>
+                    
+                    <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+                        <div class="bg-white/70 backdrop-blur-sm px-5 py-3 rounded-2xl border border-white/50 text-center min-w-[100px]">
+                            <p class="text-[10px] uppercase text-brand-primary font-bold tracking-wider">মোট সদস্য</p>
+                            <p class="text-2xl font-black text-brand-dark leading-none" id="totalMemberCount">০</p>
+                        </div>
+                        <button id="refreshMembers" class="h-12 w-12 flex items-center justify-center bg-white/80 hover:bg-brand-primary hover:text-white rounded-2xl transition-all duration-300 text-gray-600 hover:shadow-lg">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Members Grid Container -->
+            <div id="membersGridContainer" class="relative min-h-[500px]">
+                <!-- Loader -->
+                <div id="memberLoader" class="absolute inset-0 flex justify-center items-start pt-32 z-10">
+                    <div class="relative">
+                        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-brand-primary"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="fas fa-heart text-brand-secondary text-lg animate-pulse"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Members Grid -->
+                <!-- Section 0: President -->
+                <div id="presidentSection" class="hidden mb-20">
+                    <div class="text-center mb-10">
+                        <h3 class="text-3xl md:text-4xl font-black text-gray-900"><i class="fas fa-star text-brand-primary mr-2"></i><span class="gradient-text">President</span></h3>
+                        <p class="text-gray-500 mt-1">সভাপতি</p>
+                        <div class="w-24 h-1 bg-gradient-to-r from-brand-primary to-brand-secondary mx-auto rounded-full mt-4"></div>
+                    </div>
+                    <div id="presidentGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+                </div>
+
+                <!-- Section 1: Founding Members -->
+                <div id="foundingSection" class="hidden mb-20">
+                    <div class="text-center mb-10">
+                        <h3 class="text-3xl md:text-4xl font-black text-gray-900"><i class="fas fa-landmark text-brand-primary mr-2"></i>Founding <span class="gradient-text">Members</span></h3>
+                        <p class="text-gray-500 mt-1">প্রতিষ্ঠাতা সদস্যবৃন্দ</p>
+                        <div class="w-24 h-1 bg-gradient-to-r from-brand-primary to-brand-secondary mx-auto rounded-full mt-4"></div>
+                    </div>
+                    <div id="foundingGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+                </div>
+
+                <!-- Section 2: Strategic Advisers -->
+                <div id="advisersSection" class="hidden mb-20">
+                    <div class="text-center mb-10">
+                        <h3 class="text-3xl md:text-4xl font-black text-gray-900"><i class="fas fa-lightbulb text-brand-primary mr-2"></i>Strategic <span class="gradient-text">Advisers</span></h3>
+                        <p class="text-gray-500 mt-1">কৌশলগত উপদেষ্টা</p>
+                        <div class="w-24 h-1 bg-gradient-to-r from-brand-primary to-brand-secondary mx-auto rounded-full mt-4"></div>
+                    </div>
+                    <div id="advisersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+                </div>
+
+                <!-- Section 3: Management Committee -->
+                <div id="managementSection" class="hidden mb-20">
+                    <div class="text-center mb-10">
+                        <h3 class="text-3xl md:text-4xl font-black text-gray-900"><i class="fas fa-user-tie text-brand-primary mr-2"></i>Management <span class="gradient-text">Committee</span></h3>
+                        <p class="text-gray-500 mt-1">ব্যবস্থাপনা কমিটি</p>
+                        <div class="w-24 h-1 bg-gradient-to-r from-brand-primary to-brand-secondary mx-auto rounded-full mt-4"></div>
+                    </div>
+                    <div id="managementGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+                </div>
+
+                <!-- Section 4: General Members -->
+                <div id="generalSection" class="hidden">
+                    <div class="text-center mb-10">
+                        <h3 class="text-3xl md:text-4xl font-black text-gray-900"><i class="fas fa-users text-brand-primary mr-2"></i>General <span class="gradient-text">Members</span></h3>
+                        <p class="text-gray-500 mt-1">সাধারণ সদস্যবৃন্দ</p>
+                        <div class="w-24 h-1 bg-gradient-to-r from-brand-primary to-brand-secondary mx-auto rounded-full mt-4"></div>
+                    </div>
+                    <div id="generalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+                </div>
+
+                <!-- No Results Message -->
+                <div id="noMembersMessage" class="hidden text-center py-28">
+                    <div class="text-8xl mb-6 opacity-30"><i class="fas fa-user-slash"></i></div>
+                    <h3 class="text-3xl font-bold text-gray-500 mb-2">কোনো সদস্য পাওয়া যায়নি</h3>
+                    <p class="text-gray-400">সঠিক তথ্য দিয়ে পুনরায় চেষ্টা করুন</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 text-gray-400 py-10 border-t border-gray-900">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            
+            <div class="space-y-4 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3">
+                    <div class="bg-white p-1.5 rounded-xl shadow-lg shadow-white/5">
+                        <img src="photo/logo1.png" alt="Logo" class="h-9 w-auto">
+                    </div>
+                    <span class="text-xl font-extrabold text-white tracking-tight">আগন্তুক</span>
+                </div>
+                <p class="text-xs leading-relaxed text-gray-400">
+                    আগন্তুক একটি পরিবার, একটি অনুভূতির নাম। আমরা আমাদের তারুণ্যের শক্তিকে কাজে লাগিয়ে একটি ইতিবাচক সামাজিক পরিবর্তনের স্বপ্ন দেখি।
+                </p>
+                <div class="flex justify-center md:justify-start gap-3">
+                    <a href="https://www.facebook.com/profile.php?id=100064781886465" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300">
+                        <i class="fab fa-facebook-f text-sm"></i>
+                    </a>
+                    <a href="https://wa.me/+8801332738981" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-green-500 transition-all duration-300">
+                        <i class="fab fa-whatsapp text-sm"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@Agantuk2019" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-red-600 transition-all duration-300">
+                        <i class="fab fa-youtube text-sm"></i>
+                    </a>
+                </div>
+            </div>
+    
+            <div class="text-center md:text-left">
+                <h3 class="text-white font-semibold mb-4 text-base relative inline-block after:content-[''] after:absolute after:w-1/2 after:h-0.5 after:bg-brand-primary after:bottom-[-6px] after:left-0">লিংকস</h3>
+                <ul class="space-y-2.5 text-xs">
+                    <li><a href="#about" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition-all"><span>&rsaquo;</span> আমাদের সম্পর্কে</a></li>
+                    <li><a href="#projects" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition-all"><span>&rsaquo;</span> প্রজেক্টসমূহ</a></li>
+                    <li><a href="https://docs.google.com/spreadsheets/d/1YdIZCITuqZ3hpulo2at5lgCLLMGtztxtbTobEVLcpRU/edit?usp=sharing" target="_blank" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition-all"><span>&rsaquo;</span> ফিনান্সিয়াল রিপোর্ট</a></li>
+                    <li><a href="#transparency" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition-all"><span>&rsaquo;</span> সদস্য নীতিমালা</a></li>
+                </ul>
+            </div>
+    
+            <div class="text-center md:text-left">
+                <h3 class="text-white font-semibold mb-4 text-base relative inline-block after:content-[''] after:absolute after:w-1/2 after:h-0.5 after:bg-brand-primary after:bottom-[-6px] after:left-0">যোগাযোগ</h3>
+                <ul class="space-y-3 text-xs">
+                    <li class="flex items-start justify-center md:justify-start gap-3 group">
+                        <i class="fas fa-map-marker-alt mt-1 text-brand-primary"></i>
+                        <span class="text-left">সাদাব্রিজ, আলমডাঙ্গা, চুয়াডাঙ্গা</span>
+                    </li>
+                    <li class="flex items-center justify-center md:justify-start gap-3 group">
+                        <i class="fas fa-phone-alt text-brand-primary"></i>
+                        <span>+880 1332-738981</span>
+                    </li>
+                    <li class="flex items-center justify-center md:justify-start gap-3 group">
+                        <i class="fas fa-envelope text-brand-primary"></i>
+                        <span class="break-all">agantukbd2019@gmail.com</span>
+                    </li>
+                </ul>
+            </div>
+    
+            <div class="text-center md:text-left">
+                <h3 class="text-white font-semibold mb-4 text-base relative inline-block after:content-[''] after:absolute after:w-1/2 after:h-0.5 after:bg-brand-primary after:bottom-[-6px] after:left-0">যুক্ত হোন</h3>
+                <div class="bg-gray-900/40 border border-gray-800/60 p-4 rounded-xl shadow-lg">
+                    <p class="text-[12px] mb-4 text-gray-200 ">
+                        "মানবতার সেবায় আপনার একটি ক্ষুদ্র পদক্ষেপ হতে পারে আগন্তুকের শক্তি।"
+                    </p>
+                    <a href="index.html#volunteer" class="flex items-center justify-center gap-2 bg-brand-primary hover:bg-opacity-90 text-white py-2 px-4 rounded-lg text-xs font-bold transition-all shadow-md shadow-brand-primary/10">
+                        <i class="fas fa-user-plus"></i>
+                        সদস্য হতে আবেদন করুন
+                    </a>
+                     <!-- ফুটারের "যুক্ত হোন" সেকশনে নিচের বাটনটি যোগ করুন -->
+                    <button onclick="openAdminLogin()" 
+                            class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:bg-opacity-90 text-white py-2 px-4 rounded-lg text-xs font-bold transition-all shadow-md shadow-purple-500/10 mt-2">
+                        <i class="fas fa-lock"></i>
+                        অ্যাডমিন লগইন
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <div class="border-t border-gray-900/50 mt-8 pt-6">
+            <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-medium uppercase tracking-widest text-gray-500">
+                <p>&copy; ২০২৬ আগন্তুক । সর্বস্বত্ব সংরক্ষিত।</p>
+                <p class="flex items-center gap-2 bg-gray-900/30 px-3 py-1.5 rounded-full border border-gray-900">
+                    Developed with <i class="fas fa-heart text-red-500 animate-pulse"></i> by 
+                    <span class="text-gray-400">Agantuk Tech Team</span>
+                </p>
+            </div>
+        </div>
+    
+    </footer>
+
+    <script>
+        (function() {
+            "use strict";
+
+            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_C4FA3jD_ZdAs_7QJyPa3PSf-W34GtTInLd8kks0H5sSwEIT2QzaPViz0d17L71dP/exec';
+            let allMembers = [];
+
+            // ---------- জন্মদিন ফরমেট ঠিক করা হল ----------
+             // ---------- জন্মদিন ফরমেট ঠিক করা হল (সংশোধিত) ----------
+            function formatBanglaDate(dateStr) {
+                if (!dateStr || dateStr === 'null' || dateStr === 'undefined' || dateStr === '') return null;
+                
+                // বাংলা মাসের নাম
+                const months = [
+                    'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন',
+                    'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
+                ];
+                
+                try {
+                    let date;
+                    
+                    // ১. যদি ডেট স্ট্রিংয়ে 'T' থাকে (ISO Format), তবে সরাসরি Date অবজেক্ট তৈরি করি
+                    if (dateStr.includes('T')) {
+                        date = new Date(dateStr);
+                    }
+                    // ২. DD/MM/YYYY ফরম্যাট হ্যান্ডেল করা
+                    else if (dateStr.includes('/')) {
+                        const parts = dateStr.split('/');
+                        if (parts.length === 3) {
+                            const day = parseInt(parts[0], 10);
+                            const month = parseInt(parts[1], 10) - 1;
+                            const year = parseInt(parts[2], 10);
+                            date = new Date(year, month, day);
+                        }
+                    } 
+                    // ৩. YYYY-MM-DD ফরম্যাট (যেখানে সময় বা T নেই)
+                    else if (dateStr.includes('-')) {
+                        const parts = dateStr.split('-');
+                        if (parts.length === 3) {
+                            const year = parseInt(parts[0], 10);
+                            const month = parseInt(parts[1], 10) - 1;
+                            const day = parseInt(parts[2], 10);
+                            date = new Date(year, month, day);
+                        }
+                    } 
+                    // ৪. অন্যান্য ফরম্যাট
+                    else {
+                        date = new Date(dateStr);
+                    }
+                    
+                    // ভ্যালিড ডেট চেক এবং আউটপুট ফরম্যাট
+                    if (date && !isNaN(date.getTime())) {
+                        const day = date.getDate();
+                        const month = months[date.getMonth()];
+                        const year = date.getFullYear();
+                        
+                        // আউটপুট: 13 নভেম্বর, 2003
+                        return `${day} ${month}, ${year}`;
+                    }
+                    
+                    return dateStr;
+                } catch (e) {
+                    console.warn('Date parsing error:', e);
+                    return dateStr;
+                }
+            }
+
+            // Helper: Google Drive direct image link
+            function getDirectImageUrl(url) {
+                if (!url || url === 'null' || url === 'undefined') return null;
+                const match = url.match(/(?:id=|\/d\/|file\/d\/)([\w-]{25,})/);
+                return match ? `https://lh3.googleusercontent.com/d/${match[1]}` : url;
+            }
+
+            // Helper: avatar color based on name
+            function getAvatarColor(name) {
+                const colors = [
+                    'from-blue-500 to-blue-600',
+                    'from-red-500 to-red-600',
+                    'from-emerald-500 to-emerald-600',
+                    'from-purple-500 to-purple-600',
+                    'from-amber-500 to-amber-600',
+                    'from-indigo-500 to-indigo-600',
+                    'from-rose-500 to-rose-600',
+                    'from-cyan-500 to-cyan-600'
+                ];
+                let hash = 0;
+                for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+                return colors[Math.abs(hash) % colors.length];
+            }
+
+            function getInitials(name) {
+                if (!name) return 'আ';
+                const parts = name.trim().split(' ').filter(p => p.length > 0);
+                if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+                return (parts[0].charAt(0) + parts[parts.length-1].charAt(0)).toUpperCase();
+            }
+
+            // Role (Q কলাম) অনুযায়ী কোন section-এ যাবে তা ঠিক হয়। category (R কলাম) শুধু card-এ দেখায়, filter করে না।
+            function getMemberGroup(member) {
+                const text = (member.role || '').toLowerCase();
+                if (/president|সভাপতি/.test(text)) return 'president';
+                if (/founding|founder|প্রতিষ্ঠাতা/.test(text)) return 'founding';
+                if (/advis|উপদেষ্টা|পরামর্শদাতা/.test(text)) return 'advisers';
+                if (/management|committee|কমিটি|ব্যবস্থাপনা|কার্যনির্বাহী/.test(text)) return 'management';
+                return 'general';
+            }
+
+            function renderMembers(members) {
+                const grids = {
+                    president: document.getElementById('presidentGrid'),
+                    founding: document.getElementById('foundingGrid'),
+                    advisers: document.getElementById('advisersGrid'),
+                    management: document.getElementById('managementGrid'),
+                    general: document.getElementById('generalGrid')
+                };
+                const sections = {
+                    president: document.getElementById('presidentSection'),
+                    founding: document.getElementById('foundingSection'),
+                    advisers: document.getElementById('advisersSection'),
+                    management: document.getElementById('managementSection'),
+                    general: document.getElementById('generalSection')
+                };
+                const totalEl = document.getElementById('totalMemberCount');
+                const emptyEl = document.getElementById('noMembersMessage');
+                
+                Object.values(grids).forEach(g => g.innerHTML = '');
+                Object.values(sections).forEach(s => s.classList.add('hidden'));
+                totalEl.innerText = members.length;
+            
+                if (members.length === 0) {
+                    emptyEl.classList.remove('hidden');
+                    return;
+                }
+                emptyEl.classList.add('hidden');
+            
+                members.forEach((member, idx) => {
+                    const photo = getDirectImageUrl(member.photoUrl);
+                    const initials = getInitials(member.name);
+                    const colorGradient = getAvatarColor(member.name || 'অজানা');
+                    
+                    // Google Sheet থেকে আসা ID এবং Role
+                    const memberId = member.id || '—'; 
+                    const categoryText = (member.category || '').toString().trim();
+            
+                    const formattedDob = formatBanglaDate(member.dob);
+                    
+                    const card = document.createElement('div');
+                    card.className = "member-card";
+                    card.style.animationDelay = `${idx * 0.08}s`;
+            
+                    let avatarHtml = photo 
+                        ? `<img src="${photo}" class="w-full h-full object-cover" alt="${member.name}" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full bg-gradient-to-br ${colorGradient} flex items-center justify-center text-3xl font-bold text-white\\'>${initials}</div>';">`
+                        : `<div class="w-full h-full bg-gradient-to-br ${colorGradient} flex items-center justify-center text-3xl font-bold text-white">${initials}</div>`;
+            
+                    card.innerHTML = `
+                        <div class="absolute top-4 right-4 z-10">
+                            <span class="id-badge shadow-sm"><i class="far fa-id-card mr-1"></i>${memberId}</span>
+                        </div>
+            
+                        <div class="flex flex-col items-center pt-8 px-6 pb-6">
+                            <div class="image-container mb-5">
+                                ${avatarHtml}
+                            </div>
+            
+                            <h3 class="text-xl font-extrabold text-gray-800 mb-1 text-center">${member.name || 'নাম নেই'}</h3>
+                            
+                            ${categoryText ? `
+                            <div class="flex items-center gap-2 text-xs text-brand-secondary font-bold bg-red-50 px-4 py-1.5 rounded-full mb-4 border border-red-100">
+                                <i class="fas fa-layer-group text-[10px]"></i>
+                                <span>${categoryText}</span>
+                            </div>
+                            ` : '<div class="mb-4"></div>'}
+            
+                            <div class="w-full space-y-3 mt-2">
+                                <div class="flex items-center gap-3 text-sm">
+                                    <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-600">
+                                        <i class="fas fa-tint blood-drop"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400">ব্লাড গ্রুপ</p>
+                                        <p class="font-bold text-gray-700">${member.blood || '—'}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-3 text-sm">
+                                    <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-brand-primary">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="truncate">
+                                        <p class="text-xs text-gray-400">ঠিকানা</p>
+                                        <p class="font-medium text-gray-700 truncate max-w-[160px]">${member.address || 'জানানো হয়নি'}</p>
+                                    </div>
+                                </div>
+                                
+                                ${formattedDob ? `
+                                <div class="flex items-center gap-3 text-sm">
+                                    <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center text-amber-600">
+                                        <i class="fas fa-cake-candles"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400">জন্মদিন</p>
+                                        <p class="font-medium text-gray-700">${formattedDob}</p>
+                                    </div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                    const group = getMemberGroup(member);
+                    grids[group].appendChild(card);
+                    sections[group].classList.remove('hidden');
+                });
+            }
+            
+            // Search with debounce
+            let searchTimer;
+            document.getElementById('memberSearch').addEventListener('input', function(e) {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(() => {
+                    const query = e.target.value.toLowerCase().trim();
+                    if (!query) {
+                        renderMembers(allMembers);
+                        return;
+                    }
+                    const filtered = allMembers.filter(m => 
+                        (m.name && m.name.toLowerCase().includes(query)) ||
+                        (m.address && m.address.toLowerCase().includes(query)) ||
+                        (m.blood && m.blood.toLowerCase().includes(query)) ||
+                        (m.id && m.id.toString().toLowerCase().includes(query)) ||
+                        (m.memberId && m.memberId.toString().toLowerCase().includes(query))
+                    );
+                    renderMembers(filtered);
+                }, 300);
+            });
+
+            async function fetchMembers() {
+                const loader = document.getElementById('memberLoader');
+                loader.classList.remove('hidden');
+                
+                try {
+                    const callbackName = 'jsonp_cb_' + Date.now();
+                    const script = document.createElement('script');
+                    script.src = `${SCRIPT_URL}?action=getMembers&callback=${callbackName}`;
+                    
+                    window[callbackName] = (data) => {
+                        if (data && data.members) {
+                            // sort by ID (memberId or id) ascending
+                            allMembers = data.members.sort((a, b) => {
+                                const idA = (a.memberId || a.id || '').toString();
+                                const idB = (b.memberId || b.id || '').toString();
+                                return idA.localeCompare(idB, undefined, { numeric: true });
+                            });
+                        } else {
+                            allMembers = [];
+                        }
+                        renderMembers(allMembers);
+                        loader.classList.add('hidden');
+                        delete window[callbackName];
+                        document.head.removeChild(script);
+                    };
+                    
+                    // fallback if script fails
+                    script.onerror = () => {
+                        console.warn('JSONP failed, loading demo data');
+                        // demo data with proper IDs and dates in different formats
+                        allMembers = [
+                            { id: 'MC001', name: 'Adnan Ahamed Arif', address: 'Thanapara, Alamdanga, Chuadanga', blood: 'A-', dob: '10/07/2003', photoUrl: null },
+                            { id: 'AA001', name: 'Md. Habibur Rahman Chanchal', address: 'Dsharipara, Hamdah, Jhenaidah', blood: 'AB+', dob: '14/11/2003', photoUrl: null },
+                            { id: 'AE001', name: 'Sadia Afrin', address: 'Kushtia Sadar', blood: 'B+', dob: '21/05/2002', photoUrl: null },
+                            { id: 'ZM001', name: 'Tamanna Islam', address: 'Meherpur', blood: 'O-', dob: '03/09/2001', photoUrl: null },
+                            { id: 'BD001', name: 'Rakib Hossain', address: 'Chuadanga', blood: 'A+', dob: '30/12/1999', photoUrl: null },
+                            { id: 'BD002', name: 'Nusrat Jahan', address: 'Jhenaidah', blood: 'B-', dob: '05/03/2000', photoUrl: null },
+                        ];
+                        renderMembers(allMembers);
+                        loader.classList.add('hidden');
+                        document.head.removeChild(script);
+                    };
+                    
+                    document.head.appendChild(script);
+                } catch (err) {
+                    console.error("Data fetch error", err);
+                    loader.classList.add('hidden');
+                }
+            }
+
+            // refresh
+            document.getElementById('refreshMembers').addEventListener('click', () => {
+                document.getElementById('memberSearch').value = '';
+                fetchMembers();
+            });
+
+            document.addEventListener('DOMContentLoaded', fetchMembers);
+        })();
+    </script>
+
+    <!-- Mobile menu toggle script -->
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) menu.classList.toggle('hidden');
+        }
+        window.addEventListener('click', function(e) {
+            const menu = document.getElementById('mobile-menu');
+            const btn = document.querySelector('button[onclick="toggleMenu()"]');
+            if (menu && !menu.classList.contains('hidden') && !menu.contains(e.target) && !btn?.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

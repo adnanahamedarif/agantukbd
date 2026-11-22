@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="photo/Agantuk logo.jpg">
+    <title>আইডিয়া শেয়ারিং - আগন্তুক</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#3B82F6',
+                            secondary: '#D32F2F',
+                            dark: '#1E40AF',
+                            light: '#EFF6FF',
+                            accent: '#F59E0B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #3B82F6; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1E40AF; }
+        html { scroll-behavior: smooth; }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -15px rgba(102, 126, 234, 0.5);
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* active filter button */
+        .filter-btn.active { background-color: #3B82F6; color: white; }
+
+        /* ===== AGANTUK IDEAS PAGE: MODERN REDESIGN ===== */
+        :root {
+            --ag-blue: #2563eb;
+            --ag-blue-dark: #173b83;
+            --ag-red: #d32f2f;
+            --ag-ink: #14213d;
+            --ag-muted: #64748b;
+            --ag-line: #e5eaf2;
+        }
+
+        body {
+            background: #f5f7fb !important;
+            color: var(--ag-ink);
+        }
+
+        #navbar {
+            background: rgba(255,255,255,.94) !important;
+            border-bottom: 1px solid rgba(226,232,240,.9);
+            box-shadow: 0 8px 30px rgba(15,23,42,.06) !important;
+            backdrop-filter: blur(16px);
+        }
+        #navbar > div { max-width: 1240px; margin: auto; }
+        #navbar a { transition: color .2s ease, background .2s ease; }
+
+        .gradient-bg {
+            background:
+                radial-gradient(circle at 8% 5%, rgba(59,130,246,.08), transparent 28%),
+                radial-gradient(circle at 92% 22%, rgba(211,47,47,.055), transparent 25%),
+                #f5f7fb !important;
+        }
+        main .container {
+            max-width: 1180px !important;
+            padding-top: 112px !important;
+            padding-bottom: 72px !important;
+        }
+
+        #home {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            color: #fff;
+            background: linear-gradient(120deg, #102b5c 0%, #17458f 58%, #2563eb 100%) !important;
+            border: 1px solid rgba(255,255,255,.16);
+            border-radius: 30px !important;
+            padding: 58px 28px !important;
+            box-shadow: 0 24px 60px rgba(23,59,131,.18) !important;
+        }
+        #home:before, #home:after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        #home:before { width: 360px; height: 360px; right: -110px; top: -190px; }
+        #home:after { width: 250px; height: 250px; left: -100px; bottom: -170px; }
+        #home h1 { color: #fff; letter-spacing: -.8px; line-height: 1.25; }
+        #home h1 span {
+            background: linear-gradient(90deg,#93c5fd,#fff) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+        }
+        #home > p { color: rgba(255,255,255,.78) !important; line-height: 1.9; }
+        #home .flex.flex-wrap > div {
+            width: 150px !important;
+            padding: 18px 14px !important;
+            border: 1px solid rgba(255,255,255,.2);
+            background: rgba(255,255,255,.10) !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,.08) !important;
+            backdrop-filter: blur(8px);
+        }
+        #home .flex.flex-wrap > div div:last-child { color: rgba(255,255,255,.76) !important; }
+
+        #add-idea, #ideas {
+            background: #fff !important;
+            border: 1px solid var(--ag-line);
+            border-radius: 26px !important;
+            box-shadow: 0 14px 40px rgba(15,23,42,.055) !important;
+            padding: 34px !important;
+        }
+        #add-idea h2, #ideas h2 {
+            color: var(--ag-ink);
+            letter-spacing: -.35px;
+        }
+        #add-idea h2 { margin-bottom: 26px !important; }
+        #ideaForm { max-width: 900px; margin: 0 auto; }
+        #ideaForm label { color: #334155; font-size: 15px; font-weight: 600; }
+        #ideaForm input:not([type="checkbox"]):not([type="file"]),
+        #ideaForm textarea, #ideaForm select {
+            width: 100%;
+            border: 1px solid #dce3ee !important;
+            background: #fbfcff !important;
+            border-radius: 13px !important;
+            padding: 13px 15px !important;
+            color: #1e293b;
+            transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+        }
+        #ideaForm input:focus, #ideaForm textarea:focus, #ideaForm select:focus {
+            border-color: #60a5fa !important;
+            background: #fff !important;
+            box-shadow: 0 0 0 4px rgba(59,130,246,.10) !important;
+            outline: none !important;
+        }
+        #ideaForm input[type="file"] {
+            border: 1px dashed #cbd5e1 !important;
+            border-radius: 13px !important;
+            background: #f8fafc;
+            min-height: 48px;
+        }
+        #ideaForm button[type="submit"] {
+            width: auto !important;
+            min-width: 240px;
+            margin: 8px auto 0;
+            padding: 14px 30px !important;
+            border-radius: 13px !important;
+            background: linear-gradient(110deg,#2563eb,#1d4ed8) !important;
+            box-shadow: 0 10px 22px rgba(37,99,235,.20) !important;
+        }
+        #ideaForm button[type="submit"]:hover { transform: translateY(-2px); }
+        #anonymousCheck { accent-color: #2563eb; }
+
+        #ideas { margin-top: 0; }
+        #ideas > div:first-child { align-items: center; }
+        #searchInput { font-family: inherit; }
+        #ideas .rounded-full:has(#searchInput) {
+            border-color: #e2e8f0 !important;
+            background: #f8fafc !important;
+            border-radius: 13px !important;
+            padding: 11px 15px !important;
+        }
+        #filterContainer { gap: 9px !important; }
+        .filter-btn {
+            border: 1px solid #dbe4f0 !important;
+            background: #fff;
+            color: #475569 !important;
+            border-radius: 999px !important;
+            padding: 9px 17px !important;
+            font-size: 14px;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: #2563eb !important;
+            border-color: #2563eb !important;
+            color: #fff !important;
+            box-shadow: 0 6px 16px rgba(37,99,235,.16);
+        }
+
+        #ideasGrid { gap: 22px !important; }
+        #ideasGrid > div:not(.col-span-full) {
+            border: 1px solid #e8edf5 !important;
+            border-radius: 20px !important;
+            background: #fff !important;
+            box-shadow: 0 8px 24px rgba(15,23,42,.045) !important;
+            overflow: hidden;
+        }
+        #ideasGrid > div:not(.col-span-full):hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 36px rgba(15,23,42,.10) !important;
+            border-color: #d5e3fb !important;
+        }
+        #ideasGrid > div > div:first-child:has(img) { height: 205px !important; }
+        #ideasGrid > div > div:last-child { padding: 20px !important; }
+        #ideasGrid h3 { color: #172554; font-size: 19px; line-height: 1.45; }
+        #ideasGrid p { line-height: 1.8; }
+        #ideasGrid .border-t { border-color: #edf1f6 !important; }
+
+        #toast { max-width: min(92vw, 420px); border-radius: 14px !important; }
+        footer { margin-top: 0 !important; }
+        footer .container { max-width: 1180px; }
+
+        @media (max-width: 767px) {
+            main .container { padding: 96px 16px 48px !important; }
+            #home { padding: 42px 20px !important; border-radius: 22px !important; }
+            #home h1 { font-size: 2.1rem !important; }
+            #home .flex.flex-wrap > div { width: 29% !important; min-width: 92px; padding: 13px 7px !important; }
+            #home .flex.flex-wrap > div div:first-child { font-size: 1.7rem !important; }
+            #add-idea, #ideas { padding: 23px 17px !important; border-radius: 20px !important; }
+            #add-idea h2, #ideas h2 { font-size: 1.45rem !important; }
+            #ideaForm button[type="submit"] { width: 100% !important; }
+            #ideas > div:first-child { align-items: stretch; }
+            #filterContainer { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 8px; }
+            .filter-btn { flex: 0 0 auto; }
+        }
+
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav
+      class="fixed w-full z-50 bg-white shadow-md top-0 transition-all duration-300"
+      id="navbar"
+    >
+      <div
+        class="container mx-auto px-4 py-2 flex justify-between items-center"
+      >
+        <!-- Logo -->
+        <a href="index.html#home" class="flex items-center gap-2 group">
+          <img
+            src="photo/logo1.png"
+            alt="Agantuk Logo"
+            class="h-14 w-auto transition-transform group-hover:scale-105"
+          />
+          <div class="hidden sm:block">
+            <h1 class="text-2xl font-bold text-brand-secondary leading-none">
+              আগন্তুক
+            </h1>
+            <span class="text-xs text-brand-primary font-bold tracking-wider"
+              >একটি সমাজ সেবা মূলক সংগঠন</span
+            >
+          </div>
+        </a>
+
+        <!-- Desktop Menu — MEMBERS added -->
+        <div
+          class="hidden md:flex items-center gap-6 font-medium text-gray-700"
+        >
+          <a href="index.html#home" class="hover:text-brand-primary transition">হোম</a>
+          <a href="index.html#about" class="hover:text-brand-primary transition"
+            >আমাদের সম্পর্কে</a
+          >
+          <a href="index.html#projects" class="hover:text-brand-primary transition"
+            >প্রজেক্ট</a
+          >
+          <a href="index.html#recent-projects" class="hover:text-brand-primary transition"
+            >কার্যক্রম</a
+          >
+
+          <a href="blood.html" class="hover:text-brand-secondary transition"
+            ><i class="fas fa-droplet text-red-500 mr-1"></i>ব্লাড ব্যাংক</a
+          >
+          <a href="volunteer.html" class="hover:text-brand-primary transition"
+            >স্বেচ্ছাসেবক</a
+          >
+          <a
+            href="members.html"
+            class="hover:text-brand-primary transition flex items-center gap-1"
+          >
+            <i class="fas fa-users"></i> সদস্যবৃন্দ
+          </a>
+          <a href="index.html#contact" class="hover:text-brand-primary transition"
+            >যোগাযোগ</a
+          >
+          <a
+            href="index.html#donate"
+            class="bg-brand-secondary text-white px-5 py-2.5 rounded-full hover:bg-red-700 transition shadow-lg transform hover:-translate-y-0.5 font-bold"
+            ><i class="fas fa-heart mr-1"></i>দান করুন</a
+          >
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button
+          onclick="toggleMenu()"
+          class="md:hidden text-brand-primary text-2xl focus:outline-none"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Dropdown (Members included) -->
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg"
+      >
+        <div class="flex flex-col p-4 gap-4 font-medium text-center">
+          <a
+            href="index.html#home"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >হোম</a
+          >
+          <a
+            href="index.html#about"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >আমাদের সম্পর্কে</a
+          >
+          <a
+            href="index.html#projects"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >প্রজেক্ট</a
+          >
+          <a
+            href="index.html#recent-projects"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >কার্যক্রম</a
+          >
+          <a
+            href="members.html"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            ><i class="fas fa-users mr-1"></i>সদস্যবৃন্দ</a
+          >
+          <a
+            href="blood.html"
+            onclick="toggleMenu()"
+            class="py-2 text-red-600 hover:bg-red-50 rounded font-semibold"
+            ><i class="fas fa-droplet mr-1"></i>ব্লাড ব্যাংক</a
+          >
+          <a
+            href="volunteer.html"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >স্বেচ্ছাসেবক</a
+          >
+          <a
+            href="index.html#donate"
+            onclick="toggleMenu()"
+            class="py-3 bg-brand-secondary hover:bg-red-700 text-white rounded-xl shadow-lg font-bold"
+            ><i class="fas fa-heart mr-2"></i>দান করুন</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <main class="gradient-bg min-h-screen">
+    <div class="container mx-auto px-4 pt-24 pb-12 max-w-6xl">
+      <!-- Hero -->
+      <section
+        id="home"
+        class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-10 text-center"
+      >
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">
+          <span
+            class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+            >স্বাগতম</span
+          >
+          Agantuk পরিবারে
+        </h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+          আপনার সমাজ সেবা মূলক আইডিয়া শেয়ার করুন, অন্যদের আইডিয়া দেখুন এবং
+          একসাথে সমাজের জন্য কিছু করুন
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 md:gap-8">
+          <div class="bg-white/70 p-4 rounded-2xl shadow-md w-32">
+            <div class="text-3xl font-bold text-white-600" id="totalIdeas">
+              0
+            </div>
+            <div class="text-sm text-gray-600">মোট আইডিয়া</div>
+          </div>
+          <div class="bg-white/70 p-4 rounded-2xl shadow-md w-32">
+            <div
+              class="text-3xl font-bold text-white-600"
+              id="totalContributors"
+            >
+              0
+            </div>
+            <div class="text-sm text-gray-600">অবদানকারী</div>
+          </div>
+          <div class="bg-white/70 p-4 rounded-2xl shadow-md w-32">
+            <div class="text-3xl font-bold text-white-600" id="totalLikes">
+              0
+            </div>
+            <div class="text-sm text-gray-600">মোট লাইক</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Add Idea Form -->
+      <section
+        id="add-idea"
+        class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 md:p-8 mb-10"
+      >
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 flex items-center justify-center gap-2 text-center">
+          <i class="fas fa-plus-circle text-blue-600"></i>আপনার আইডিয়া শেয়ার
+          করুন
+        </h2>
+        <form id="ideaForm" class="space-y-4">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-medium mb-1"
+                ><i class="fas fa-user text-blue-600 mr-2"></i>আপনার নাম</label
+              >
+              <input
+                type="text"
+                id="authorName"
+                class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+                placeholder="আপনার নাম লিখুন"
+              />
+            </div>
+            <div>
+              <label class="block font-medium mb-1"
+                ><i class="fas fa-tag text-blue-600 mr-2"></i>আইডিয়ার
+                শিরোনাম</label
+              >
+              <input
+                type="text"
+                id="ideaTitle"
+                class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+                placeholder="শিরোনাম দিন"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-medium mb-1"
+              ><i class="fas fa-align-left text-blue-600 mr-2"></i>বিবরণ</label
+            >
+            <textarea
+              id="ideaDescription"
+              rows="4"
+              class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+              placeholder="আপনার আইডিয়া বিস্তারিত লিখুন..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-medium mb-1"
+                ><i class="fas fa-filter text-blue-600 mr-2"></i
+                >ক্যাটাগরি</label
+              >
+              <select
+                id="ideaCategory"
+                class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+                required
+              >
+                <option value="">নির্বাচন করুন</option>
+                <option value="education">শিক্ষা</option>
+                <option value="health">স্বাস্থ্য</option>
+                <option value="environment">পরিবেশ</option>
+                <option value="women">নারী উন্নয়ন</option>
+                <option value="child">শিশু কল্যাণ</option>
+                <option value="elderly">বয়স্ক সেবা</option>
+                <option value="fundraising">ফান্ডরেইজিং</option>
+                <option value="other">অন্যান্য</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-medium mb-1"
+                ><i class="fas fa-image text-blue-600 mr-2"></i>ছবি
+                (ঐচ্ছিক)</label
+              >
+              <input
+                type="file"
+                id="ideaImage"
+                accept="image/*"
+                onchange="previewImage(event)"
+                class="w-full p-2 border rounded-xl"
+              />
+              <div id="imagePreview" class="hidden relative mt-2 w-24 h-24">
+                <img
+                  src=""
+                  class="w-full h-full object-cover rounded-lg border-2 border-blue-400"
+                />
+                <button
+                  type="button"
+                  onclick="removeImage()"
+                  class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                >
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="anonymousCheck" class="w-5 h-5" />
+            <label for="anonymousCheck" class="text-gray-600"
+              >বেনামী হিসেবে পোস্ট করুন</label
+            >
+          </div>
+
+          <button
+            type="submit"
+            id="submitBtn"
+            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl text-lg font-semibold hover:shadow-xl transition flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-paper-plane"></i> আইডিয়া শেয়ার করুন
+          </button>
+        </form>
+      </section>
+
+      <!-- Ideas Grid -->
+      <section
+        id="ideas"
+        class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 md:p-8"
+      >
+        <div
+          class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6"
+        >
+          <h2 class="text-2xl md:text-3xl font-bold flex items-center gap-2">
+            <i class="fas fa-lightbulb text-yellow-500"></i>সর্বশেষ আইডিয়াস
+          </h2>
+          <div
+            class="flex items-center bg-white border rounded-full px-4 py-2 w-full md:w-72"
+          >
+            <i class="fas fa-search text-gray-400 mr-2"></i>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="আইডিয়া খুঁজুন..."
+              class="w-full outline-none"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mb-6" id="filterContainer">
+          <button
+            class="filter-btn active px-4 py-2 rounded-full border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-600 hover:text-white transition"
+            data-filter="all"
+          >
+            সবগুলো
+          </button>
+          <button
+            class="filter-btn px-4 py-2 rounded-full border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-600 hover:text-white transition"
+            data-filter="education"
+          >
+            শিক্ষা
+          </button>
+          <button
+            class="filter-btn px-4 py-2 rounded-full border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-600 hover:text-white transition"
+            data-filter="health"
+          >
+            স্বাস্থ্য
+          </button>
+          <button
+            class="filter-btn px-4 py-2 rounded-full border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-600 hover:text-white transition"
+            data-filter="fundraising"
+          >
+            ফান্ডরেইজিং
+          </button>
+          <button
+            class="filter-btn px-4 py-2 rounded-full border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-600 hover:text-white transition"
+            data-filter="other"
+          >
+            অন্যান্য
+          </button>
+        </div>
+
+        <div
+          id="ideasGrid"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <div class="col-span-full text-center py-10">
+            <div class="spinner mx-auto mb-4"></div>
+            <p class="text-gray-500">আইডিয়া লোড হচ্ছে...</p>
+          </div>
+        </div>
+      </section>
+    </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 text-gray-400 py-10 border-t border-gray-900 mt-12">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+            <div class="space-y-4 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3">
+                    <div class="bg-white p-1.5 rounded-xl shadow-lg">
+                        <img src="photo/logo1.png" alt="Logo" class="h-9 w-auto">
+                    </div>
+                    <span class="text-xl font-extrabold text-white tracking-tight">আগন্তুক</span>
+                </div>
+                <p class="text-xs leading-relaxed text-gray-400">
+                    আগন্তুক একটি পরিবার, একটি অনুভূতির নাম। আমরা আমাদের তারুণ্যের শক্তিকে কাজে লাগিয়ে একটি ইতিবাচক সামাজিক পরিবর্তনের স্বপ্ন দেখি।
+                </p>
+                <div class="flex justify-center md:justify-start gap-3">
+                    <a href="https://www.facebook.com/profile.php?id=100064781886465" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300">
+                        <i class="fab fa-facebook-f text-sm"></i>
+                    </a>
+                    <a href="https://wa.me/+8801332738981" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-green-500 transition-all duration-300">
+                        <i class="fab fa-whatsapp text-sm"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@Agantuk2019" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-red-600 transition-all duration-300">
+                        <i class="fab fa-youtube text-sm"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center md:text-left">
+                <h3 class="text-white font-semibold mb-4 text-base">লিংকস</h3>
+                <ul class="space-y-2.5 text-xs">
+                    <li><a href="index.html" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition-all"><span>&rsaquo;</span> হোম</a></li>
+                    <li><a href="index.html#projects" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition-all"><span>&rsaquo;</span> প্রজেক্টসমূহ</a></li>
+                    <li><a href="ideas.html" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition-all"><span>&rsaquo;</span> আইডিয়াস</a></li>
+                    <li><a href="index.html#transparency" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition-all"><span>&rsaquo;</span> সদস্য নীতিমালা</a></li>
+                </ul>
+            </div>
+
+            <div class="text-center md:text-left">
+                <h3 class="text-white font-semibold mb-4 text-base">যোগাযোগ</h3>
+                <ul class="space-y-3 text-xs">
+                    <li class="flex items-start justify-center md:justify-start gap-3">
+                        <i class="fas fa-map-marker-alt mt-1 text-brand-primary"></i>
+                        <span class="text-left">সাদাব্রিজ, আলমডাঙ্গা, চুয়াডাঙ্গা</span>
+                    </li>
+                    <li class="flex items-center justify-center md:justify-start gap-3">
+                        <i class="fas fa-phone-alt text-brand-primary"></i>
+                        <span>+880 1332-738981</span>
+                    </li>
+                    <li class="flex items-center justify-center md:justify-start gap-3">
+                        <i class="fas fa-envelope text-brand-primary"></i>
+                        <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f8999f99968c8d939a9ccac8c9c1b89f95999194d69b9795">[email&#160;protected]</a></span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="text-center md:text-left">
+                <h3 class="text-white font-semibold mb-4 text-base">যুক্ত হোন</h3>
+                <div class="bg-gray-900/40 border border-gray-800/60 p-4 rounded-xl shadow-lg">
+                    <p class="text-[12px] mb-4 text-gray-200">
+                        "মানবতার সেবায় আপনার একটি ক্ষুদ্র পদক্ষেপ হতে পারে আগন্তুকের শক্তি।"
+                    </p>
+                    <a href="index.html#volunteer" class="flex items-center justify-center gap-2 bg-brand-primary hover:bg-brand-dark text-white py-2 px-4 rounded-lg text-xs font-bold transition-all shadow-md">
+                        <i class="fas fa-user-plus"></i>
+                        সদস্য হতে আবেদন করুন
+                    </a>
+                    <a href="#add-idea" class="mt-2 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:opacity-90 text-white py-2 px-4 rounded-lg text-xs font-bold transition-all shadow-md">
+                        <i class="fas fa-lightbulb"></i>
+                        আইডিয়া শেয়ার করুন
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-900/50 mt-8 pt-6">
+            <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-medium uppercase tracking-widest text-gray-500">
+                <p>&copy; ২০২৬ আগন্তুক । সর্বস্বত্ব সংরক্ষিত।</p>
+                <p>ডাটাবেস: Google Sheets & Drive</p>
+            </div>
+        </div>
+    </footer>
+
+    <div
+      id="toast"
+      class="fixed bottom-5 right-5 bg-white rounded-xl shadow-2xl p-4 flex items-center gap-3 border-l-8 transition-all duration-300 translate-x-[500px] z-50"
+    ></div>
+
+    <script>
+      // ==================== কনফিগারেশন ====================
+      const APPS_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbzcGdL1AL_A_NxwImCOHBrmKtWfVH1DahC8acU3GaLJ686hLBxmdOZ_yyXqdbs52qK0/exec"; // ⚠️ আপনার URL দিন
+
+      // ==================== গ্লোবাল ভেরিয়েবল ====================
+      let ideas = [];
+      let currentFilter = "all";
+      let searchTerm = "";
+
+      // ==================== ডোম লোড ====================
+      document.addEventListener("DOMContentLoaded", () => {
+        loadIdeas();
+        setupEventListeners();
+      });
+
+      function setupEventListeners() {
+        // Search
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", (e) => {
+            searchTerm = e.target.value;
+            displayIdeas();
+          });
+
+        // Filter buttons
+        document.querySelectorAll(".filter-btn").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            document.querySelectorAll(".filter-btn").forEach((b) => {
+              b.classList.remove("active", "bg-blue-600", "text-white");
+            });
+            this.classList.add("active", "bg-blue-600", "text-white");
+            currentFilter = this.dataset.filter;
+            displayIdeas();
+          });
+        });
+
+        // Form submit
+        document
+          .getElementById("ideaForm")
+          .addEventListener("submit", handleSubmit);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach((a) => {
+          a.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) target.scrollIntoView({ behavior: "smooth" });
+          });
+        });
+      }
+
+      // ==================== লোড আইডিয়াস ====================
+      // HTML ফাইলের loadIdeas ফাংশনটি এইভাবে আপডেট করুন:
+
+      async function loadIdeas() {
+        showToast("আইডিয়া লোড হচ্ছে...", "info");
+
+        try {
+          const response = await fetch(
+            `${APPS_SCRIPT_URL}?action=getAllIdeas&_=${Date.now()}`,
+            { method: "GET", redirect: "follow", mode: "cors" }
+          );
+
+          const text = await response.text();
+          const data = JSON.parse(text);
+
+          if (data.success) {
+            ideas = data.ideas || [];
+            displayIdeas();
+            updateStats();
+            showToast(`${ideas.length}টি আইডিয়া লোড হয়েছে`, "success");
+          } else {
+            throw new Error(data.error || "সার্ভার থেকে ডাটা আসেনি");
+          }
+        } catch (error) {
+          console.error("Load error:", error);
+          showToast("কানেকশন সমস্যা, ডেমো ডাটা দেখানো হচ্ছে", "warning");
+          ideas = getDemoIdeas();
+          displayIdeas();
+          updateStats();
+        }
+      }
+
+      // ==================== ডেমো ডাটা ====================
+      function getDemoIdeas() {
+        return [
+          {
+            id: 1,
+            title: "গ্রামীণ এলাকায় মোবাইল লাইব্রেরি",
+            description:
+              "দূরবর্তী গ্রামগুলিতে একটি মোবাইল লাইব্রেরি পরিষেবা চালু করা, যেখানে প্রতি সপ্তাহে বই পৌঁছে দেওয়া হবে।",
+            author: "রহিম উদ্দিন",
+            isAnonymous: false,
+            category: "education",
+            likes: 45,
+            comments: [
+              { author: "করিম", text: "অসাধারণ আইডিয়া!", date: "2024-02-11" },
+            ],
+            date: "2024-01-15",
+            imageUrl: "",
+          },
+          {
+            id: 2,
+            title: "বয়স্কদের জন্য ডিজিটাল সেবা কেন্দ্র",
+            description:
+              "বয়স্ক ব্যক্তিদের জন্য ডিজিটাল সেবা কেন্দ্র স্থাপন, যেখানে তারা ফ্রিতে ডিজিটাল সেবা পাবেন।",
+            author: "বেনামী",
+            isAnonymous: true,
+            category: "elderly",
+            likes: 32,
+            comments: [],
+            date: "2024-01-20",
+            imageUrl: "",
+          },
+        ];
+      }
+
+      // ==================== ফর্ম সাবমিট ====================
+      async function handleSubmit(e) {
+        e.preventDefault();
+
+        const btn = document.getElementById("submitBtn");
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রক্রিয়াকরণ...';
+        btn.disabled = true;
+
+        try {
+          const isAnonymous = document.getElementById("anonymousCheck").checked;
+          const authorName  = document.getElementById("authorName").value;
+          const file        = document.getElementById("ideaImage").files[0];
+
+          let result;
+
+          if (file) {
+            // ছবি আছে → POST দিয়ে পাঠাও
+            showToast("ছবি আপলোড হচ্ছে...", "info");
+            const imageData = await getBase64(file);
+
+            const response = await fetch(APPS_SCRIPT_URL, {
+              method  : "POST",
+              mode    : "cors",
+              headers : { "Content-Type": "text/plain" },
+              body    : JSON.stringify({
+                action     : "addIdeaWithImage",
+                title      : document.getElementById("ideaTitle").value,
+                description: document.getElementById("ideaDescription").value,
+                author     : isAnonymous ? null : authorName,
+                isAnonymous: isAnonymous,
+                category   : document.getElementById("ideaCategory").value,
+                imageData  : imageData,
+                imageName  : file.name,
+                imageType  : file.type,
+              }),
+            });
+            const postText = await response.text();
+            result = JSON.parse(postText);
+
+          } else {
+            // ছবি নেই → GET দিয়ে পাঠাও
+            const params = new URLSearchParams({
+              action     : "addIdea",
+              title      : document.getElementById("ideaTitle").value,
+              description: document.getElementById("ideaDescription").value,
+              author     : isAnonymous ? "" : authorName,
+              isAnonymous: isAnonymous,
+              category   : document.getElementById("ideaCategory").value,
+            });
+
+            const response = await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`, {
+              method  : "GET",
+              redirect: "follow",
+              mode    : "cors",
+            });
+            const getText = await response.text();
+            result = JSON.parse(getText);
+          }
+
+          if (result.success) {
+            showToast("✅ আইডিয়া সফলভাবে শেয়ার হয়েছে!", "success");
+            document.getElementById("ideaForm").reset();
+            removeImage();
+            await loadIdeas();
+          } else {
+            throw new Error(result.error || "Unknown error");
+          }
+        } catch (error) {
+          console.error("Submit error:", error);
+          showToast("❌ " + error.message, "error");
+        } finally {
+          btn.innerHTML = originalText;
+          btn.disabled  = false;
+        }
+      }
+
+      // ==================== হেল্পার ফাংশন ====================
+      function getBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result.split(",")[1]);
+          reader.onerror = reject;
+        });
+      }
+
+      // ==================== ডিসপ্লে আইডিয়াস ====================
+      function displayIdeas() {
+        const grid = document.getElementById("ideasGrid");
+
+        const filtered = ideas.filter((idea) => {
+          const matchesFilter =
+            currentFilter === "all" || idea.category === currentFilter;
+          const matchesSearch =
+            idea.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            idea.description.toLowerCase().includes(searchTerm.toLowerCase());
+          return matchesFilter && matchesSearch;
+        });
+
+        if (filtered.length === 0) {
+          grid.innerHTML =
+            '<div class="col-span-full text-center py-10"><i class="fas fa-lightbulb text-6xl text-gray-300 mb-4"></i><p class="text-gray-500">কোনো আইডিয়া পাওয়া যায়নি</p></div>';
+          return;
+        }
+
+        grid.innerHTML = filtered
+          .map(
+            (idea) => `
+                <div class="card-hover bg-white rounded-xl shadow-lg overflow-hidden border">
+                    ${idea.imageUrl ? `
+                    <div class="w-full h-48 bg-gray-100 overflow-hidden cursor-pointer" onclick="openImageModal('${getDriveImageUrl(idea.imageUrl)}')">
+                        <img 
+                            src="${getDriveImageUrl(idea.imageUrl)}" 
+                            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                            onerror="this.parentElement.style.display='none'"
+                        >
+                    </div>` : ""}
+                    <div class="p-4">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm mb-3">
+                            <i class="fas fa-tag mr-1"></i>${getCategoryName(idea.category)}
+                        </span>
+                        <h3 class="text-lg font-bold mb-2">${idea.title}</h3>
+                        <div class="text-gray-600 text-sm mb-3">
+                            <p class="line-clamp-3">${idea.description}</p>
+                            ${idea.description.length > 120 ? `
+                            <button onclick="openIdeaModal(${idea.id})" class="text-blue-600 text-xs font-semibold mt-1 hover:underline">
+                                আরও পড়ুন <i class="fas fa-arrow-right text-xs"></i>
+                            </button>` : ''}
+                        </div>
+                        <div class="flex justify-between items-center text-xs border-t pt-3">
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-user-circle text-blue-600"></i>
+                                ${idea.isAnonymous ? '<span class="bg-gray-100 px-2 py-0.5 rounded-full"><i class="fas fa-user-secret mr-1"></i>বেনামী</span>' : idea.author}
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="likeIdea(${idea.id})" class="flex items-center gap-1 text-pink-600 hover:scale-110 transition">
+                                    <i class="fas fa-heart"></i><span>${idea.likes || 0}</span>
+                                </button>
+                                <button onclick="toggleComments(${idea.id})" class="flex items-center gap-1 text-blue-600">
+                                    <i class="fas fa-comment"></i><span>${idea.comments?.length || 0}</span>
+                                </button>
+                            </div>
+                            <div class="text-gray-400"><i class="far fa-calendar mr-1"></i>${new Date(idea.date).toLocaleDateString("bn-BD")}</div>
+                        </div>
+                        
+                        <div id="comments-${idea.id}" class="hidden mt-3 pt-3 border-t">
+                            <div class="flex gap-2 mb-2">
+                                <input id="comment-${idea.id}" class="flex-1 p-2 border rounded-full text-sm" placeholder="মন্তব্য লিখুন...">
+                                <button onclick="addComment(${idea.id})" class="bg-blue-600 text-white px-4 rounded-full text-sm hover:bg-blue-700">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="space-y-2 max-h-32 overflow-auto pr-1">
+                                ${
+                                  idea.comments
+                                    ?.map(
+                                      (c) => `
+                                    <div class="bg-gray-50 p-2 rounded-lg text-xs">
+                                        <span class="font-semibold">${c.author}</span>
+                                        <p class="text-gray-600">${c.text}</p>
+                                        <span class="text-gray-400 text-2xs">${new Date(c.date).toLocaleDateString("bn-BD")}</span>
+                                    </div>
+                                `,
+                                    )
+                                    .join("") || ""
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      // Google Drive URL → সরাসরি img tag-এ কাজ করে এমন format
+      function getDriveImageUrl(url) {
+        if (!url) return "";
+
+        // ইতিমধ্যে thumbnail format থাকলে সেটাই ফেরত দাও
+        if (url.includes("drive.google.com/thumbnail")) return url;
+
+        // uc?export=view&id=FILE_ID format থেকে ID বের করো
+        let match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+        if (match) {
+          return "https://drive.google.com/thumbnail?id=" + match[1] + "&sz=w800";
+        }
+
+        // /file/d/FILE_ID/view format
+        match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+        if (match) {
+          return "https://drive.google.com/thumbnail?id=" + match[1] + "&sz=w800";
+        }
+
+        // অন্য যেকোনো URL হলে সরাসরি ব্যবহার করো
+        return url;
+      }
+
+      function getCategoryName(cat) {
+        const map = {
+          education: "শিক্ষা",
+          health: "স্বাস্থ্য",
+          environment: "পরিবেশ",
+          women: "নারী উন্নয়ন",
+          child: "শিশু কল্যাণ",
+          elderly: "বয়স্ক সেবা",
+          fundraising: "ফান্ডরেইজিং",
+          other: "অন্যান্য",
+        };
+        return map[cat] || cat;
+      }
+
+
+      // ==================== আইডিয়া মডাল ====================
+      let currentModalIdeaId = null;
+
+      window.openIdeaModal = function(id) {
+        const idea = ideas.find(i => i.id === id);
+        if (!idea) return;
+        currentModalIdeaId = id;
+
+        document.getElementById('modal-category').innerHTML = '<i class="fas fa-tag mr-1"></i>' + getCategoryName(idea.category);
+        document.getElementById('modal-title').textContent = idea.title;
+        document.getElementById('modal-description').textContent = idea.description;
+        document.getElementById('modal-author').textContent = idea.isAnonymous ? 'বেনামী' : idea.author;
+        document.getElementById('modal-date').textContent = new Date(idea.date).toLocaleDateString('bn-BD');
+        document.getElementById('modal-likes').textContent = idea.likes || 0;
+        document.getElementById('modal-comment-count').textContent = idea.comments?.length || 0;
+
+        // Image
+        const imgWrap = document.getElementById('modal-image-wrap');
+        if (idea.imageUrl) {
+          document.getElementById('modal-idea-img').src = getDriveImageUrl(idea.imageUrl);
+          imgWrap.classList.remove('hidden');
+        } else {
+          imgWrap.classList.add('hidden');
+        }
+
+        // Comments
+        renderModalComments(idea);
+        document.getElementById('modal-comments-section').classList.add('hidden');
+
+        // Like button
+        document.getElementById('modal-like-btn').onclick = function() {
+          likeIdea(id);
+          document.getElementById('modal-likes').textContent = (idea.likes || 0);
+        };
+
+        // Comment submit
+        document.getElementById('modal-comment-submit').onclick = async function() {
+          const input = document.getElementById('modal-comment-input');
+          const text = input.value.trim();
+          if (!text) return;
+          await addComment(id);
+          renderModalComments(ideas.find(i => i.id === id));
+          document.getElementById('modal-comment-count').textContent = ideas.find(i => i.id === id)?.comments?.length || 0;
+          input.value = '';
+        };
+
+        const modal = document.getElementById('ideaModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      };
+
+      function renderModalComments(idea) {
+        const list = document.getElementById('modal-comments-list');
+        if (!idea?.comments?.length) {
+          list.innerHTML = '<p class="text-gray-400 text-sm text-center py-2">এখনো কোনো মন্তব্য নেই</p>';
+          return;
+        }
+        list.innerHTML = idea.comments.map(c => `
+          <div class="bg-gray-50 p-3 rounded-xl text-sm">
+            <span class="font-semibold text-gray-700">${c.author}</span>
+            <p class="text-gray-600 mt-0.5">${c.text}</p>
+            <span class="text-gray-400 text-xs">${new Date(c.date).toLocaleDateString('bn-BD')}</span>
+          </div>
+        `).join('');
+      }
+
+      window.closeIdeaModal = function(e) {
+        if (e && e.target !== document.getElementById('ideaModal')) return;
+        const modal = document.getElementById('ideaModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = '';
+        currentModalIdeaId = null;
+      };
+
+      // ESC দিয়ে বন্ধ
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeIdeaModal();
+          closeImageModal();
+        }
+      });
+
+      // ==================== বিবরণ টগল ====================
+      window.toggleDesc = function(id) {
+        const short = document.getElementById(`desc-short-${id}`);
+        const full  = document.getElementById(`desc-full-${id}`);
+        const btn   = document.getElementById(`desc-btn-${id}`);
+        const isExpanded = full.classList.contains("hidden");
+        if (isExpanded) {
+          short.classList.add("hidden");
+          full.classList.remove("hidden");
+          btn.innerHTML = 'সংক্ষেপ করুন <i class="fas fa-chevron-up text-xs"></i>';
+        } else {
+          short.classList.remove("hidden");
+          full.classList.add("hidden");
+          btn.innerHTML = 'আরও পড়ুন <i class="fas fa-chevron-down text-xs"></i>';
+        }
+      };
+
+      // ==================== লাইক / কমেন্ট ====================
+      window.likeIdea = async function (id) {
+        const idea = ideas.find((i) => i.id === id);
+        if (idea) {
+          idea.likes++;
+          displayIdeas();
+          updateStats();
+        }
+
+        try {
+          await fetch(`${APPS_SCRIPT_URL}?action=likeIdea&ideaId=${id}`, {
+            method: "GET", redirect: "follow", mode: "cors",
+          });
+        } catch (e) { console.error("Like error:", e); }
+      };
+
+      window.toggleComments = function (id) {
+        const el = document.getElementById(`comments-${id}`);
+        if (el) el.classList.toggle("hidden");
+      };
+
+      window.addComment = async function (id) {
+        const input = document.getElementById(`comment-${id}`);
+        const text = input.value.trim();
+        if (!text) return;
+
+        const idea = ideas.find((i) => i.id === id);
+        if (idea) {
+          if (!idea.comments) idea.comments = [];
+          idea.comments.push({
+            author: "আগন্তুক সদস্য",
+            text: text,
+            date: new Date().toISOString().split("T")[0],
+          });
+          displayIdeas();
+        }
+
+        try {
+          const params = new URLSearchParams({
+            action : "addComment",
+            ideaId : id,
+            author : "আগন্তুক সদস্য",
+            comment: text,
+          });
+          await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`, {
+            method: "GET", redirect: "follow", mode: "cors",
+          });
+        } catch (e) { console.error("Comment error:", e); }
+
+        input.value = "";
+        showToast("মন্তব্য যোগ হয়েছে", "success");
+      };
+
+      // ==================== স্ট্যাটিস্টিক্স ====================
+      async function updateStats() {
+        try {
+          const res  = await fetch(`${APPS_SCRIPT_URL}?action=getStats&_=${Date.now()}`, {
+            method: "GET", redirect: "follow", mode: "cors",
+          });
+          const statsText = await res.text();
+          const data = JSON.parse(statsText);
+          if (data.success) {
+            document.getElementById("totalIdeas").textContent        = data.stats.totalIdeas;
+            document.getElementById("totalContributors").textContent = data.stats.totalContributors;
+            document.getElementById("totalLikes").textContent        = data.stats.totalLikes;
+          }
+        } catch {
+          document.getElementById("totalIdeas").textContent        = ideas.length;
+          document.getElementById("totalContributors").textContent = new Set(ideas.map((i) => (i.isAnonymous ? "anon" : i.author))).size;
+          document.getElementById("totalLikes").textContent        = ideas.reduce((s, i) => s + (i.likes || 0), 0);
+        }
+      }
+
+      // ==================== ইমেজ মডাল ====================
+      window.openImageModal = function(url) {
+        const modal = document.getElementById("imageModal");
+        document.getElementById("modalImg").src = url;
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.body.style.overflow = "hidden";
+      };
+
+      window.closeImageModal = function() {
+        const modal = document.getElementById("imageModal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+        document.body.style.overflow = "";
+      };
+
+      // ESC চাপলে modal বন্ধ হবে
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeImageModal();
+      });
+
+      // ==================== ইমেজ প্রিভিউ ====================
+      window.previewImage = function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const preview = document.getElementById("imagePreview");
+          preview.querySelector("img").src = e.target.result;
+          preview.classList.remove("hidden");
+        };
+        reader.readAsDataURL(file);
+      };
+
+      window.removeImage = function () {
+        document.getElementById("ideaImage").value = "";
+        document.getElementById("imagePreview").classList.add("hidden");
+      };
+
+      // ==================== টোস্ট ====================
+      // ==================== টোস্ট (সংশোধিত) ====================
+function showToast(message, type = "success") {
+  const toast = document.getElementById("toast");
+  
+  // আইকন এবং বর্ডার কনফিগারেশন
+  const iconMap = {
+    success: "fa-check-circle text-green-500",
+    error: "fa-exclamation-circle text-red-500",
+    warning: "fa-exclamation-triangle text-yellow-500",
+    info: "fa-info-circle text-blue-500",
+  };
+
+  const borderMap = {
+    success: "border-green-500",
+    error: "border-red-500",
+    warning: "border-yellow-500",
+    info: "border-blue-500",
+  };
+
+  // কন্টেন্ট সেট করা
+  toast.innerHTML = `<i class="fas ${iconMap[type]} text-xl"></i><span>${message}</span>`;
+  
+  // ক্লাস রিসেট এবং নতুন ক্লাস অ্যাপ্লাই
+  // প্রথমে হাইড করা (ডান দিকে সরিয়ে রাখা)
+  toast.className = `fixed bottom-5 right-5 bg-white rounded-xl shadow-2xl p-4 flex items-center gap-3 border-l-8 ${borderMap[type]} transition-all duration-300 translate-x-[150%] z-50`;
+
+  // সামান্য ডিলে দিয়ে শো করা (ব্রাউজার রিফ্লোর জন্য)
+  setTimeout(() => {
+    toast.classList.remove("translate-x-[150%]");
+    toast.classList.add("translate-x-0");
+  }, 10);
+
+  // ৩ সেকেন্ড পর হাইড করা
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => {
+    toast.classList.remove("translate-x-0");
+    toast.classList.add("translate-x-[150%]");
+  }, 3000);
+}
+    </script>
+    <!-- Image Modal -->
+    <div id="imageModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm" onclick="closeImageModal()">
+      <button class="absolute top-4 right-5 text-white text-3xl hover:text-gray-300 transition" onclick="closeImageModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <img id="modalImg" src="" class="max-w-[92vw] max-h-[88vh] rounded-2xl shadow-2xl object-contain" onclick="event.stopPropagation()">
+    </div>
+
+  
+
+    <!-- Idea Detail Modal -->
+    <div id="ideaModal" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4" onclick="closeIdeaModal(event)">
+      <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+        <div class="sticky top-0 bg-white rounded-t-3xl flex justify-between items-center px-6 py-4 border-b z-10">
+          <span id="modal-category" class="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"></span>
+          <button onclick="closeIdeaModal()" class="text-gray-400 hover:text-gray-700 text-2xl transition"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="px-6 py-5">
+          <div id="modal-image-wrap" class="hidden mb-5 rounded-2xl overflow-hidden cursor-pointer">
+            <img id="modal-idea-img" src="" class="w-full max-h-72 object-cover hover:scale-105 transition-transform duration-300" onclick="openImageModal(document.getElementById('modal-idea-img').src)">
+          </div>
+          <h2 id="modal-title" class="text-2xl font-bold text-gray-800 mb-3"></h2>
+          <p id="modal-description" class="text-gray-600 leading-relaxed whitespace-pre-wrap mb-5"></p>
+          <div class="flex flex-wrap justify-between items-center gap-3 border-t pt-4 text-sm text-gray-500">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-user-circle text-blue-500 text-lg"></i>
+              <span id="modal-author"></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="far fa-calendar text-blue-500"></i>
+              <span id="modal-date"></span>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-4">
+            <button id="modal-like-btn" class="flex items-center gap-2 bg-pink-50 hover:bg-pink-100 text-pink-600 font-semibold px-4 py-2 rounded-full transition">
+              <i class="fas fa-heart"></i><span id="modal-likes">0</span>
+            </button>
+            <button onclick="document.getElementById('modal-comments-section').classList.toggle('hidden')" class="flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-600 font-semibold px-4 py-2 rounded-full transition">
+              <i class="fas fa-comment"></i><span id="modal-comment-count">0</span> মন্তব্য
+            </button>
+          </div>
+          <div id="modal-comments-section" class="hidden mt-4 pt-4 border-t">
+            <div class="flex gap-2 mb-3">
+              <input id="modal-comment-input" class="flex-1 p-2 border rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-300" placeholder="মন্তব্য লিখুন...">
+              <button id="modal-comment-submit" class="bg-blue-600 text-white px-4 rounded-full text-sm hover:bg-blue-700 transition">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+            <div id="modal-comments-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close mobile menu on outside click
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('mobile-menu');
+            const btn  = document.querySelector('button[onclick="toggleMenu()"]');
+            if (btn && !menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // Navbar scroll shadow effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 10) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
+</html>

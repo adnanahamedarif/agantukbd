@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="photo/Agantuk logo.jpg">
+<title>কার্যক্রম সমূহ — আগন্তুক</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { brand: { primary:'#3B82F6', secondary:'#D32F2F', dark:'#1E40AF', light:'#EFF6FF', accent:'#F59E0B' } },
+      fontFamily: { sans: ['"Hind Siliguri"', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#f1f1f1}
+::-webkit-scrollbar-thumb{background:#3B82F6;border-radius:4px}
+html{scroll-behavior:smooth}
+.gradient-text{background:linear-gradient(135deg,#F59E0B,#EF4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.project-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.08);transition:all .4s;opacity:0;transform:translateY(24px);display:flex;flex-direction:column}
+.project-card.show{opacity:1;transform:translateY(0)}
+.project-card:hover{box-shadow:0 20px 50px rgba(59,130,246,.2);transform:translateY(-5px)}
+.thumb{position:relative;overflow:hidden;height:220px;flex-shrink:0}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.project-card:hover .thumb img{transform:scale(1.06)}
+.tover{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.project-card:hover .tover{opacity:1}
+.sl-slide{position:absolute;inset:0;transition:opacity .4s ease}
+.fbtn{transition:all .25s;cursor:pointer}
+.fbtn.on{background:linear-gradient(135deg,#3B82F6,#1E40AF)!important;color:white!important;border-color:transparent!important;box-shadow:0 4px 15px rgba(59,130,246,.4)}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal-box{background:white;border-radius:20px;max-width:680px;width:100%;max-height:92vh;overflow-y:auto;transform:scale(.92);transition:transform .3s}
+.modal-bg.open .modal-box{transform:scale(1)}
+@keyframes shimmer{0%{background-position:-800px 0}100%{background-position:800px 0}}
+.sk{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:800px 100%;animation:shimmer 1.6s infinite;border-radius:8px}
+.sk-card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.07)}
+.stats-bg{background:linear-gradient(135deg,#1E40AF,#3B82F6)}
+.fh{display:inline-block;padding-bottom:6px;border-bottom:2px solid #3B82F6}
+#pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:28px}
+@media(max-width:640px){#pgrid{grid-template-columns:1fr}}
+.be{background:#3B82F6}.bh{background:#EF4444}.br{background:#F59E0B}
+.bb{background:#DC2626}.bn{background:#10B981}.bw{background:#6366F1}
+.bsk{background:#9333EA}.baw{background:#0EA5E9}.bo{background:#6B7280}
+@keyframes fiu{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.ai{animation:fiu .6s ease-out forwards}.d1{animation-delay:.1s;opacity:0}.d2{animation-delay:.22s;opacity:0}
+</style>
+<script>
+/* ============================================================
+   CONFIG
+============================================================ */
+var SHEET_ID  = "1I5YAZlyJak1wSOqGAxAjlLl-8E24-AHN1gKIUggg9r4";
+var SHEET_TAB = "Projects  ";
+var PAGE_SIZE = 12;
+var ALL = [], FIL = [], FILTER = 'all', SEARCH = '', PAGE = 1;
+
+/* Drive image → thumbnail URL */
+function imgUrl(v) {
+  if (!v) return '';
+  v = String(v).trim();
+  var dm = v.match(/\/d\/([A-Za-z0-9_-]{10,})/);
+  if (dm) return 'https://drive.google.com/thumbnail?id=' + dm[1] + '&sz=w600';
+  var qm = v.match(/[?&]id=([A-Za-z0-9_-]{10,})/);
+  if (qm) return 'https://drive.google.com/thumbnail?id=' + qm[1] + '&sz=w600';
+  if (v.length >= 10 && v.indexOf('http') < 0 && v.indexOf('/') < 0)
+    return 'https://drive.google.com/thumbnail?id=' + v + '&sz=w600';
+  if (v.indexOf('http') === 0) return v;
+  return '';
+}
+function imgUrls(v) {
+  if (!v) return [];
+  var r = [];
+  String(v).split(/[,\n]+/).forEach(function(p) { var u = imgUrl(p.trim()); if (u) r.push(u); });
+  return r;
+}
+
+var CATS = {
+  education:  {lbl:'শিক্ষা',      ic:'fa-book',               cls:'be',  fb:'border-blue-500',   ft:'text-blue-600',   fh:'hover:bg-blue-500'},
+  health:     {lbl:'স্বাস্থ্য',   ic:'fa-heartbeat',          cls:'bh',  fb:'border-red-500',    ft:'text-red-600',    fh:'hover:bg-red-500'},
+  relief:     {lbl:'ত্রাণ',       ic:'fa-hands-helping',      cls:'br',  fb:'border-amber-500',  ft:'text-amber-600',  fh:'hover:bg-amber-500'},
+  blood:      {lbl:'রক্তদান',     ic:'fa-tint',               cls:'bb',  fb:'border-rose-600',   ft:'text-rose-600',   fh:'hover:bg-rose-600'},
+  environment:{lbl:'পরিবেশ',      ic:'fa-leaf',               cls:'bn',  fb:'border-green-500',  ft:'text-green-600',  fh:'hover:bg-green-500'},
+  winter:     {lbl:'শীতবস্ত্র',   ic:'fa-snowflake',          cls:'bw',  fb:'border-indigo-500', ft:'text-indigo-600', fh:'hover:bg-indigo-500'},
+  sokkhom:    {lbl:'সক্ষম',       ic:'fa-hand-holding-heart', cls:'bsk', fb:'border-purple-500', ft:'text-purple-600', fh:'hover:bg-purple-500'},
+  awareness:  {lbl:'সচেতনতা',     ic:'fa-bullhorn',           cls:'baw', fb:'border-sky-500',    ft:'text-sky-600',    fh:'hover:bg-sky-500'},
+  other:      {lbl:'অন্যান্য',    ic:'fa-star',               cls:'bo',  fb:'border-gray-400',   ft:'text-gray-600',   fh:'hover:bg-gray-400'}
+};
+
+function x(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function show(id, v) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (id === 'pgrid' || id === 'nores' || id === 'errdiv') el.classList.toggle('hidden', !v);
+  else el.style.display = v ? '' : 'none';
+}
+function showErr(msg) {
+  document.getElementById('errmsg').innerHTML = msg.replace(/\n/g,'<br>');
+  show('errdiv', true);
+}
+
+/* ============================================================
+   LOAD DATA
+============================================================ */
+function loadData() {
+  show('skels', true);
+  show('pgrid', false);
+  show('nores', false);
+  show('errdiv', false);
+  document.getElementById('lmore').style.display = 'none';
+  document.getElementById('ri').classList.add('fa-spin');
+
+  var done = false;
+  var cb = 'gsCB' + Date.now();
+  var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID
+          + '/gviz/tq?tqx=out:json&tq=select%20*&sheet='
+          + encodeURIComponent(SHEET_TAB) + '&callback=' + cb;
+
+  var t = setTimeout(function() {
+    if (done) return; done = true;
+    finish();
+    showErr('Timeout — Sheet লোড হয়নি।\nSheet: Share > Anyone with the link > Viewer করুন।');
+  }, 10000);
+
+  window[cb] = function(data) {
+    if (done) return; done = true;
+    clearTimeout(t);
+    delete window[cb];
+    finish();
+    processData(data);
+  };
+
+  if (!window.google) window.google = {};
+  if (!window.google.visualization) window.google.visualization = {};
+  if (!window.google.visualization.Query) window.google.visualization.Query = {};
+  window.google.visualization.Query.setResponse = window[cb];
+
+  var s = document.createElement('script');
+  s.src = url;
+  s.onerror = function() {
+    if (done) return; done = true;
+    clearTimeout(t);
+    finish();
+    showErr('Sheet লোড করা যায়নি।\nSheet পাবলিক করুন: Share > Anyone with the link > Viewer');
+  };
+  document.head.appendChild(s);
+}
+
+function finish() {
+  show('skels', false);
+  document.getElementById('ri').classList.remove('fa-spin');
+}
+
+/* ============================================================
+   PROCESS DATA
+============================================================ */
+function processData(data) {
+  if (!data) { showErr('Sheet থেকে কোনো data আসেনি।'); return; }
+  if (data.status === 'error') {
+    var msg = (data.errors && data.errors[0]) ? (data.errors[0].detailed_message || data.errors[0].message) : 'Sheet error';
+    showErr('Google Sheets error: ' + msg); return;
+  }
+  if (!data.table) { showErr('Sheet থেকে valid data পাওয়া যায়নি।'); return; }
+
+  var defH = ['title','category','date','location','description','facebook','image','status'];
+  var cols = (data.table.cols || []).map(function(col, i) {
+    var lbl = (col.label || '').toLowerCase().trim().replace(/\s+/g,'_');
+    return lbl || defH[i] || ('col' + i);
+  });
+
+  var rows = [];
+  (data.table.rows || []).forEach(function(row) {
+    if (!row || !row.c) return;
+    var obj = {};
+    cols.forEach(function(k, i) {
+      var cell = row.c[i];
+      obj[k] = (cell && cell.v != null) ? String(cell.f || cell.v).trim() : '';
+    });
+    if (obj.title === 'title') return;
+    if ((obj.status || '').toLowerCase() === 'inactive') return;
+    if (!Object.keys(obj).some(function(k) { return obj[k]; })) return;
+    if (!obj.category || !CATS[obj.category.toLowerCase()]) obj.category = 'other';
+    else obj.category = obj.category.toLowerCase();
+    obj._imgs = imgUrls(obj.image || '');
+    obj._img  = obj._imgs[0] || '';
+    rows.push(obj);
+  });
+
+  rows.reverse();
+
+  if (!rows.length) {
+    showErr('Sheet-এ কোনো active ডেটা নেই।\nRow 1: header, Row 2+: data, status কলামে "active" লিখুন।');
+    return;
+  }
+
+  ALL = rows;
+  var cats = [];
+  rows.forEach(function(p) { if (p.category && cats.indexOf(p.category) < 0) cats.push(p.category); });
+  document.getElementById('s-total').textContent = rows.length + '+';
+  document.getElementById('s-cats').textContent  = cats.length + 'টি';
+  buildTabs(cats);
+  FILTER = 'all'; SEARCH = ''; PAGE = 1;
+  applyFilter();
+  var n = new Date();
+  document.getElementById('updt').textContent = 'আপডেট: ' + n.getHours() + ':' + String(n.getMinutes()).padStart(2,'0');
+  document.getElementById('upd').classList.remove('hidden');
+}
+
+/* ============================================================
+   FILTERS
+============================================================ */
+function buildTabs(cats) {
+  var tb = document.getElementById('ftabs');
+  tb.querySelectorAll('.dyn').forEach(function(b) { b.remove(); });
+  cats.forEach(function(cat) {
+    var m = CATS[cat] || CATS.other;
+    var b = document.createElement('button');
+    b.className = 'fbtn dyn px-5 py-2.5 rounded-full border-2 ' + m.fb + ' ' + m.ft + ' font-medium text-sm ' + m.fh + ' hover:text-white transition';
+    b.innerHTML = '<i class="fas ' + m.ic + ' mr-1"></i>' + m.lbl;
+    b.onclick = function() { doFilter(cat, b); };
+    tb.appendChild(b);
+  });
+}
+function doFilter(cat, btn) {
+  FILTER = cat; PAGE = 1;
+  document.querySelectorAll('.fbtn').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  applyFilter();
+}
+function doSearch(v) { SEARCH = v.toLowerCase().trim(); PAGE = 1; applyFilter(); }
+function applyFilter() {
+  FIL = ALL.filter(function(p) {
+    var co = FILTER === 'all' || p.category === FILTER;
+    var so = true;
+    if (SEARCH) {
+      var s = SEARCH;
+      var lbl = CATS[p.category] ? CATS[p.category].lbl.toLowerCase() : '';
+      so = (p.title||'').toLowerCase().indexOf(s) > -1 ||
+           (p.description||'').toLowerCase().indexOf(s) > -1 ||
+           (p.location||'').toLowerCase().indexOf(s) > -1 ||
+           (p.date||'').toLowerCase().indexOf(s) > -1 ||
+           (p.category||'').toLowerCase().indexOf(s) > -1 ||
+           lbl.indexOf(s) > -1;
+    }
+    return co && so;
+  });
+  renderGrid();
+}
+
+/* ============================================================
+   RENDER
+============================================================ */
+function renderGrid() {
+  var g  = document.getElementById('pgrid');
+  var lm = document.getElementById('lmore');
+  if (!FIL.length) {
+    show('pgrid', false); show('nores', true);
+    lm.style.display = 'none';
+    document.getElementById('cnt').textContent = 0;
+    return;
+  }
+  show('nores', false); show('pgrid', true);
+  var slice = FIL.slice(0, PAGE * PAGE_SIZE);
+  g.innerHTML = slice.map(function(p, i) { return card(p, i); }).join('');
+  document.getElementById('cnt').textContent = FIL.length;
+  var rem = FIL.length - slice.length;
+  lm.style.display = rem > 0 ? 'block' : 'none';
+  if (rem > 0) document.getElementById('lmbtn').innerHTML =
+    '<i class="fas fa-chevron-down mr-2"></i>আরো দেখুন (' + rem + 'টি বাকি)';
+  requestAnimationFrame(function() {
+    g.querySelectorAll('.project-card').forEach(function(c, i) {
+      setTimeout(function() { c.classList.add('show'); }, i * 60);
+    });
+  });
+}
+function loadMore() { PAGE++; renderGrid(); }
+
+/* ============================================================
+   CARD
+============================================================ */
+function card(p, idx) {
+  var cat   = p.category || 'other';
+  var m     = CATS[cat] || CATS.other;
+  var imgs  = p._imgs.length ? p._imgs : ['https://placehold.co/600x400/3B82F6/white?text=' + encodeURIComponent(p.title || '')];
+  var multi = imgs.length > 1;
+
+  var slides = imgs.map(function(u, si) {
+    return '<div class="sl-slide absolute inset-0" style="opacity:' + (si===0?1:0) + ';z-index:' + (si===0?1:0) + '">'
+         + '<img src="' + u + '" loading="lazy" class="w-full h-full object-cover" onerror="this.style.opacity=0.2"></div>';
+  }).join('');
+
+  var dots = multi
+    ? '<div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5 z-20">'
+      + imgs.map(function(_, si) {
+          return '<button onclick="slGo(this,' + si + ',event)" class="sl-dot w-2 h-2 rounded-full bg-white ' + (si===0?'opacity-100':'opacity-40') + '"></button>';
+        }).join('') + '</div>' : '';
+
+  var arrows = multi
+    ? '<button onclick="slPrev(this,event)" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-black/70 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs transition"><i class="fas fa-chevron-left"></i></button>'
+      + '<button onclick="slNext(this,event)" class="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-black/70 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs transition"><i class="fas fa-chevron-right"></i></button>' : '';
+
+  var badge = multi
+    ? '<span class="absolute top-2 right-2 z-20 bg-black/50 text-white text-xs px-2 py-0.5 rounded-full pointer-events-none"><i class="fas fa-images mr-1"></i>' + imgs.length + '</span>' : '';
+
+  var fbBtn = p.facebook
+    ? '<div class="absolute bottom-0 left-0 right-0 z-20 p-3"><a href="' + x(p.facebook) + '" target="_blank" onclick="event.stopPropagation()" class="inline-flex items-center gap-1.5 bg-blue-700/90 hover:bg-blue-800 text-white text-xs px-3 py-1.5 rounded-full transition"><i class="fab fa-facebook-f"></i>ফেসবুকে দেখুন</a></div>' : '';
+
+  return '<div class="project-card">'
+    + '<div class="thumb relative" data-total="' + imgs.length + '" data-cur="0">'
+    + slides
+    + '<div class="tover absolute inset-0 z-10"></div>'
+    + '<div class="absolute top-4 left-4 z-20"><span class="' + m.cls + ' text-white text-xs px-3 py-1 rounded-full font-medium shadow"><i class="fas ' + m.ic + ' mr-1"></i>' + m.lbl + '</span></div>'
+    + badge + arrows + dots + fbBtn
+    + '</div>'
+    + '<div class="p-5 flex flex-col flex-1">'
+    + '<div class="flex justify-between items-start mb-2">'
+    + '<h3 class="text-lg font-bold text-gray-800 leading-snug pr-2">' + x(p.title || 'শিরোনাম নেই') + '</h3>'
+    + '<button onclick="openM(' + idx + ')" class="text-brand-primary hover:text-brand-dark text-lg shrink-0"><i class="fas fa-expand-alt"></i></button>'
+    + '</div>'
+    + '<p class="text-gray-500 text-sm mb-3 line-clamp-2 flex-1">' + x(p.description || '') + '</p>'
+    + '<div class="border-t pt-3 flex flex-wrap justify-between gap-2 text-xs text-gray-400 mt-auto">'
+    + (p.date     ? '<span><i class="fas fa-calendar mr-1 text-brand-primary opacity-60"></i>' + x(p.date) + '</span>' : '')
+    + (p.location ? '<span><i class="fas fa-map-marker-alt mr-1 text-brand-primary opacity-60"></i>' + x(p.location) + '</span>' : '')
+    + '</div></div></div>';
+}
+
+/* ============================================================
+   MODAL
+============================================================ */
+function openM(idx) {
+  var p = FIL[idx]; if (!p) return;
+  var cat = p.category || 'other';
+  var m   = CATS[cat] || CATS.other;
+  var mimgs = p._imgs.length ? p._imgs : ['https://placehold.co/700x420/3B82F6/white?text=' + encodeURIComponent(p.title || '')];
+  window._mImgs = mimgs; window._mCur = 0;
+
+  var mslides = mimgs.map(function(u, si) {
+    return '<div class="msl absolute inset-0" style="opacity:' + (si===0?1:0) + ';z-index:' + (si===0?1:0) + '">'
+         + '<img src="' + u + '" class="w-full h-full object-cover" onerror="this.style.opacity=0.2"></div>';
+  }).join('');
+
+  var mDots = mimgs.length > 1
+    ? '<div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2 z-20">'
+      + mimgs.map(function(_, si) { return '<button onclick="mslGo(' + si + ')" class="msl-dot w-2.5 h-2.5 rounded-full bg-white ' + (si===0?'opacity-100':'opacity-40') + ' transition-opacity"></button>'; }).join('')
+      + '</div>' : '';
+
+  var mArrows = mimgs.length > 1
+    ? '<button onclick="mslPrev()" class="absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/80 text-white w-9 h-9 rounded-full flex items-center justify-center transition"><i class="fas fa-chevron-left"></i></button>'
+      + '<button onclick="mslNext()" class="absolute right-3 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/80 text-white w-9 h-9 rounded-full flex items-center justify-center transition"><i class="fas fa-chevron-right"></i></button>' : '';
+
+  document.getElementById('mcontent').innerHTML =
+    '<div class="relative h-56 md:h-72 rounded-t-2xl overflow-hidden" id="mslider">'
+    + mslides + mDots + mArrows
+    + '<button onclick="closeM()" class="absolute top-4 right-4 z-30 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fas fa-times"></i></button>'
+    + '<span class="absolute top-4 left-4 z-30 ' + m.cls + ' text-white text-xs px-3 py-1 rounded-full font-medium shadow"><i class="fas ' + m.ic + ' mr-1"></i>' + m.lbl + '</span>'
+    + (mimgs.length > 1 ? '<span class="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-black/50 text-white text-xs px-2 py-1 rounded-full"><i class="fas fa-images mr-1"></i>' + mimgs.length + 'টি ছবি</span>' : '')
+    + '</div>'
+    + '<div class="p-6 md:p-8">'
+    + '<h2 class="text-2xl font-bold text-gray-800 mb-3">' + x(p.title || '') + '</h2>'
+    + '<div class="flex flex-wrap gap-4 text-sm text-gray-500 mb-5">'
+    + (p.date     ? '<span><i class="fas fa-calendar mr-1 text-brand-primary"></i>' + x(p.date) + '</span>' : '')
+    + (p.location ? '<span><i class="fas fa-map-marker-alt mr-1 text-brand-primary"></i>' + x(p.location) + '</span>' : '')
+    + '</div>'
+    + '<p class="text-gray-600 leading-relaxed mb-6">' + x(p.description || 'বিবরণ পাওয়া যায়নি।') + '</p>'
+    + (p.facebook ? '<a href="' + x(p.facebook) + '" target="_blank" class="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 hover:bg-blue-100 transition"><div class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center shrink-0"><i class="fab fa-facebook-f"></i></div><div><div class="text-xs text-blue-500 font-semibold mb-0.5">ফেসবুক পোস্ট</div><div class="text-gray-800 font-bold text-sm">ফেসবুকে দেখুন</div></div></a>' : '')
+    + '<div class="flex gap-3">'
+    + '<a href="index.html#donate" class="flex-1 bg-brand-primary text-white py-3 rounded-xl font-bold text-center hover:bg-brand-dark transition"><i class="fas fa-heart mr-2"></i>সহায়তা করুন</a>'
+    + '<button onclick="closeM()" class="px-6 py-3 border-2 border-gray-200 rounded-xl text-gray-600 hover:border-gray-400 transition">বন্ধ করুন</button>'
+    + '</div></div>';
+
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeM() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ============================================================
+   SLIDERS
+============================================================ */
+function slGetThumb(btn) { var el=btn; while(el&&!el.classList.contains('thumb'))el=el.parentElement; return el; }
+function slShow(thumb, idx) {
+  var slides=thumb.querySelectorAll('.sl-slide'), dots=thumb.querySelectorAll('.sl-dot'), total=slides.length;
+  idx=((idx%total)+total)%total;
+  slides.forEach(function(s,i){s.style.opacity=i===idx?1:0;s.style.zIndex=i===idx?1:0;});
+  dots.forEach(function(d,i){d.classList.toggle('opacity-100',i===idx);d.classList.toggle('opacity-40',i!==idx);});
+  thumb.dataset.cur=idx;
+}
+function slNext(btn,e){if(e)e.stopPropagation();var th=slGetThumb(btn);if(th)slShow(th,parseInt(th.dataset.cur||0)+1);}
+function slPrev(btn,e){if(e)e.stopPropagation();var th=slGetThumb(btn);if(th)slShow(th,parseInt(th.dataset.cur||0)-1);}
+function slGo(btn,idx,e){if(e)e.stopPropagation();var th=slGetThumb(btn);if(th)slShow(th,idx);}
+
+function mslShow(idx) {
+  var box=document.getElementById('mslider');if(!box)return;
+  var total=window._mImgs.length;
+  idx=((idx%total)+total)%total; window._mCur=idx;
+  box.querySelectorAll('.msl').forEach(function(s,i){s.style.opacity=i===idx?1:0;s.style.zIndex=i===idx?1:0;});
+  box.querySelectorAll('.msl-dot').forEach(function(d,i){d.classList.toggle('opacity-100',i===idx);d.classList.toggle('opacity-40',i!==idx);});
+}
+function mslNext(){mslShow(window._mCur+1);}
+function mslPrev(){mslShow(window._mCur-1);}
+function mslGo(i){mslShow(i);}
+
+/* ============================================================
+   NAVBAR + INIT
+============================================================ */
+function navToggle() {
+  var m=document.getElementById('nmenu'),i=document.getElementById('ni');
+  m.classList.toggle('hidden');
+  i.classList.toggle('fa-bars');
+  i.classList.toggle('fa-times');
+}
+document.addEventListener('DOMContentLoaded', function() {
+  window.addEventListener('scroll', function() {
+    document.getElementById('navbar').classList.toggle('shadow-lg', window.scrollY > 10);
+  });
+  loadData();
+});
+</script>
+</head>
+<body class="font-sans text-gray-800 bg-gray-50">
+
+<!-- NAVBAR -->
+<nav
+      class="fixed w-full z-50 bg-white shadow-md top-0 transition-all duration-300"
+      id="navbar"
+    >
+      <div
+        class="container mx-auto px-4 py-2 flex justify-between items-center"
+      >
+        <!-- Logo -->
+        <a href="index.html#home" class="flex items-center gap-2 group">
+          <img
+            src="photo/logo1.png"
+            alt="Agantuk Logo"
+            class="h-14 w-auto transition-transform group-hover:scale-105"
+          />
+          <div class="hidden sm:block">
+            <h1 class="text-2xl font-bold text-brand-secondary leading-none">
+              আগন্তুক
+            </h1>
+            <span class="text-xs text-brand-primary font-bold tracking-wider"
+              >একটি সমাজ সেবা মূলক সংগঠন</span
+            >
+          </div>
+        </a>
+
+        <!-- Desktop Menu — MEMBERS added -->
+        <div
+          class="hidden md:flex items-center gap-6 font-medium text-gray-700"
+        >
+          <a href="index.html#home" class="hover:text-brand-primary transition">হোম</a>
+          <a href="index.html#about" class="hover:text-brand-primary transition"
+            >আমাদের সম্পর্কে</a
+          >
+          <a href="index.html#projects" class="text-brand-primary font-semibold transition"
+            >প্রজেক্ট</a
+          >
+          <a href="index.html#recent-projects" class="text-brand-primary font-semibold transition"
+            >কার্যক্রম</a
+          >
+
+          <a href="blood.html" class="hover:text-brand-secondary transition"
+            ><i class="fas fa-droplet text-red-500 mr-1"></i>ব্লাড ব্যাংক</a
+          >
+          <a href="volunteer.html" class="hover:text-brand-primary transition"
+            >স্বেচ্ছাসেবক</a
+          >
+          <a
+            href="members.html"
+            class="hover:text-brand-primary transition flex items-center gap-1"
+          >
+            <i class="fas fa-users"></i> সদস্যবৃন্দ
+          </a>
+          <a href="index.html#contact" class="hover:text-brand-primary transition"
+            >যোগাযোগ</a
+          >
+          <a
+            href="index.html#donate"
+            class="bg-brand-secondary text-white px-5 py-2.5 rounded-full hover:bg-red-700 transition shadow-lg transform hover:-translate-y-0.5 font-bold"
+            ><i class="fas fa-heart mr-1"></i>দান করুন</a
+          >
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button
+          onclick="toggleMenu()"
+          class="md:hidden text-brand-primary text-2xl focus:outline-none"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Dropdown (Members included) -->
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg"
+      >
+        <div class="flex flex-col p-4 gap-4 font-medium text-center">
+          <a
+            href="index.html#home"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >হোম</a
+          >
+          <a
+            href="index.html#about"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >আমাদের সম্পর্কে</a
+          >
+          <a
+            href="index.html#projects"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >প্রজেক্ট</a
+          >
+          <a
+            href="index.html#recent-projects"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >কার্যক্রম</a
+          >
+          <a
+            href="members.html"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            ><i class="fas fa-users mr-1"></i>সদস্যবৃন্দ</a
+          >
+          <a
+            href="blood.html"
+            onclick="toggleMenu()"
+            class="py-2 text-red-600 hover:bg-red-50 rounded font-semibold"
+            ><i class="fas fa-droplet mr-1"></i>ব্লাড ব্যাংক</a
+          >
+          <a
+            href="volunteer.html"
+            onclick="toggleMenu()"
+            class="py-2 text-gray-700 hover:bg-gray-50 rounded"
+            >স্বেচ্ছাসেবক</a
+          >
+          <a
+            href="index.html#donate"
+            onclick="toggleMenu()"
+            class="py-3 bg-brand-secondary hover:bg-red-700 text-white rounded-xl shadow-lg font-bold"
+            ><i class="fas fa-heart mr-2"></i>দান করুন</a
+          >
+        </div>
+      </div>
+    </nav>
+
+<!-- HERO -->
+<header class="relative pt-24 pb-16 overflow-hidden bg-gray-900">
+  <div class="absolute inset-0 z-0">
+    <img src="photo/hero.avif" alt="" class="w-full h-full object-cover opacity-20">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 opacity-85"></div>
+    <div class="absolute top-10 right-10 w-72 h-72 bg-blue-400 rounded-full opacity-10 blur-3xl"></div>
+  </div>
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="flex items-center text-sm text-blue-200 mb-6">
+      <a href="index.html" class="hover:text-white transition">হোম</a>
+      <span class="mx-2 text-blue-400">›</span>
+      <span class="text-white font-medium">কার্যক্রম সমূহ</span>
+    </div>
+    <div class="max-w-3xl">
+      <span class="inline-block bg-white/10 border border-white/20 px-4 py-1.5 rounded-full text-sm font-semibold text-blue-200 mb-5 ai">
+        <i class="fas fa-hands-helping mr-2"></i>আমাদের কার্যক্রম
+      </span>
+      <h1 class="text-4xl md:text-6xl font-bold text-white mb-5 leading-tight ai d1">
+        আমাদের সকল <span class="gradient-text">কার্যক্রম সমূহ</span>
+      </h1>
+      <p class="text-lg text-blue-100 max-w-2xl ai d2">আগন্তুকের প্রতিটি কার্যক্রম একটি স্বপ্নের গল্প — মানুষের পাশে দাঁড়ানোর অঙ্গীকার।</p>
+    </div>
+  </div>
+  <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 50" fill="none">
+    <path d="M0,25 C360,50 1080,0 1440,25 L1440,50 L0,50 Z" fill="#f9fafb"/>
+  </svg>
+</header>
+
+<!-- STATS -->
+<section class="stats-bg py-8">
+  <div class="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    <div class="text-white"><div class="text-3xl font-bold mb-1" id="s-total">—</div><div class="text-blue-200 text-sm">মোট প্রজেক্ট</div></div>
+    <div class="text-white"><div class="text-3xl font-bold mb-1">১০০০+</div><div class="text-blue-200 text-sm">উপকৃত মানুষ</div></div>
+    <div class="text-white"><div class="text-3xl font-bold mb-1" id="s-cats">—</div><div class="text-blue-200 text-sm">ক্যাটাগরি</div></div>
+    <div class="text-white"><div class="text-3xl font-bold mb-1">২০১৯</div><div class="text-blue-200 text-sm">থেকে কার্যক্রম</div></div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">সকল <span class="text-brand-primary">কার্যক্রম</span>  সমূহ</h2>
+      <div class="w-20 h-1.5 bg-gradient-to-r from-brand-primary to-brand-secondary mx-auto rounded-full mb-4"></div>
+      <p class="text-gray-500 text-sm">ক্যাটাগরি অনুযায়ী ফিল্টার করুন বা সার্চ করুন</p>
+    </div>
+
+    <div class="max-w-lg mx-auto mb-8">
+      <div class="relative">
+        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input type="text" id="si" placeholder="নাম, সাল, ক্যাটাগরি দিয়ে খুঁজুন..." oninput="doSearch(this.value)"
+          class="w-full pl-12 pr-4 py-3.5 rounded-full border-2 border-gray-200 focus:border-brand-primary focus:outline-none bg-white shadow-sm transition">
+      </div>
+    </div>
+
+    <div id="ftabs" class="flex flex-wrap justify-center gap-3 mb-8">
+      <button onclick="doFilter('all',this)" class="fbtn on px-6 py-2.5 rounded-full border-2 border-brand-primary font-medium text-sm">
+        <i class="fas fa-th-large mr-1"></i>সব কার্যক্রম
+      </button>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-center gap-3 mb-8">
+      <span class="text-sm text-gray-500 bg-white px-4 py-1.5 rounded-full border shadow-sm">
+        মোট <strong id="cnt">0</strong>টি কার্যক্রম 
+      </span>
+      <span id="upd" class="hidden text-xs text-gray-400 bg-white px-3 py-1.5 rounded-full border shadow-sm">
+        <i class="fas fa-check-circle text-green-500 mr-1"></i><span id="updt"></span>
+      </span>
+      <button onclick="loadData()" title="রিফ্রেশ"
+        class="w-8 h-8 bg-white border rounded-full shadow-sm flex items-center justify-center text-gray-400 hover:text-brand-primary transition text-sm">
+        <i class="fas fa-redo-alt" id="ri"></i>
+      </button>
+    </div>
+
+    <div id="skels" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:28px">
+      <div class="sk-card"><div class="sk" style="height:220px"></div><div class="p-5 space-y-3"><div class="sk" style="height:22px;width:70%"></div><div class="sk" style="height:14px"></div><div class="sk" style="height:14px;width:80%"></div></div></div>
+      <div class="sk-card"><div class="sk" style="height:220px"></div><div class="p-5 space-y-3"><div class="sk" style="height:22px;width:65%"></div><div class="sk" style="height:14px"></div><div class="sk" style="height:14px;width:75%"></div></div></div>
+      <div class="sk-card"><div class="sk" style="height:220px"></div><div class="p-5 space-y-3"><div class="sk" style="height:22px;width:72%"></div><div class="sk" style="height:14px"></div><div class="sk" style="height:14px;width:88%"></div></div></div>
+    </div>
+
+    <div id="pgrid" class="hidden"></div>
+
+    <div id="nores" class="hidden text-center py-20">
+      <div class="text-gray-200 text-8xl mb-5"><i class="fas fa-search"></i></div>
+      <h3 class="text-xl font-bold text-gray-500 mb-2">কোনো কার্যক্রম পাওয়া যায়নি</h3>
+      <p class="text-gray-400 text-sm">অন্য কোনো কীওয়ার্ড বা ক্যাটাগরি চেষ্টা করুন।</p>
+    </div>
+
+    <div id="errdiv" class="hidden py-8">
+      <div class="max-w-lg mx-auto bg-white border border-red-100 rounded-2xl shadow-lg overflow-hidden">
+        <div class="bg-red-50 px-6 py-4 border-b border-red-100 flex items-center gap-3">
+          <i class="fas fa-exclamation-triangle text-red-400 text-2xl"></i>
+          <h3 class="text-lg font-bold text-red-700">ডেটা লোড হয়নি</h3>
+        </div>
+        <div class="p-6">
+          <p id="errmsg" class="text-gray-600 text-sm leading-relaxed mb-5"></p>
+          <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-xs space-y-2 text-amber-800">
+            <p class="font-bold">📋 চেকলিস্ট:</p>
+            <p>☐ Sheet: <strong>Share → Anyone with the link → Viewer</strong></p>
+            <p>☐ Row 1 header: <code>title, category, date, location, description, facebook, image, status</code></p>
+            <p>☐ status কলামে <strong>active</strong> লেখা আছে?</p>
+            <p>☐ Tab নাম: <strong>Projects</strong> ঠিক আছে?</p>
+          </div>
+          <button onclick="loadData()" class="w-full bg-brand-primary text-white py-3 rounded-xl font-bold hover:bg-brand-dark transition">
+            <i class="fas fa-redo mr-2"></i>আবার চেষ্টা করুন
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-12" id="lmore" style="display:none">
+      <button id="lmbtn" onclick="loadMore()"
+        class="bg-white border-2 border-brand-primary text-brand-primary px-10 py-3 rounded-full font-bold hover:bg-brand-primary hover:text-white transition shadow-md">
+        <i class="fas fa-chevron-down mr-2"></i>আরো দেখুন
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white text-center">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4">আমাদের সাথে যুক্ত হোন</h2>
+    <p class="text-blue-100 max-w-xl mx-auto mb-8">আপনার একটি ছোট্ট পদক্ষেপ পরিবর্তন আনতে পারে অনেকের জীবনে।</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="index.html#volunteer" class="bg-white text-blue-700 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition shadow-lg"><i class="fas fa-user-plus mr-2"></i>স্বেচ্ছাসেবক হোন</a>
+      <a href="index.html#donate" class="bg-brand-secondary text-white px-8 py-3 rounded-full font-bold hover:bg-red-700 transition shadow-lg"><i class="fas fa-heart mr-2"></i>দান করুন</a>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div id="modal" class="modal-bg" onclick="if(event.target.id==='modal')closeM()">
+  <div class="modal-box"><div id="mcontent"></div></div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-gray-950 text-gray-400 py-10 border-t border-gray-900">
+  <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <div class="space-y-4 text-center md:text-left">
+      <div class="flex items-center justify-center md:justify-start gap-3">
+        <div class="bg-white p-1.5 rounded-xl shadow-lg"><img src="photo/logo1.png" alt="Logo" class="h-9 w-auto"></div>
+        <span class="text-xl font-extrabold text-white">আগন্তুক</span>
+      </div>
+      <p class="text-xs leading-relaxed">আগন্তুক একটি পরিবার। আমরা তারুণ্যের শক্তিকে কাজে লাগিয়ে ইতিবাচক সামাজিক পরিবর্তনের স্বপ্ন দেখি।</p>
+      <div class="flex justify-center md:justify-start gap-3">
+        <a href="https://www.facebook.com/profile.php?id=100064781886465" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-blue-600 transition"><i class="fab fa-facebook-f text-sm"></i></a>
+        <a href="https://wa.me/+8801332738981" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-green-500 transition"><i class="fab fa-whatsapp text-sm"></i></a>
+        <a href="https://www.youtube.com/@Agantuk2019" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-red-600 transition"><i class="fab fa-youtube text-sm"></i></a>
+      </div>
+    </div>
+    <div class="text-center md:text-left">
+      <h3 class="fh text-white font-semibold mb-5 text-base">লিংকস</h3>
+      <ul class="space-y-3 text-xs">
+        <li><a href="index.html#about" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition"><span class="text-blue-400">&rsaquo;</span>আমাদের সম্পর্কে</a></li>
+        <li><a href="project.html" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition"><span class="text-blue-400">&rsaquo;</span>সকল প্রজেক্ট</a></li>
+        <li><a href="members.html" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition"><span class="text-blue-400">&rsaquo;</span>সদস্যবৃন্দ</a></li>
+        <li><a href="ideas.html" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition"><span class="text-blue-400">&rsaquo;</span>আইডিয়াস</a></li>
+      </ul>
+    </div>
+    <div class="text-center md:text-left">
+      <h3 class="fh text-white font-semibold mb-5 text-base">যোগাযোগ</h3>
+      <ul class="space-y-3 text-xs">
+        <li class="flex items-start justify-center md:justify-start gap-3"><i class="fas fa-map-marker-alt mt-1 text-blue-400"></i><span>সাদাব্রিজ, আলমডাঙ্গা, চুয়াডাঙ্গা</span></li>
+        <li class="flex items-center justify-center md:justify-start gap-3"><i class="fas fa-phone-alt text-blue-400"></i><span>+880 1332-738981</span></li>
+        <li class="flex items-center justify-center md:justify-start gap-3"><i class="fas fa-envelope text-blue-400"></i><span>agantukbd2019@gmail.com</span></li>
+      </ul>
+    </div>
+    <div class="text-center md:text-left">
+      <h3 class="fh text-white font-semibold mb-5 text-base">যুক্ত হোন</h3>
+      <div class="bg-gray-900/40 border border-gray-800/60 p-4 rounded-xl">
+        <p class="text-xs mb-4 text-gray-200">"মানবতার সেবায় আপনার একটি ক্ষুদ্র পদক্ষেপ হতে পারে আগন্তুকের শক্তি।"</p>
+        <a href="index.html#volunteer" class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-xs font-bold transition"><i class="fas fa-user-plus"></i>সদস্য হতে আবেদন করুন</a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-gray-900 mt-8 pt-6 text-center text-xs text-gray-600">© ২০২৫ আগন্তুক। সর্বস্বত্ব সংরক্ষিত।</div>
+</footer>
+
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('mobile-menu');
+  if (menu) menu.classList.toggle('hidden');
+}
+</script>
+
+</body>
+</html>

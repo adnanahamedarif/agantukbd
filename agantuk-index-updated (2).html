@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="photo/Agantuk logo.jpg">
+    <title>Agantuk</title>
+    
+    <!-- Google Fonts: Hind Siliguri for Bangla -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS (CDN for standalone file) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#3B82F6', // Blue from Main Logo blocks
+                            secondary: '#D32F2F', // Red from Main Logo text
+                            dark: '#1E40AF',    // Darker Blue for hover
+                            light: '#EFF6FF',   // Light Blue background
+                            accent: '#F59E0B'   // Amber/Orange from Secondary Logo
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3B82F6; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1E40AF; 
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+    /* Footer heading underline */
+    .footer-heading {
+        display: inline-block;
+        padding-bottom: 6px;
+        border-bottom: 2px solid #3B82F6;
+    }
+    </style>
+
+    <style>
+        /* ===== Bangla QR (bKash) ===== */
+        .qr-ring { position: relative; padding: 4px; border-radius: 1.75rem; overflow: hidden; display: inline-block;
+                   box-shadow: 0 20px 50px rgba(226, 19, 110, 0.35); animation: qrFloat 4s ease-in-out infinite; }
+        .qr-ring::before { content: ''; position: absolute; inset: -60%;
+                   background: conic-gradient(from 0deg, #e2136e, #16a34a, #3B82F6, #F59E0B, #e2136e);
+                   animation: qrSpin 4s linear infinite; }
+        .qr-card { position: relative; background: #fff; border-radius: 1.5rem; padding: 1rem 1rem 1.1rem; text-align: center; }
+        .qr-frame { position: relative; display: block; margin: 0 auto; width: var(--qr-size, 200px); height: var(--qr-size, 200px);
+                    padding: 8px; background: #fff; border-radius: 0.75rem; }
+        .qr-frame img { width: 100%; height: 100%; display: block; border-radius: 0.4rem; cursor: zoom-in; }
+        .qr-scan { position: absolute; left: 8px; right: 8px; height: 3px; border-radius: 3px; pointer-events: none;
+                   background: linear-gradient(90deg, transparent, #e2136e, transparent);
+                   box-shadow: 0 0 14px 3px rgba(226, 19, 110, 0.55); animation: qrScan 2.6s ease-in-out infinite; }
+        .qr-corner { position: absolute; width: 22px; height: 22px; border: 3px solid #e2136e; pointer-events: none; animation: qrCorner 1.8s ease-in-out infinite; }
+        .qr-corner.tl { top: 0; left: 0; border-right: 0; border-bottom: 0; border-top-left-radius: 10px; }
+        .qr-corner.tr { top: 0; right: 0; border-left: 0; border-bottom: 0; border-top-right-radius: 10px; }
+        .qr-corner.bl { bottom: 0; left: 0; border-right: 0; border-top: 0; border-bottom-left-radius: 10px; }
+        .qr-corner.br { bottom: 0; right: 0; border-left: 0; border-top: 0; border-bottom-right-radius: 10px; }
+        .qr-badge { display: inline-flex; align-items: center; gap: 6px; background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8;
+                    padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; animation: qrBeat 1.6s ease-in-out infinite; }
+        .qr-copy { display: inline-flex; align-items: center; gap: 8px; background: #e2136e; color: #fff; font-weight: 600;
+                   padding: 8px 18px; border-radius: 999px; box-shadow: 0 6px 16px rgba(226, 19, 110, 0.35); transition: all .25s; }
+        .qr-copy:hover { background: #be0f5b; transform: translateY(-2px); }
+        .qr-copy:active { transform: scale(0.96); }
+        @keyframes qrSpin { to { transform: rotate(360deg); } }
+        @keyframes qrFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes qrScan { 0%, 100% { top: 6%; } 50% { top: 92%; } }
+        @keyframes qrCorner { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(.9); } }
+        @keyframes qrBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+        @media (prefers-reduced-motion: reduce) {
+            .qr-ring, .qr-ring::before, .qr-scan, .qr-corner, .qr-badge { animation: none; }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-white">
+<!-- Admin Login Modal -->
+<div id="adminLoginModal" class="fixed inset-0 bg-black bg-opacity-70 z-[9999] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl md:rounded-2xl w-full max-w-md mx-4 overflow-hidden animate-scale-up">
+        <!-- Modal Header -->
+        <div class="bg-gradient-to-r from-purple-600 to-blue-600 p-6 text-center text-white">
+            <div class="flex justify-center items-center gap-3 mb-4">
+                <img src="photo/logo1.png" alt="Agantuk Logo" class="h-12 w-auto">
+                <div>
+                    <h3 class="text-xl md:text-2xl font-bold">আগন্তুক অ্যাডমিন</h3>
+                    <p class="text-sm text-purple-100">ওয়েবসাইট কন্টেন্ট ম্যানেজমেন্ট</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div class="p-6 md:p-8">
+            <form id="adminLoginForm" onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ইমেইল</label>
+                    <input type="email" id="adminEmail" required 
+                           class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                           placeholder="agantukbd2019@gmail.com">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">পাসওয়ার্ড</label>
+                    <input type="password" id="adminPassword" required 
+                           class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                           placeholder="••••••••">
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="flex justify-between items-center text-sm">
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox" id="rememberMe" class="rounded text-purple-600">
+                        <span class="text-gray-600">মনে রাখুন</span>
+                    </label>
+                    <button type="button" onclick="openForgotPassword()" class="text-purple-600 hover:text-purple-700 hover:underline">
+                        পাসওয়ার্ড ভুলে গেছেন?
+                    </button>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" id="adminLoginBtn" 
+                        class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-lg font-bold hover:shadow-lg transition duration-300 mt-4 hidden">
+                    লগইন করুন
+                </button>
+
+                <!-- Error Message -->
+                <div id="loginError" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm mt-4">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    <span id="errorMessage">লগইন ব্যর্থ হয়েছে। দয়া করে আবার চেষ্টা করুন।</span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="bg-gray-50 p-4 border-t text-center">
+            <p class="text-sm text-gray-500">
+                অ্যাডমিন এক্সেস শুধুমাত্র অনুমোদিত সদস্যদের জন্য
+            </p>
+            <button onclick="closeAdminLogin()" class="text-gray-500 hover:text-gray-700 text-sm mt-2">
+                <i class="fas fa-times mr-1"></i>বন্ধ করুন
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Forgot Password Modal -->
+<div id="forgotPasswordModal" class="fixed inset-0 bg-black bg-opacity-70 z-[99999] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl md:rounded-2xl w-full max-w-md mx-4 overflow-hidden animate-scale-up">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-center text-white">
+            <h3 class="text-xl md:text-2xl font-bold">পাসওয়ার্ড রিসেট</h3>
+        </div>
+        
+        <div class="p-6 md:p-8">
+            <p class="text-gray-600 mb-4">
+                অ্যাডমিন পাসওয়ার্ড রিসেট করতে অনুগ্রহ করে সরাসরি এডমিনের সাথে যোগাযোগ করুন:
+            </p>
+            
+            <div class="space-y-3">
+                <a href="tel:01761523354" 
+                   class="flex items-center gap-3 bg-blue-50 text-blue-600 p-3 rounded-lg hover:bg-blue-100 transition">
+                    <i class="fas fa-phone"></i>
+                    <span>কল করুন: 01761-523354</span>
+                </a>
+                
+                <a href="/cdn-cgi/l/email-protection#f69791979882839d9492c4c6c7cfb6919b979f9ad895999b" class="flex items-center gap-3 bg-blue-50 text-blue-600 p-3 rounded-lg hover:bg-blue-100 transition"><i class="fas fa-envelope"></i><span>ইমেইল করুন: <span class="__cf_email__" data-cfemail="620305030c16170900065052535b22050f030b0e4c010d0f">[email&#160;protected]</span></span></a>
+                
+                <a href="https://wa.me/8801761523354" target="_blank"
+                   class="flex items-center gap-3 bg-green-50 text-green-600 p-3 rounded-lg hover:bg-green-100 transition">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp এ মেসেজ করুন</span>
+                </a>
+            </div>
+            
+            <button onclick="closeForgotPassword()" 
+                    class="w-full mt-6 bg-gray-800 text-white py-3 rounded-lg font-bold hover:bg-black transition">
+                বন্ধ করুন
+            </button>
+        </div>
+    </div>
+</div>
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50 bg-white shadow-md top-0 transition-all duration-300" id="navbar">
+    <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2 group">
+            <img src="photo/logo1.png" alt="Agantuk Logo" class="h-14 w-auto transition-transform group-hover:scale-105">
+            <div class="hidden sm:block">
+                <h1 class="text-2xl font-bold text-brand-secondary leading-none">আগন্তুক</h1>
+                <span class="text-xs text-brand-primary font-bold tracking-wider">একটি সমাজ সেবা মূলক সংগঠন</span>
+            </div>
+        </a>
+
+        <!-- Desktop Menu — MEMBERS added -->
+        <div class="hidden md:flex items-center gap-6 font-medium text-gray-700">
+            <a href="#home" class="hover:text-brand-primary transition">হোম</a>
+            <a href="#about" class="hover:text-brand-primary transition">আমাদের সম্পর্কে</a>
+            <a href="#projects" class="hover:text-brand-primary transition">প্রজেক্টসমূহ</a>
+            <a href="members.html" class="text-brand-primary font-semibold hover:text-brand-dark transition flex items-center gap-1 border-b-2 border-transparent hover:border-brand-primary">
+                <i class="fas fa-users"></i> সদস্যবৃন্দ
+            </a>
+            <a href="ideas.html" class="hover:text-brand-primary transition">আইডিয়াস</a>
+            <a href="#help-application" class="text-brand-secondary font-semibold hover:text-red-700 transition">সহায়তা আবেদন</a>
+            <a href="#donate" class="bg-brand-primary text-white px-5 py-2 rounded-full hover:bg-brand-dark transition shadow-lg transform hover:-translate-y-0.5">দান করুন</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button onclick="toggleMenu()" class="md:hidden text-brand-primary text-2xl focus:outline-none">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Mobile Menu Dropdown (Members included) -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+        <div class="flex flex-col p-4 gap-4 font-medium text-center">
+            <a href="#home" onclick="toggleMenu()" class="py-2 text-gray-700 hover:bg-gray-50 rounded">হোম</a>
+            <a href="#about" onclick="toggleMenu()" class="py-2 text-gray-700 hover:bg-gray-50 rounded">আমাদের সম্পর্কে</a>
+            <a href="members.html" onclick="toggleMenu()" class="py-2 text-brand-primary bg-blue-50 rounded font-semibold"><i class="fas fa-users mr-1"></i>সদস্যবৃন্দ</a>
+            <a href="#projects" onclick="toggleMenu()" class="py-2 text-gray-700 hover:bg-gray-50 rounded">প্রজেক্টসমূহ</a>
+            <a href="ideas.html" onclick="toggleMenu()" class="py-2 text-gray-700 hover:bg-gray-50 rounded">আইডিয়াস</a>
+            <a href="#help-application" onclick="toggleMenu()" class="py-2 text-brand-secondary bg-red-50 rounded font-semibold">সহায়তা আবেদন</a>
+            <a href="#donate" onclick="toggleMenu()" class="py-3 bg-brand-primary text-white rounded shadow">দান করুন</a>
+        </div>
+    </div>
+</nav>
+    <!-- Hero Section -->
+    <header id="home" class="relative pt-24 pb-20 md:pt-32 md:pb-32 min-h-[85vh] flex items-center justify-center bg-gray-900 overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="photo/hero.avif" alt="Volunteers Helping" class="w-full h-full object-cover opacity-30">
+            <!-- Blue Overlay to match brand -->
+            <div class="absolute inset-0 bg-blue-900 mix-blend-multiply opacity-60"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10 text-center text-white">
+            <span class="inline-block bg-brand-primary bg-opacity-90 px-4 py-2 rounded-full text-sm font-semibold mb-4 animate-pulse border border-blue-400">
+                স্বাগত আগন্তুক পরিবারে
+            </span>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                আপনার একটু সহানুভূতি,<br>কারও বাঁচার <span class="text-brand-accent">স্বপ্ন</span>
+            </h1>
+            <p class="text-lg md:text-xl text-blue-50 mb-8 max-w-2xl mx-auto">
+                আমরা সুবিধাবঞ্চিত মানুষের পাশে দাঁড়াই। আমাদের লক্ষ্য একটি বৈষম্যহীন ও মানবিক সমাজ গড়ে তোলা।
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#donate" class="bg-brand-secondary hover:bg-red-700 text-white px-8 py-3 rounded-lg font-bold text-lg transition shadow-xl flex items-center justify-center gap-2">
+                    <i class="fas fa-heart"></i> দান করুন
+                </a>
+                <a href="volunteer.html" class="bg-white hover:bg-blue-50 text-brand-primary px-8 py-3 rounded-lg font-bold text-lg transition shadow-xl flex items-center justify-center gap-2">
+                    <i class="fas fa-users"></i> স্বেচ্ছাসেবক হোন
+                </a>
+            </div>
+        </div>
+
+</header>
+
+    <!-- Impact Stats (Live Counter) -->
+<section class="py-12 bg-brand-light -mt-8 relative z-20 mx-4 md:mx-16 rounded-xl shadow-lg border-b-4 border-brand-primary">
+        <div class="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-gray-300">
+            <div>
+                <div class="text-4xl font-bold text-brand-primary mb-1 counter" data-target="1000">1000+</div>
+                <div class="text-sm md:text-base text-gray-600 font-medium">উপকৃত মানুষ</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-brand-secondary mb-1 counter" data-target="100">100+</div>
+                <div class="text-sm md:text-base text-gray-600 font-medium">রক্তদান সম্পন্ন</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-brand-primary mb-1 counter" data-target="50">40+</div>
+                <div class="text-sm md:text-base text-gray-600 font-medium">প্রজেক্ট</div>
+            </div>
+            <div class="border-none">
+                <div class="text-4xl font-bold text-brand-accent mb-1 counter" data-target="100">60+</div>
+                <div class="text-sm md:text-base text-gray-600 font-medium">স্বেচ্ছাসেবক</div>
+            </div>
+        </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-20 bg-white">
+     <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="w-full md:w-1/2 flex justify-center">
+                <img src="photo/logo2.png" alt="Volunteer Hands - Unity" class="w-full max-w-sm mx-auto drop-shadow-xl hover:scale-105 transition duration-500">
+            </div>
+            
+            <div class="w-full md:w-1/2">
+                <h4 class="text-brand-primary font-bold text-lg mb-2 uppercase tracking-wide">আমাদের পরিচিতি</h4>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">আগন্তুক: একটি   <span class="text-brand-secondary">সমাজ সেবা মূলক</span> সংগঠন</h2>
+                <p class="text-gray-600 mb-4 leading-relaxed">
+                    আগন্তুক একটি অরাজনৈতিক, স্বেচ্ছাসেবী ও মানবিক সামাজিক সংগঠন। ২০১৯ সাল থেকে আমরা আলমডাঙ্গা, চুয়াডাঙ্গা ও আশপাশের মানুষের পাশে থেকে মানবিক সহায়তা, সামাজিক সচেতনতা ও স্বেচ্ছাসেবামূলক কার্যক্রম পরিচালনা করে আসছি।
+মানুষের বিপদে পাশে দাঁড়ানো, অসহায় ও সুবিধাবঞ্চিত মানুষের সহায়তা করা এবং তরুণদের মানবিক ও সামাজিক কাজে সম্পৃক্ত করাই আমাদের মূল লক্ষ্য।
+
+                </p>
+                
+                <div class="space-y-4 mt-6">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-blue-100 p-3 rounded-full text-brand-primary">
+                            <i class="fas fa-eye text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">আমাদের লক্ষ্য (Our Vision)</h3>
+                            <p class="text-sm text-gray-600">ক্ষুধা ও দারিদ্র্যমুক্ত একটি স্বনির্ভর বাংলাদেশ গড়া।</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="bg-blue-100 p-3 rounded-full text-brand-primary">
+                            <i class="fas fa-bullseye text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">আমাদের উদ্দেশ্য (Our Mission)</h3>
+                            <p class="text-sm text-gray-600">শিক্ষা, স্বাস্থ্য এবং মৌলিক অধিকার নিশ্চিত করতে সম্মিলিত প্রচেষ্টা।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 pt-8 border-t border-gray-100">
+                    <div class="flex flex-wrap items-center gap-6">
+                        <div class="flex gap-4">
+                            <a href="https://www.facebook.com/profile.php?id=100064781886465" target="_blank" class="text-blue-600 hover:text-blue-800 transition duration-300 transform hover:scale-110">
+                                <i class="fab fa-facebook fa-2x"></i>
+                            </a>
+                            <a href="https://wa.me/+8801332738981" target="_blank" class="text-green-500 hover:text-green-700 transition duration-300 transform hover:scale-110">
+                                <i class="fab fa-whatsapp fa-2x"></i>
+                            </a>
+                            <a href="https://www.youtube.com/@Agantuk2019" target="_blank" class="text-red-600 hover:text-red-800 transition duration-300 transform hover:scale-110">
+                                <i class="fab fa-youtube fa-2x"></i>
+                            </a>
+                        </div>
+
+                        <a href="গঠনতন্ত্র.pdf" target="_blank" class="inline-flex items-center gap-2 bg-brand-primary text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-opacity-90 transition duration-300">
+                            <i class="fas fa-file-pdf"></i>
+                            আমাদের গঠনতন্ত্র দেখুন
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+</section>
+
+<!-- Projects Section -->
+<style>
+    .reveal-ready .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal-ready .reveal.show { opacity: 1; transform: translateY(0); }
+
+    .prj-card { position: relative; display: flex; gap: 1.1rem; align-items: flex-start; background: #fff; border-radius: 1.25rem;
+                 padding: 1.5rem; box-shadow: 0 8px 28px rgba(15, 23, 42, .07); overflow: hidden; border: 1px solid #f1f5f9;
+                 transition: transform .35s ease, box-shadow .35s ease; }
+    .prj-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--c); border-radius: 5px 0 0 5px; }
+    .prj-card::after { content: ''; position: absolute; right: -40px; bottom: -40px; width: 130px; height: 130px; border-radius: 50%;
+                        background: var(--bg); opacity: .7; transition: transform .5s ease; }
+    .prj-card:hover { transform: translateY(-8px); box-shadow: 0 22px 44px rgba(15, 23, 42, .14); }
+    .prj-card:hover::after { transform: scale(1.8); }
+    .prj-card > * { position: relative; z-index: 1; }
+    .prj-icon { width: 62px; height: 62px; flex-shrink: 0; border-radius: 18px; background: var(--bg); color: var(--c);
+                 display: flex; align-items: center; justify-content: center; font-size: 1.6rem; transition: transform .4s ease, background .3s, color .3s; }
+    .prj-card:hover .prj-icon { background: var(--c); color: #fff; transform: rotate(-8deg) scale(1.1); }
+    .prj-num { position: absolute !important; top: 10px; right: 16px; font-size: 1.6rem; font-weight: 700; color: var(--c); opacity: .15; z-index: 1; }
+    .prj-link { display: inline-flex; align-items: center; gap: 8px; font-size: .85rem; font-weight: 600; color: var(--c); }
+    .prj-link i { transition: transform .3s; }
+    .prj-link:hover i { transform: translateX(6px); }
+
+    .sk-wrap { position: relative; border-radius: 2rem; overflow: hidden; color: #fff;
+                background: linear-gradient(135deg, #1e3a8a 0%, #3B82F6 60%, #60a5fa 100%); box-shadow: 0 25px 60px rgba(30, 64, 175, .35); }
+    .sk-blob { position: absolute; border-radius: 50%; background: rgba(255,255,255,.08); animation: skFloat 7s ease-in-out infinite; }
+    .sk-item { display: flex; flex-direction: column; align-items: center; gap: .6rem; font-size: .85rem; font-weight: 500; text-align: center; }
+    .sk-circle { width: 76px; height: 76px; border-radius: 50%; background: #fff; color: #1e40af; display: flex; align-items: center; justify-content: center;
+                  font-size: 1.9rem; box-shadow: 0 10px 24px rgba(0,0,0,.2); transition: transform .35s ease, background .3s, color .3s; }
+    .sk-item:hover .sk-circle { transform: translateY(-8px) scale(1.12) rotate(6deg); background: #F59E0B; color: #fff; }
+    .sk-bar { height: 10px; background: rgba(255,255,255,.25); border-radius: 999px; overflow: hidden; }
+    .sk-bar > div { height: 100%; width: 0; background: linear-gradient(90deg, #fbbf24, #f59e0b); border-radius: 999px; transition: width 1.8s ease .3s; position: relative; }
+    .sk-bar > div::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent);
+                           animation: skShine 2.2s linear infinite; }
+    .quote-card { position: relative; background: #fff; border-radius: 1.25rem; padding: 1.5rem 1.75rem 1.5rem 4rem; box-shadow: 0 10px 30px rgba(15,23,42,.08);
+                   border: 1px solid #eef2ff; font-size: 1.2rem; font-weight: 600; color: #1e3a8a; line-height: 1.6; }
+    .quote-card i { position: absolute; left: 1.25rem; top: 1.2rem; font-size: 1.8rem; color: #3B82F6; opacity: .5; }
+    @keyframes skFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }
+    @keyframes skShine { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+    @media (prefers-reduced-motion: reduce) { .sk-blob, .sk-bar > div::after { animation: none; } }
+</style>
+
+<section id="projects" class="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-14 reveal">
+            <span class="inline-block px-4 py-1.5 bg-blue-100 text-brand-primary rounded-full text-sm font-semibold mb-3">আমাদের কার্যক্রম</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">আমাদের <span class="text-brand-secondary">প্রজেক্টসমূহ</span></h2>
+            <div class="w-24 h-1 bg-brand-primary mx-auto rounded"></div>
+            <p class="mt-4 text-gray-600">সমাজের পিছিয়ে পড়া মানুষের মুখে হাসি ফোটাতে আমাদের ক্ষুদ্র প্রচেষ্টা</p>
+        </div>
+
+        <!-- Programs -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <div class="prj-card reveal" style="--c:#dc2626; --bg:#fee2e2; transition-delay:0ms">
+                    <div class="prj-icon"><i class="fas fa-droplet"></i></div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">রক্তদান সেবা</h3>
+                        <p class="text-sm text-gray-500 mb-4">রক্তের সংকটে মানুষের পাশে</p>
+                        <a href="blood.html" class="prj-link" style="--c:#dc2626">রক্তদাতা খুঁজুন <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <span class="prj-num">০১</span>
+                </div>
+                <div class="prj-card reveal" style="--c:#2563eb; --bg:#dbeafe; transition-delay:80ms">
+                    <div class="prj-icon"><i class="fas fa-book-open"></i></div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">শিক্ষা সহায়তা</h3>
+                        <p class="text-sm text-gray-500 mb-4">শিক্ষার্থীদের জন্য সহযোগিতা</p>
+                        <a href="#donate" class="prj-link" style="--c:#2563eb">সহায়তা করুন <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <span class="prj-num">০২</span>
+                </div>
+                <div class="prj-card reveal" style="--c:#e11d48; --bg:#ffe4e6; transition-delay:160ms">
+                    <div class="prj-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">আর্থিক সহায়তা</h3>
+                        <p class="text-sm text-gray-500 mb-4">অসহায় ও দরিদ্র মানুষের পাশে</p>
+                        <a href="#donate" class="prj-link" style="--c:#e11d48">সহায়তা করুন <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <span class="prj-num">০৩</span>
+                </div>
+                <div class="prj-card reveal" style="--c:#9333ea; --bg:#f3e8ff; transition-delay:240ms">
+                    <div class="prj-icon"><i class="fas fa-gift"></i></div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">ঈদ উপহার বিতরণ</h3>
+                        <p class="text-sm text-gray-500 mb-4">আনন্দ ভাগাভাগি, ভালোবাসার উপহার</p>
+                        <a href="#donate" class="prj-link" style="--c:#9333ea">সহায়তা করুন <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <span class="prj-num">০৪</span>
+                </div>
+                <div class="prj-card reveal" style="--c:#0284c7; --bg:#e0f2fe; transition-delay:320ms">
+                    <div class="prj-icon"><i class="fas fa-shirt"></i></div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">শীতবস্ত্র বিতরণ</h3>
+                        <p class="text-sm text-gray-500 mb-4">শীতের সময়ে উষ্ণতার পাশে</p>
+                        <a href="#donate" class="prj-link" style="--c:#0284c7">সহায়তা করুন <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <span class="prj-num">০৫</span>
+                </div>
+                <div class="prj-card reveal" style="--c:#ea580c; --bg:#ffedd5; transition-delay:400ms">
+                    <div class="prj-icon"><i class="fas fa-bowl-food"></i></div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">এতিম ইফতার</h3>
+                        <p class="text-sm text-gray-500 mb-4">এতিম শিশুদের সাথে ভালোবাসার ইফতার</p>
+                        <a href="#donate" class="prj-link" style="--c:#ea580c">সহায়তা করুন <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <span class="prj-num">০৬</span>
+                </div>
+        </div>
+
+        <!-- Sokkhom Project -->
+        <div class="sk-wrap max-w-6xl mx-auto mt-14 p-8 md:p-12 reveal">
+            <div class="sk-blob" style="width:260px;height:260px;top:-90px;right:-70px"></div>
+            <div class="sk-blob" style="width:180px;height:180px;bottom:-60px;left:-40px;animation-delay:-3s"></div>
+
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div>
+                    <span class="inline-flex items-center gap-2 bg-white/15 border border-white/30 px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
+                        <i class="fas fa-gear"></i> সক্ষম প্রকল্প
+                    </span>
+                    <h3 class="text-3xl md:text-4xl font-bold mb-4 leading-snug">আমাদের <span class="text-yellow-300">সক্ষম</span> প্রকল্প</h3>
+                    <p class="text-blue-50 leading-relaxed mb-6">
+                        সক্ষম প্রকল্পের মাধ্যমে আমরা অসহায় মানুষকে টেকসই জীবিকার সুযোগ তৈরি করে দেই। যেমন –
+                        ভ্যান, সেলাই মেশিন, ছোট দোকান, গবাদি পশু, মাছ চাষ, কৃষি উপকরণ ইত্যাদি।
+                    </p>
+
+                    <div class="flex justify-between text-sm text-blue-100 mb-2">
+                        <span>সংগৃহীত: ২০,০০০</span>
+                        <span>লক্ষ্য: ১,০০,০০০</span>
+                    </div>
+                    <div class="sk-bar mb-6"><div data-width="20%"></div></div>
+
+                    <a href="#donate" class="inline-flex items-center gap-2 bg-white text-brand-dark px-7 py-3 rounded-full font-bold shadow-xl hover:-translate-y-1 hover:shadow-2xl transition duration-300">
+                        <i class="fas fa-heart text-brand-secondary"></i> সক্ষম প্রকল্পে সহায়তা করুন
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                    <div class="sk-item reveal" style="transition-delay:0ms">
+                        <div class="sk-circle"><i class="fas fa-truck-pickup"></i></div>
+                        <span>ভ্যান গাড়ি</span>
+                    </div>
+                    <div class="sk-item reveal" style="transition-delay:70ms">
+                        <div class="sk-circle"><i class="fas fa-scissors"></i></div>
+                        <span>সেলাই মেশিন</span>
+                    </div>
+                    <div class="sk-item reveal" style="transition-delay:140ms">
+                        <div class="sk-circle"><i class="fas fa-store"></i></div>
+                        <span>ছোট দোকান</span>
+                    </div>
+                    <div class="sk-item reveal" style="transition-delay:210ms">
+                        <div class="sk-circle"><i class="fas fa-cow"></i></div>
+                        <span>গবাদি পশু</span>
+                    </div>
+                    <div class="sk-item reveal" style="transition-delay:280ms">
+                        <div class="sk-circle"><i class="fas fa-fish"></i></div>
+                        <span>মাছ চাষ</span>
+                    </div>
+                    <div class="sk-item reveal" style="transition-delay:350ms">
+                        <div class="sk-circle"><i class="fas fa-egg"></i></div>
+                        <span>পোল্ট্রি খামার</span>
+                    </div>
+                    <div class="sk-item reveal" style="transition-delay:420ms">
+                        <div class="sk-circle"><i class="fas fa-seedling"></i></div>
+                        <span>কৃষি উপকরণ</span>
+                    </div>
+                    <div class="sk-item reveal" style="transition-delay:490ms">
+                        <div class="sk-circle"><i class="fas fa-gear"></i></div>
+                        <span>অন্যান্য</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quotes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto mt-12">
+            <div class="quote-card reveal"><i class="fas fa-quote-left"></i>ছোট ছোট উদ্যোগও বড় পরিবর্তন আনতে পারে।</div>
+            <div class="quote-card reveal" style="transition-delay:120ms"><i class="fas fa-quote-left"></i>সাহায্য নয়, সম্ভাবনা তৈরিই আমাদের লক্ষ্য।</div>
+        </div>
+    </div>
+</section>
+
+<script>
+    (function () {
+        var els = document.querySelectorAll('#projects .reveal');
+        if (!('IntersectionObserver' in window)) return;
+        document.documentElement.classList.add('reveal-ready');
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+                if (!en.isIntersecting) return;
+                en.target.classList.add('show');
+                var bar = en.target.querySelector('.sk-bar > div');
+                if (bar) bar.style.width = bar.getAttribute('data-width');
+                io.unobserve(en.target);
+            });
+        }, { threshold: 0.15 });
+        els.forEach(function (el) { io.observe(el); });
+    })();
+</script>
+
+<!-- Recent Projects Gallery -->
+<section id="recent-projects" class="py-20 bg-gradient-to-br from-gray-50 to-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <span class="inline-block px-4 py-2 bg-gradient-to-r from-brand-primary to-blue-500 text-white rounded-full text-sm font-semibold mb-4 shadow-lg">
+                আমাদের কার্যক্রম সমূহ
+            </span>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                আগন্তুকের প্রতিটি কার্যক্রম একটি স্বপ্নের <span class="text-brand-secondary">গল্প</span>
+            </h2>
+            <div class="w-24 h-1.5 bg-gradient-to-r from-brand-primary to-brand-secondary mx-auto rounded-full"></div>
+            <p class="mt-6 text-gray-600 max-w-2xl mx-auto text-lg">
+                গত কয়েক মাসে সম্পন্ন হওয়া আমাদের কিছু কার্যক্রম সমূহ।
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="index-projects-grid">
+            <div class="idx-sk animate-pulse"><div class="rounded-2xl bg-gray-200 h-72 mb-4"></div><div class="h-5 bg-gray-200 rounded w-3/4 mb-2"></div><div class="h-4 bg-gray-200 rounded w-full mb-1"></div><div class="h-4 bg-gray-200 rounded w-2/3"></div></div>
+            <div class="idx-sk animate-pulse"><div class="rounded-2xl bg-gray-200 h-72 mb-4"></div><div class="h-5 bg-gray-200 rounded w-3/4 mb-2"></div><div class="h-4 bg-gray-200 rounded w-full mb-1"></div><div class="h-4 bg-gray-200 rounded w-2/3"></div></div>
+            <div class="idx-sk animate-pulse"><div class="rounded-2xl bg-gray-200 h-72 mb-4"></div><div class="h-5 bg-gray-200 rounded w-3/4 mb-2"></div><div class="h-4 bg-gray-200 rounded w-full mb-1"></div><div class="h-4 bg-gray-200 rounded w-2/3"></div></div>
+        </div>
+        <div class="text-center mt-12">
+            <a href="project.html" class="inline-block px-8 py-3 bg-gradient-to-r from-brand-primary to-blue-600 text-white rounded-full font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                <i class="fas fa-th-large mr-2"></i>সব কার্যক্রম সমূহ দেখুন
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Project Details Modal -->
+<div id="project-modal" class="fixed inset-0 bg-black bg-opacity-90 z-[9999] hidden overflow-y-auto">
+    <div class="min-h-screen px-4 py-8">
+        <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <!-- Modal Header -->
+            <div class="relative">
+                <img id="modal-main-image" src="" alt="" class="w-full h-96 object-cover">
+                <button onclick="closeProjectModal()" class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 shadow-lg">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+                <div id="modal-category" class="absolute top-4 left-4 px-4 py-2 text-white text-sm rounded-full"></div>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-8">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Left Content -->
+                    <div class="lg:w-2/3">
+                        <h2 id="modal-title" class="text-3xl font-bold text-gray-800 mb-4"></h2>
+                        <p id="modal-description" class="text-gray-600 text-lg leading-relaxed mb-6"></p>
+                        
+                        <!-- Gallery -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">গ্যালারি</h3>
+                            <div id="modal-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+                        </div>
+
+                        <!-- Key Achievements -->
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">প্রধান অর্জনসমূহ</h3>
+                            <ul id="modal-achievements" class="space-y-3"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Right Sidebar -->
+                    <div class="lg:w-1/3">
+                        <div class="bg-gray-50 rounded-xl p-6 sticky top-8">
+                            <h3 class="text-xl font-bold text-gray-800 mb-6">প্রজেক্ট ডিটেইলস</h3>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">তারিখ</p>
+                                        <p id="modal-date" class="font-medium"></p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">স্থান</p>
+                                        <p id="modal-location" class="font-medium"></p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center text-red-600">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">উপকৃত</p>
+                                        <p id="modal-beneficiaries" class="font-medium"></p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600">
+                                        <i class="fas fa-user-friends"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">ভলান্টিয়ার</p>
+                                        <p id="modal-volunteers" class="font-medium"></p>
+                                    </div>
+                                </div>
+
+                                <div class="pt-6 border-t">
+                                    <h4 class="font-bold text-gray-800 mb-3">সামাজিক মিডিয়া</h4>
+                                    <div class="flex gap-3">
+                                        <a href="#" id="modal-fb" target="_blank" class="w-10 h-10 bg-blue-600 text-white rounded-lg flex items-center justify-center hover:bg-blue-700">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                        <a href="#" id="modal-youtube" target="_blank" class="w-10 h-10 bg-red-600 text-white rounded-lg flex items-center justify-center hover:bg-red-700">
+                                            <i class="fab fa-youtube"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom Styles for Projects Section */
+    .project-card {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    
+    .project-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+    
+    .filter-btn.active {
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    }
+    
+    /* Image hover effects */
+    .group:hover .group-hover\:scale-110 {
+        transform: scale(1.1);
+    }
+    
+    /* Modal animations */
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    #project-modal > div {
+        animation: modalFadeIn 0.3s ease-out;
+    }
+    
+    /* Gallery image hover */
+    #modal-gallery img {
+        transition: transform 0.3s ease;
+    }
+    
+    #modal-gallery img:hover {
+        transform: scale(1.05);
+    }
+</style>
+ 
+    <!--Recent Projects Gallery-->
+<script>
+    // Projects Data
+    const projectsData = [
+        {
+            id: 0,
+            title: "শিক্ষা উপকরণ বিতরণ",
+            category: "education",
+            description: "আলমডাঙ্গা এলাকার দরিদ্র পরিবারের শিশুর মাঝে বই, খাতা, কলমসহ শিক্ষা উপকরণ বিতরণ করা হয়েছে। এই কার্যক্রমের মাধ্যমে শিশুদের শিক্ষার প্রতি আগ্রহ বৃদ্ধি পেয়েছে এবং ড্রপআউট রেট কমেছে।",
+            mainImage: "photo/project-education1.jpg",
+            date: "১৫ ডিসেম্বর, ২০২১",
+            location: "আলমডাঙ্গা, চুয়াডাঙ্গা",
+            beneficiaries:"" ,
+            volunteers: "",
+            gallery: [ "photo/project-education1.jpg"
+                
+            ],
+            achievements: [
+                
+            ],
+            facebook: "https://www.facebook.com/profile.php?id=100064781886465",
+            youtube: "https://youtube.com"
+        },
+        {
+            id: 1,
+            title: "মেডিকেল সহায়তা", 
+            category: "health",
+            description: "স্থানীয় চিকিৎসক ও স্বাস্থ্য কর্মীদের সহায়তায় বিনামূল্যে চিকিৎসা সেবা প্রদান। সাধারণ রোগ নির্ণয় থেকে শুরু করে প্রয়োজনীয় ওষুধ বিতরণ পর্যন্ত সকল সেবা প্রদান করা হয়েছে।",
+            mainImage: "photo/project-health1.jpg",
+            date: "১০ নভেম্বর, ২০২৫",
+            location: " আলমডাঙ্গা",
+            beneficiaries: "২০+ রোগী",
+            volunteers: "৩০ জন",
+            gallery: [
+                "photo/project-health1.jpg",
+                "photo/project-health2.jpg",
+                "photo/project-health3.jpg",
+                
+            ],
+            achievements: [
+                "২০+ রোগীর চিকিৎসা",
+               
+            ],
+            facebook: "https://facebook.com",
+            youtube: "https://youtube.com"
+        },
+        {
+            id: 2,
+            title: "শীতবস্ত্র বিতরণ ২০২৩",
+            category: "relief",
+            description: "শীত মৌসুমে অসহায় ও দরিদ্র মানুষের মাঝে উষ্ণতার বার্তা পৌঁছে দেওয়ার জন্য কম্বল ও শীতবস্ত্র বিতরণ কার্যক্রম। বিশেষ করে বয়স্ক ও শিশুদের প্রাধান্য দেওয়া হয়েছে।",
+            mainImage: "photo/project-relief1.jpg",
+            date: "২৫ ডিসেম্বর, ২০২৫",
+            location: "আলমডাঙ্গা সদর", 
+            beneficiaries: "৭০+ মানুষ",
+            volunteers: "২০ জন",
+            gallery: [
+                "photo/project-relief1.jpg",
+                "photo/project-relief2.jpg",
+                "photo/project-relief3.jpg",
+                "photo/project-relief4.jpg"
+            ],
+            achievements: [
+                "২০টি কম্বল বিতরণ", 
+                "৫০টি শীতবস্ত্র",
+                "বিশেষ শিশু প্যাকেট"
+            ],
+            facebook: "https://facebook.com",
+            youtube: "https://youtube.com"
+        },
+        {
+            id: 3,
+            title: "মেগা ব্লাড ডোনেশন ক্যাম্প",
+            category: "blood",
+            description: "বিশ্ব রক্তদাতা দিবস উপলক্ষে আয়োজিত বিশেষ ব্লাড ডোনেশন ক্যাম্পেইন। স্থানীয় তরুণ ও স্বেচ্ছাসেবকদের ব্যাপক অংশগ্রহণে সফলভাবে রক্ত সংগ্রহ করা হয়েছে।",
+            mainImage: "photo/project-blood1.jpg",
+            date: "১৪ জুন, ২০২৫",
+            location: "আলমডাঙ্গা কলেজ",
+            beneficiaries: "২০০+ ডোনার রেজিস্ট্রেশন",
+            volunteers: "৪০ জন",
+            gallery: [
+                "photo/project-blood1.jpg",
+                "photo/project-blood2.jpg",
+                "photo/project-blood3.jpg",
+                "photo/project-blood4.jpg"
+            ],
+            achievements: [
+                "১৫০+ ব্যাগ রক্ত সংগ্রহ",
+                "২০০+ নতুন ডোনার রেজিস্ট্রেশন",
+                "রক্তদান বিষয়ে সচেতনতা",
+                "সার্টিফিকেট বিতরণ"
+            ],
+            facebook: "https://facebook.com",
+            youtube: "https://youtube.com"
+        },
+        {
+            id: 4,
+            title: "ঈদ উপহার বিতরণ",
+            category: "education",
+            description: "আলমডাঙ্গার একটি এতিমখানার ২৫ জন এতিম শিশুকে ঈদ উপহার হিসেবে পাঞ্জাবী, টুপি, আতর বিতরন করা হয়েছে",
+            mainImage: "photo/project-eid1.jpg",
+            date: "৫ জানুয়ারি, ২০২৪",
+            location: "বিভিন্ন শিক্ষা প্রতিষ্ঠান",
+            beneficiaries: "২৫ জন শিক্ষার্থী",
+            volunteers: "১৫ জন",
+            gallery: [
+                "photo/project-project-eid1.jpg",
+                "photo/project-project-eid2.jpg",
+                "photo/project-project-eid3.jpg",
+                "photo/project-project-eid4.jpg"
+            ],
+            achievements: [
+                "২৫ জন মেধাবী শিক্ষার্থী",
+                "প্রতি মাসে বৃত্তি প্রদান",
+                "শিক্ষা উপকরণ সহায়তা",
+                "মেন্টরশিপ প্রোগ্রাম"
+            ],
+            facebook: "https://facebook.com",
+            youtube: "https://youtube.com"
+        },
+        {
+            id: 5,
+            title: "রমজানে ইফতার বিতরণ",
+            category: "relief",
+            description: "পবিত্র রমজান মাসে অসহায়, দরিদ্র ও পথশিশুদের মাঝে ইফতার সামগ্রী বিতরণ কার্যক্রম। পুরো মাসজুড়ে এই কার্যক্রম চালানো হয়েছে।",
+            mainImage: "photo/project-ramjan1.jpg",
+            date: "মার্চ - এপ্রিল, ২০২৫",
+            location: "আলমডাঙ্গা শহর",
+            beneficiaries: "১০০+ মানুষ",
+            volunteers: "৫০ জন",
+            gallery: [
+                "photo/project-ramjan1.jpg",
+                "photo/project-ramjan2.jpg",
+                
+            ],
+            achievements: [
+                "১০০+ ইফতার প্যাকেট",
+                
+            ],
+            facebook: "https://facebook.com",
+            youtube: "https://youtube.com"
+        }
+
+        
+    ];
+
+    // Filter Projects
+    function filterProjects(category) {
+        const cards = document.querySelectorAll('.project-card');
+        const buttons = document.querySelectorAll('.filter-btn');
+        
+        // Update active button
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // Filter cards
+        cards.forEach(card => {
+            if (category === 'all' || card.dataset.category === category) {
+                card.style.display = 'block';
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 10);
+            } else {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.display = 'none';
+                }, 300);
+            }
+        });
+    }
+
+    // Open Project Modal
+    function openProjectModal(projectId) {
+        const project = projectsData[projectId];
+        const modal = document.getElementById('project-modal');
+        
+        // Set modal content
+        document.getElementById('modal-title').textContent = project.title;
+        document.getElementById('modal-description').textContent = project.description;
+        document.getElementById('modal-main-image').src = project.mainImage;
+        document.getElementById('modal-main-image').alt = project.title;
+        document.getElementById('modal-date').textContent = project.date;
+        document.getElementById('modal-location').textContent = project.location;
+        document.getElementById('modal-beneficiaries').textContent = project.beneficiaries;
+        document.getElementById('modal-volunteers').textContent = project.volunteers;
+        document.getElementById('modal-fb').href = project.facebook;
+        document.getElementById('modal-youtube').href = project.youtube;
+        
+        // Set category badge
+        const categoryBadge = document.getElementById('modal-category');
+        categoryBadge.textContent = getCategoryName(project.category);
+        categoryBadge.className = 'absolute top-4 left-4 px-4 py-2 text-white text-sm rounded-full ' + getCategoryClass(project.category);
+        
+        // Set achievements
+        const achievementsList = document.getElementById('modal-achievements');
+        achievementsList.innerHTML = '';
+        project.achievements.forEach(achievement => {
+            const li = document.createElement('li');
+            li.className = 'flex items-start gap-3';
+            li.innerHTML = `
+                <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                <span>${achievement}</span>
+            `;
+            achievementsList.appendChild(li);
+        });
+        
+        // Set gallery
+        const gallery = document.getElementById('modal-gallery');
+        gallery.innerHTML = '';
+        project.gallery.forEach((imgSrc, index) => {
+            const imgDiv = document.createElement('div');
+            imgDiv.className = 'relative rounded-lg overflow-hidden cursor-pointer group';
+            imgDiv.innerHTML = `
+                <img src="${imgSrc}" alt="Gallery Image ${index + 1}" 
+                     class="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300"></div>
+            `;
+            imgDiv.onclick = () => {
+                document.getElementById('modal-main-image').src = imgSrc;
+            };
+            gallery.appendChild(imgDiv);
+        });
+        
+        // Show modal
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Close Project Modal
+    function closeProjectModal() {
+        document.getElementById('project-modal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Helper functions for category
+    function getCategoryName(category) {
+        const categories = {
+            'education': 'শিক্ষা',
+            'health': 'স্বাস্থ্য',
+            'relief': 'ত্রাণ',
+            'blood': 'রক্তদান'
+        };
+        return categories[category] || category;
+    }
+
+    function getCategoryClass(category) {
+        const classes = {
+            'education': 'bg-blue-500',
+            'health': 'bg-red-500',
+            'relief': 'bg-amber-500',
+            'blood': 'bg-red-600'
+        };
+        return classes[category] || 'bg-gray-500';
+    }
+
+    // Load More Projects
+    function loadMoreProjects() {
+        const loadMoreBtn = document.getElementById('load-more');
+        loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>লোড হচ্ছে...';
+        loadMoreBtn.disabled = true;
+        
+        // Simulate loading delay
+        setTimeout(() => {
+            alert('আরো প্রজেক্ট খুব শীঘ্রই যুক্ত করা হবে!');
+            loadMoreBtn.innerHTML = '<i class="fas fa-plus mr-2"></i>আরো প্রজেক্ট দেখুন';
+            loadMoreBtn.disabled = false;
+        }, 1000);
+    }
+
+    // Close modal on ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeProjectModal();
+        }
+    });
+</script>
+
+<!-- Transparency & Reports -->
+<section id="transparency" class="py-16 bg-white border-t border-gray-100">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8">স্বচ্ছতা ও জবাবদিহিতা</h2>
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div class="border rounded-lg p-6 hover:shadow-md transition text-left flex items-center justify-between border-l-4 border-l-brand-primary">
+                <div>
+                    <h4 class="font-bold text-lg">আয়-ব্যয় রিপোর্ট</h4>
+                    <p class="text-sm text-gray-500">আপডেট: ১ ফেব্রুয়ারি, ২০২৬</p>
+                </div>
+                <a href="https://docs.google.com/spreadsheets/d/1YdIZCITuqZ3hpulo2at5lgCLLMGtztxtbTobEVLcpRU/edit?usp=sharing" target="_blank" class="text-brand-primary hover:bg-blue-50 p-2 rounded-full transition">
+                    <i class="fas fa-file-excel text-xl"></i>
+                </a>
+            </div>
+
+            <div class="border rounded-lg p-6 hover:shadow-md transition text-left flex items-center justify-between border-l-4 border-l-brand-primary">
+                <div>
+                    <h4 class="font-bold text-lg">গঠনতন্ত্র</h4>
+                    <p class="text-sm text-gray-500">সংগঠনের মূল নীতিমালা</p>
+                </div>
+                <a href="https://docs.google.com/document/d/1-0jAE17X7IIn6QsyJtmU8ljexvcr0orF/edit?usp=sharing" target="_blank" class="text-brand-primary hover:bg-blue-50 p-2 rounded-full transition">
+                    <i class="fas fa-file-word text-xl"></i>
+                </a>
+            </div>
+
+            <div class="border rounded-lg p-6 hover:shadow-md transition text-left flex items-center justify-between border-l-4 border-l-brand-primary">
+                <div>
+                    <h4 class="font-bold text-lg">সদস্য নীতিমালা</h4>
+                    <p class="text-sm text-gray-500">সদস্যপদ সংক্রান্ত নিয়মাবলী</p>
+                </div>
+                <a href="https://docs.google.com/document/d/1l_OHkqKlInf-353OdBM6kgj4RtnzoDtzNDfZekOXaX8/edit?usp=sharing" target="_blank" class="text-brand-primary hover:bg-blue-50 p-2 rounded-full transition">
+                    <i class="fas fa-file-alt text-xl"></i>
+                </a>
+            </div>
+
+            <div class="border rounded-lg p-6 hover:shadow-md transition text-left flex items-center justify-between border-l-4 border-l-brand-primary">
+                <div>
+                    <h4 class="font-bold text-lg">অভ্যন্তরীণ অডিট রিপোর্ট  ২০২৫</h4>
+                    <p class="text-sm text-gray-500">বাৎসরিক আয় ব্যয়ের হিসাব</p>
+                </div>
+                <a href="https://drive.google.com/file/d/1PWBuG5eB5zDKBZYHRyzr0j2ky5ITacvn/view?usp=sharing" target="_blank" class="text-brand-primary hover:bg-blue-50 p-2 rounded-full transition">
+                    <i class="fas fa-file-alt text-xl"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Help Application Section -->
+<section id="help-application" class="py-20 bg-gradient-to-b from-blue-50 via-white to-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center mb-12">
+            <span class="inline-flex items-center gap-2 bg-blue-100 text-brand-primary px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <i class="fas fa-hand-holding-heart"></i> মানবিক সহায়তা কার্যক্রম
+            </span>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                সহায়তার জন্য <span class="text-brand-secondary">আবেদন করুন</span>
+            </h2>
+            <div class="w-24 h-1 bg-brand-primary mx-auto rounded"></div>
+            <p class="mt-5 text-gray-600 leading-relaxed">
+                আপনি বা আপনার পরিচিত কেউ মানবিক সহায়তার প্রয়োজন অনুভব করলে আগন্তুকের সহায়তা আবেদন ফর্মটি পূরণ করতে পারেন।
+                প্রতিটি আবেদন গুরুত্ব ও গোপনীয়তার সঙ্গে যাচাই-বাছাই করা হবে।
+            </p>
+        </div>
+
+        <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+            <div class="lg:col-span-3 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-700 to-blue-500 p-6 md:p-8 text-white">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-xl bg-white/15 flex items-center justify-center text-2xl">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">সহায়তা আবেদন ফর্ম</h3>
+                            <p class="text-blue-100 text-sm mt-1">অনলাইনে ফর্ম পূরণ করে PDF কপি জমা দিন</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 md:p-8">
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        নিচের বাটনে ক্লিক করে আবেদন ফর্মটি খুলুন। ফর্মের প্রতিটি ঘর সতর্কতার সঙ্গে পূরণ করুন এবং পূরণ শেষে PDF ফাইলটি ডাউনলোড করুন।
+                    </p>
+                    <a href="https://agantuk-help-application.netlify.app/" target="_blank" rel="noopener noreferrer"
+                       class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-brand-primary hover:bg-brand-dark text-white px-7 py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5">
+                        <i class="fas fa-external-link-alt"></i>
+                        আবেদন ফর্ম পূরণ করুন
+                    </a>
+                    <div class="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-xl">
+                        <p class="text-sm text-blue-900 leading-relaxed">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            <strong>মনে রাখবেন:</strong> শুধু অনলাইনে ফর্ম পূরণ করলেই আবেদন জমা সম্পন্ন হবে না। ফর্মের PDF কপি ডাউনলোড করে আগন্তুকের নির্ধারিত ইমেইল অথবা WhatsApp নম্বরে পাঠাতে হবে।
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-5">
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-5 flex items-center gap-2">
+                        <i class="fas fa-list-check text-brand-primary"></i> আবেদন জমা দেওয়ার নির্দেশনা
+                    </h3>
+                    <ol class="space-y-4 text-sm text-gray-600">
+                        <li class="flex gap-3">
+                            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-blue-100 text-brand-primary font-bold flex items-center justify-center">১</span>
+                            <span><strong class="text-gray-800">ফর্ম পূরণ করুন:</strong> আবেদনকারীর সকল ব্যক্তিগত, পারিবারিক ও প্রয়োজন-সম্পর্কিত তথ্য সঠিকভাবে লিখুন।</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-blue-100 text-brand-primary font-bold flex items-center justify-center">২</span>
+                            <span><strong class="text-gray-800">তথ্য যাচাই করুন:</strong> জমা দেওয়ার আগে নাম, ঠিকানা, মোবাইল নম্বরসহ প্রতিটি তথ্য পুনরায় মিলিয়ে নিন।</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-blue-100 text-brand-primary font-bold flex items-center justify-center">৩</span>
+                            <span><strong class="text-gray-800">PDF ডাউনলোড করুন:</strong> ফর্ম পূরণ শেষে সম্পূর্ণ আবেদনপত্র PDF আকারে সংরক্ষণ করুন।</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-blue-100 text-brand-primary font-bold flex items-center justify-center">৪</span>
+                            <span><strong class="text-gray-800">PDF পাঠান:</strong> ডাউনলোড করা PDF ফাইলটি নিচে দেওয়া ইমেইল অথবা WhatsApp-এ পাঠিয়ে আবেদন জমা দিন।</span>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">আবেদনপত্র পাঠানোর মাধ্যম</h3>
+                    <a href="mailto:agantukbd2019@gmail.com?subject=সহায়তা%20আবেদন%20-%20আগন্তুক"
+                       class="flex items-center gap-3 p-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 transition mb-3">
+                        <i class="fas fa-envelope text-xl"></i>
+                        <span class="min-w-0">
+                            <span class="block text-xs text-blue-600">ইমেইল</span>
+                            <strong class="text-sm break-all">agantukbd2019@gmail.com</strong>
+                        </span>
+                    </a>
+                    <a href="https://wa.me/8801332738981?text=%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%86%E0%A6%97%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A7%81%E0%A6%95%E0%A7%87%E0%A6%B0%20%E0%A6%B8%E0%A6%B9%E0%A6%BE%E0%A7%9F%E0%A6%A4%E0%A6%BE%20%E0%A6%86%E0%A6%AC%E0%A7%87%E0%A6%A6%E0%A6%A8%E0%A7%87%E0%A6%B0%20PDF%20%E0%A6%AA%E0%A6%BE%E0%A6%A0%E0%A6%BE%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A6%BF%E0%A5%A4"
+                       target="_blank" rel="noopener noreferrer"
+                       class="flex items-center gap-3 p-3 rounded-xl bg-green-50 hover:bg-green-100 text-green-700 transition">
+                        <i class="fab fa-whatsapp text-2xl"></i>
+                        <span>
+                            <span class="block text-xs text-green-600">WhatsApp</span>
+                            <strong class="text-sm">+880 1332-738981</strong>
+                        </span>
+                    </a>
+                    <p class="text-xs text-gray-500 mt-3 leading-relaxed">বার্তা পাঠানোর সময় আবেদনকারীর নাম ও যোগাযোগ নম্বর উল্লেখ করুন এবং PDF ফাইলটি সংযুক্ত করুন।</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-5xl mx-auto mt-8 bg-amber-50 border border-amber-200 rounded-2xl p-6 md:p-8">
+            <div class="flex items-start gap-4">
+                <div class="w-11 h-11 flex-shrink-0 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">আবেদন যাচাই ও পরবর্তী কার্যক্রম</h3>
+                    <p class="text-sm md:text-base text-gray-700 leading-relaxed">
+                        আবেদনপত্র পাওয়ার পর আগন্তুকের অপারেশন ম্যানেজার আবেদনকারীর সঙ্গে যোগাযোগ করবেন। প্রয়োজনে আবেদনপত্রে উল্লেখিত তথ্য, পারিবারিক অবস্থা ও সহায়তার প্রয়োজনীয়তা যাচাই করা হবে। যাচাই-বাছাই সম্পন্ন হলে আবেদনটির পরবর্তী অবস্থা ও সিদ্ধান্ত আবেদনকারীকে জানানো হবে।
+                    </p>
+                    <p class="text-sm text-gray-600 mt-3 leading-relaxed">
+                        <strong>বিশেষ দ্রষ্টব্য:</strong> আবেদন জমা দেওয়া সহায়তা প্রাপ্তির নিশ্চয়তা নয়। যাচাই-বাছাই, প্রয়োজনের অগ্রাধিকার এবং সংগঠনের সামর্থ্য ও নীতিমালার ভিত্তিতে সহায়তার বিষয়ে সিদ্ধান্ত নেওয়া হবে।
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <p class="max-w-4xl mx-auto text-center text-xs text-gray-500 mt-6 leading-relaxed">
+            আবেদনকারীর ব্যক্তিগত তথ্য কেবল আবেদন যাচাই ও সহায়তা কার্যক্রম পরিচালনার প্রয়োজনে ব্যবহার করা হবে। অনুগ্রহ করে সঠিক ও সত্য তথ্য প্রদান করুন।
+        </p>
+    </div>
+</section>
+
+<!-- Donate Section -->
+<!-- Donate Section -->
+<!-- Donate Section -->
+<section id="donate" class="py-20 bg-brand-primary text-white relative overflow-hidden">
+    <!-- Decoration -->
+    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-white opacity-10 rounded-full"></div>
+    <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-60 h-60 bg-white opacity-10 rounded-full"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold mb-4">পাশে দাঁড়ান, পরিবর্তন আনুন</h2>
+            <p class="text-blue-100 text-lg">
+                আপনার দান সরাসরি সুবিধাবঞ্চিত মানুষের কাছে পৌঁছে দেওয়া হবে।
+            </p>
+        </div>
+
+        <!-- Bangla QR (bKash) -->
+        <div class="max-w-3xl mx-auto bg-white text-gray-800 rounded-3xl p-6 md:p-10 shadow-2xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="flex justify-center">
+                <div class="qr-ring ">
+                    <div class="qr-card">
+                        <div class="qr-badge mb-3"><i class="fas fa-qrcode"></i> স্ক্যান করুন</div>
+                        <div class="qr-frame" style="--qr-size:230px">
+                            <img src="bangla-qr.png" alt="বিকাশ বাংলা QR - আগন্তুক" onclick="openQrZoom()">
+                            <span class="qr-corner tl"></span><span class="qr-corner tr"></span>
+                            <span class="qr-corner bl"></span><span class="qr-corner br"></span>
+                            <span class="qr-scan"></span>
+                        </div>
+                        <div class="font-mono text-xl font-bold text-pink-600 tracking-wider mt-3 select-all">01332738981</div>
+                        <p class="text-xs text-gray-500 mt-1 mb-3">বিকাশ বা যেকোনো ব্যাংক অ্যাপ দিয়ে স্ক্যান করুন</p>
+                        <button onclick="copyNumber('01332738981', this)" class="qr-copy copy-btn text-sm">
+                            <i class="fas fa-copy"></i><span>নম্বর কপি করুন</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center md:text-left">
+                <img src="photo/bkash.webp" alt="bKash" class="h-14 mx-auto md:mx-0 mb-3">
+                <h3 class="font-bold text-2xl mb-1">বিকাশ (পার্সোনাল)</h3>
+                <p class="text-sm text-gray-500 mb-4">বাংলা QR - বিকাশ বা যেকোনো ব্যাংক অ্যাপ থেকে দান করা যাবে</p>
+
+                <ol class="text-sm text-gray-700 space-y-2 mb-5 text-left inline-block">
+                    <li class="flex items-start gap-2"><span class="w-6 h-6 shrink-0 rounded-full bg-pink-100 text-pink-600 font-bold flex items-center justify-center text-xs">১</span> অ্যাপ খুলে QR স্ক্যান করুন</li>
+                    <li class="flex items-start gap-2"><span class="w-6 h-6 shrink-0 rounded-full bg-pink-100 text-pink-600 font-bold flex items-center justify-center text-xs">২</span> দানের পরিমাণ লিখুন</li>
+                    <li class="flex items-start gap-2"><span class="w-6 h-6 shrink-0 rounded-full bg-pink-100 text-pink-600 font-bold flex items-center justify-center text-xs">৩</span> পিন দিয়ে কনফার্ম করুন</li>
+                </ol>
+
+                <div class="bg-gradient-to-r from-pink-50 to-pink-100 p-4 rounded-xl border border-pink-200 mb-3">
+                    <div id="bkashNumber" class="font-mono text-2xl font-bold text-pink-600 tracking-wider select-all text-center">
+                        01332738981
+                    </div>
+                </div>
+
+                <button onclick="copyNumber('01332738981', this)"
+                    class="copy-btn bg-pink-600 hover:bg-pink-700 text-white px-5 py-2 rounded-full font-semibold transition duration-300 flex items-center justify-center gap-2 mx-auto md:mx-0 shadow-lg">
+                    <i class="fas fa-copy"></i>
+                    <span>কপি করুন</span>
+                </button>
+
+                <p class="text-xs text-gray-500 mt-3">
+                    *নম্বরে দান করতে চাইলে সেন্ড মানি অপশন ব্যবহার করুন
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Extra CSS -->
+<style>
+    .copy-btn:active {
+        transform: scale(0.96);
+    }
+
+    .copied {
+        background: #16a34a !important;
+    }
+</style>
+
+<!-- Copy Script -->
+<script>
+    function copyNumber(number, button) {
+        navigator.clipboard.writeText(number);
+
+        const originalHTML = button.innerHTML;
+
+        button.innerHTML = `
+            <i class="fas fa-check"></i>
+            <span>কপি হয়েছে</span>
+        `;
+
+        button.classList.add("copied");
+
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.classList.remove("copied");
+        }, 2000);
+    }
+</script>
+
+<!-- Blood Bank & Volunteer Quick Access -->
+<section id="community-services" class="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <span class="inline-block bg-blue-100 text-brand-primary px-4 py-2 rounded-full text-sm font-semibold mb-3">মানবিক উদ্যোগে যুক্ত হোন</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">মানবতার পাশে <span class="text-brand-secondary">আগন্তুক</span></h2>
+            <p class="text-gray-600">রক্তের প্রয়োজনে পাশে থাকুন, অথবা স্বেচ্ছাসেবক হিসেবে আমাদের মানবিক কার্যক্রমে যুক্ত হোন।</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-7 max-w-5xl mx-auto">
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-red-700 to-rose-500 text-white p-7 md:p-9 shadow-xl">
+                <div class="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center text-2xl mb-5">
+                        <i class="fas fa-droplet"></i>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-3">আগন্তুক ব্লাড ব্যাংক</h3>
+                    <p class="text-red-50 leading-relaxed mb-6">জরুরি প্রয়োজনে রক্তদাতা খুঁজুন অথবা রক্তদাতা হিসেবে নিবন্ধন করে মানুষের জীবন বাঁচাতে ভূমিকা রাখুন।</p>
+                    <a href="blood.html" class="inline-flex items-center justify-center gap-2 bg-white text-red-700 hover:bg-red-50 px-6 py-3 rounded-xl font-bold shadow-lg transition">
+                        <i class="fas fa-search"></i> ব্লাড ব্যাংকে প্রবেশ করুন
+                    </a>
+                </div>
+            </div>
+
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-800 to-blue-500 text-white p-7 md:p-9 shadow-xl">
+                <div class="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center text-2xl mb-5">
+                        <i class="fas fa-people-group"></i>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-3">স্বেচ্ছাসেবক হিসেবে যুক্ত হোন</h3>
+                    <p class="text-blue-50 leading-relaxed mb-6">আপনার সময়, দক্ষতা ও আন্তরিকতা দিয়ে আগন্তুকের সামাজিক ও মানবিক কার্যক্রমে অবদান রাখুন।</p>
+                    <a href="volunteer.html" class="inline-flex items-center justify-center gap-2 bg-white text-blue-800 hover:bg-blue-50 px-6 py-3 rounded-xl font-bold shadow-lg transition">
+                        <i class="fas fa-user-plus"></i> স্বেচ্ছাসেবক আবেদন করুন
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    const menu = document.getElementById('mobile-menu');
+    
+    function toggleMenu() {
+        menu.classList.toggle('hidden');
+    }
+
+    // মেনুর বাইরে ক্লিক করলে মেনু বন্ধ হবে
+    window.addEventListener('click', function(e) {
+        const btn = document.querySelector('button[onclick="toggleMenu()"]');
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+            menu.classList.add('hidden');
+        }
+    });
+</script>
+
+
+<!-- old fetch removed -->
+    
+
+ 
+
+<!-- admin scripts removed -->
+
+
+
+<style>
+    /* Admin Login Modal Animations */
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-slide-in-up {
+        animation: slideInUp 0.3s ease-out;
+    }
+    
+    /* Floating button animation */
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+    
+    .animate-bounce {
+        animation: bounce 2s infinite;
+    }
+    
+    /* Gradient text for admin button */
+    .admin-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+</style>
+
+<footer class="bg-gray-950 text-gray-400 py-10 border-t border-gray-900">
+  <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <div class="space-y-4 text-center md:text-left">
+      <div class="flex items-center justify-center md:justify-start gap-3">
+        <div class="bg-white p-1.5 rounded-xl shadow-lg"><img src="photo/logo1.png" alt="Logo" class="h-9 w-auto"></div>
+        <span class="text-xl font-extrabold text-white">আগন্তুক</span>
+      </div>
+      <p class="text-xs leading-relaxed">আগন্তুক একটি পরিবার। আমরা তারুণ্যের শক্তিকে কাজে লাগিয়ে ইতিবাচক সামাজিক পরিবর্তনের স্বপ্ন দেখি।</p>
+      <div class="flex justify-center md:justify-start gap-3">
+        <a href="https://www.facebook.com/profile.php?id=100064781886465" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-blue-600 transition"><i class="fab fa-facebook-f text-sm"></i></a>
+        <a href="https://wa.me/+8801332738981" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-green-500 transition"><i class="fab fa-whatsapp text-sm"></i></a>
+        <a href="https://www.youtube.com/@Agantuk2019" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center text-white hover:bg-red-600 transition"><i class="fab fa-youtube text-sm"></i></a>
+      </div>
+    </div>
+    <div class="text-center md:text-left">
+      <h3 class="text-white font-semibold mb-5 text-base border-b-2 border-blue-500 inline-block pb-1">লিংকস</h3>
+      <ul class="space-y-3 text-xs mt-3">
+        <li><a href="#about" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition"><span class="text-blue-400">&rsaquo;</span>আমাদের সম্পর্কে</a></li>
+        <li><a href="project.html" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition"><span class="text-blue-400">&rsaquo;</span>সকল প্রজেক্ট</a></li>
+        <li><a href="members.html" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition"><span class="text-blue-400">&rsaquo;</span>সদস্যবৃন্দ</a></li>
+        <li><a href="ideas.html" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition"><span class="text-blue-400">&rsaquo;</span>আইডিয়াস</a></li>
+        <li><a href="blood.html" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition"><span class="text-blue-400">&rsaquo;</span>আগন্তুক ব্লাড ব্যাংক</a></li>
+        <li><a href="volunteer.html" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition"><span class="text-blue-400">&rsaquo;</span>স্বেচ্ছাসেবক আবেদন</a></li>
+        <li><a href="#help-application" class="hover:text-white flex items-center justify-center md:justify-start gap-2 transition"><span class="text-blue-400">&rsaquo;</span>সহায়তা আবেদন</a></li>
+      </ul>
+    </div>
+    <div class="text-center md:text-left">
+      <h3 class="text-white font-semibold mb-5 text-base border-b-2 border-blue-500 inline-block pb-1">যোগাযোগ</h3>
+      <ul class="space-y-3 text-xs mt-3">
+        <li class="flex items-start justify-center md:justify-start gap-3"><i class="fas fa-map-marker-alt mt-1 text-blue-400"></i><span>সাদাব্রিজ, আলমডাঙ্গা, চুয়াডাঙ্গা</span></li>
+        <li class="flex items-center justify-center md:justify-start gap-3"><i class="fas fa-phone-alt text-blue-400"></i><span>+880 1332-738981</span></li>
+        <li class="flex items-center justify-center md:justify-start gap-3"><i class="fas fa-envelope text-blue-400"></i><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e18086808f95948a8385d3d1d0d8a1868c80888dcf828e8c">[email&#160;protected]</a></span></li>
+      </ul>
+    </div>
+    <div class="text-center md:text-left">
+      <h3 class="text-white font-semibold mb-5 text-base border-b-2 border-blue-500 inline-block pb-1">যুক্ত হোন</h3>
+      <div class="bg-gray-900/40 border border-gray-800/60 p-4 rounded-xl mt-3">
+        <p class="text-xs mb-4 text-gray-200">"মানবতার সেবায় আপনার একটি ক্ষুদ্র পদক্ষেপ হতে পারে আগন্তুকের শক্তি।"</p>
+        <a href="volunteer.html" class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-xs font-bold transition"><i class="fas fa-user-plus"></i>সদস্য হতে আবেদন করুন</a>
+        <button onclick="window.open('admin.html','_blank')" class="w-full mt-2 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white py-2 px-4 rounded-lg text-xs font-bold transition"><i class="fas fa-lock"></i>অ্যাডমিন</button>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-gray-900 mt-8 pt-6 text-center text-xs text-gray-600">© ২০২৫ আগন্তুক। সর্বস্বত্ব সংরক্ষিত।</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+(function() {
+  var SHEET_ID  = "1I5YAZlyJak1wSOqGAxAjlLl-8E24-AHN1gKIUggg9r4";
+  var SHEET_TAB = "Projects";
+  var CAT_COLORS = {education:"bg-blue-500",health:"bg-red-500",relief:"bg-amber-500",blood:"bg-red-600",environment:"bg-green-500",winter:"bg-indigo-500",sokkhom:"bg-purple-500",awareness:"bg-sky-500",other:"bg-gray-400"};
+  var CAT_LABELS = {education:"শিক্ষা",health:"স্বাস্থ্য",relief:"ত্রাণ",blood:"রক্তদান",environment:"পরিবেশ",winter:"শীতবস্ত্র",sokkhom:"সক্ষম",awareness:"সচেতনতা",other:"অন্যান্য"};
+
+  function getDriveImg(v) {
+    if (!v) return '';
+    // Take first URL if comma-separated
+    v = String(v).split(',')[0].trim();
+    // Extract Google Drive FILE_ID from share link
+    var dm = v.match(/\/d\/([A-Za-z0-9_-]{10,})/);
+    if (dm) return 'https://drive.google.com/thumbnail?id=' + dm[1] + '&sz=w600';
+    var qm = v.match(/[?&]id=([A-Za-z0-9_-]{10,})/);
+    if (qm) return 'https://drive.google.com/thumbnail?id=' + qm[1] + '&sz=w600';
+    // Raw file ID (no slashes, no http)
+    if (v.length >= 10 && v.indexOf('http') < 0 && v.indexOf('/') < 0) {
+      return 'https://drive.google.com/thumbnail?id=' + v + '&sz=w600';
+    }
+    // Plain URL
+    if (v.indexOf('http') === 0) return v;
+    return '';
+  }
+
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function renderCard(p) {
+    var cat = (p.category||'other').toLowerCase();
+    var color = CAT_COLORS[cat] || CAT_COLORS.other;
+    var label = CAT_LABELS[cat] || 'অন্যান্য';
+    var img = getDriveImg(p.image||'');
+    var title = esc(p.title||'');
+    var desc  = esc(p.description||'');
+    var imgHtml;
+    if (img) {
+      imgHtml = '<img src="' + esc(img) + '" alt="' + title + '" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.style.opacity=0.3">';
+    } else {
+      imgHtml = '<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700"><span class="text-white text-4xl font-bold opacity-30">' + title.charAt(0) + '</span></div>';
+    }
+    var html = '<div class="project-card group">';
+    html += '<div class="relative overflow-hidden rounded-2xl shadow-xl h-72">' + imgHtml;
+    html += '<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>';
+    html += '<div class="absolute top-4 left-4"><span class="px-3 py-1 ' + color + ' text-white text-xs rounded-full">' + label + '</span></div>';
+    html += '<div class="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">';
+    html += '<h3 class="text-xl font-bold mb-1">' + title + '</h3>';
+    if (p.description) html += '<p class="text-sm text-gray-200 line-clamp-2">' + desc + '</p>';
+    html += '</div></div>';
+    html += '<div class="p-5">';
+    html += '<h3 class="text-xl font-bold text-gray-800 mb-2">' + (title||'শিরোনাম নেই') + '</h3>';
+    html += '<p class="text-gray-600 mb-4 line-clamp-2">' + desc + '</p>';
+    html += '<div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between gap-2">';
+    html += '<div class="flex flex-col gap-1">';
+    if (p.date)     html += '<span class="inline-flex items-center gap-1.5 text-xs text-gray-400"><i class="fas fa-calendar-alt text-blue-400"></i> ' + esc(p.date) + '</span>';
+    if (p.location) html += '<span class="inline-flex items-center gap-1.5 text-xs text-gray-400"><i class="fas fa-map-marker-alt text-blue-400"></i> ' + esc(p.location) + '</span>';
+    html += '</div>';
+    if (p.facebook) html += '<a href="' + esc(p.facebook) + '" target="_blank" class="shrink-0 inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded-full transition shadow-sm"><i class="fab fa-facebook-f text-xs"></i> ফেসবুক</a>';
+    else html += '<span></span>';
+    html += '</div>';
+    html += '</div></div>';
+    return html;
+  }
+
+  function removeSkeleton() {
+    document.querySelectorAll('.idx-sk').forEach(function(el) { el.remove(); });
+  }
+
+  function onData(data) {
+    if (!data || !data.table) { removeSkeleton(); return; }
+    var defH = ['title','category','date','location','description','facebook','image','status'];
+    var cols = (data.table.cols||[]).map(function(col, i) {
+      var l = (col.label||'').toLowerCase().trim().replace(/\s+/g, '_');
+      return l || defH[i] || ('col'+i);
+    });
+    var rows = [];
+    (data.table.rows||[]).forEach(function(row) {
+      if (!row || !row.c) return;
+      var obj = {};
+      cols.forEach(function(k, i) { var cell = row.c[i]; obj[k] = (cell && cell.v != null) ? String(cell.f||cell.v).trim() : ''; });
+      if (obj.title === 'title') return;
+      if ((obj.status||'').toLowerCase() === 'inactive') return;
+      if (!Object.keys(obj).some(function(k) { return obj[k]; })) return;
+      rows.push(obj);
+    });
+    rows.reverse();
+    removeSkeleton();
+    var grid = document.getElementById('index-projects-grid');
+    if (!grid) return;
+    var top6 = rows.slice(0, 6);
+    if (!top6.length) { grid.innerHTML = '<div class="col-span-3 text-center text-gray-400 py-10">কোনো প্রজেক্ট পাওয়া যায়নি।</div>'; return; }
+    grid.innerHTML = top6.map(function(p) { return renderCard(p); }).join('');
+  }
+
+  function loadIndexProjects() {
+    if (!window.google) window.google = {};
+    if (!window.google.visualization) window.google.visualization = {};
+    if (!window.google.visualization.Query) window.google.visualization.Query = {};
+    var done = false;
+    var cb = 'idxCB' + Date.now();
+    var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID
+            + '/gviz/tq?tqx=out:json&tq=select%20*&sheet='
+            + encodeURIComponent(SHEET_TAB) + '&callback=' + cb;
+    var timer = setTimeout(function() { if (!done) { done = true; removeSkeleton(); } }, 8000);
+    window.google.visualization.Query.setResponse = function(data) { if (done) return; done = true; clearTimeout(timer); onData(data); };
+    window[cb] = function(data) { if (done) return; done = true; clearTimeout(timer); delete window[cb]; onData(data); };
+    var s = document.createElement('script');
+    s.src = url;
+    s.onerror = function() { if (!done) { done = true; clearTimeout(timer); removeSkeleton(); } };
+    document.head.appendChild(s);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadIndexProjects);
+  else loadIndexProjects();
+})();
+</script>
+
+<script>
+// Cross-page anchor scroll fix — navbar height offset
+(function() {
+  function scrollToHash() {
+    var hash = window.location.hash;
+    if (!hash) return;
+    var target = document.querySelector(hash);
+    if (!target) return;
+    var navbar = document.getElementById('navbar');
+    var offset = navbar ? navbar.getBoundingClientRect().height : 72;
+    var top = target.getBoundingClientRect().top + window.pageYOffset - offset - 8;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+  // Wait for full page render before scrolling
+  window.addEventListener('load', function() {
+    setTimeout(scrollToHash, 150);
+  });
+})();
+</script>
+
+<!-- QR Zoom Modal -->
+<div id="qrZoomModal" class="fixed inset-0 bg-black bg-opacity-80 z-[99999] hidden flex items-center justify-center p-4" onclick="closeQrZoom()">
+    <div class="bg-white rounded-2xl p-4 max-w-sm w-full text-center animate-scale-up" onclick="event.stopPropagation()">
+        <img src="photo/bangla-qr.png" alt="বিকাশ বাংলা QR" class="w-full rounded-lg">
+        <div class="font-mono text-xl font-bold text-pink-600 mt-3">01332738981</div>
+        <button onclick="closeQrZoom()" class="mt-3 w-full bg-gray-800 text-white py-2 rounded-lg font-bold">বন্ধ করুন</button>
+    </div>
+</div>
+<script>
+    function openQrZoom() { document.getElementById('qrZoomModal').classList.remove('hidden'); }
+    function closeQrZoom() { document.getElementById('qrZoomModal').classList.add('hidden'); }
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeQrZoom(); });
+</script>
+</body>
+</html>
